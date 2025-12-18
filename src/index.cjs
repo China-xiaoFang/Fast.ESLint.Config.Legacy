@@ -1,18 +1,18 @@
-const {
-	CONST_JS,
-	CONST_JSX,
-	CONST_TS,
-	CONST_TSX,
+import {
 	CONST_DTS,
-	CONST_TSCONFIG,
-	CONST_VUE,
+	CONST_JS,
 	CONST_JSON,
-	CONST_JSONC,
 	CONST_JSON5,
 	CONST_JSON6,
-} = require("./constants/index");
-const { isVue3 } = require("./env/index");
-const {
+	CONST_JSONC,
+	CONST_JSX,
+	CONST_TS,
+	CONST_TSCONFIG,
+	CONST_TSX,
+	CONST_VUE,
+} from "./constants/index";
+import { isVue3 } from "./env/index";
+import {
 	commonRules,
 	importRules,
 	importUseLodashUnifiedRules,
@@ -21,7 +21,7 @@ const {
 	tsconfigJsonSortRules,
 	typescriptRules,
 	vueRules,
-} = require("./rules");
+} from "./rules";
 
 // @see: http://eslint.cn
 module.exports = {
@@ -38,7 +38,7 @@ module.exports = {
 		"plugin:import/recommended",
 		"plugin:regexp/recommended",
 		"plugin:jsonc/recommended-with-jsonc",
-		"plugin:markdown/recommended-legacy",
+		"plugin:markdown/recommended",
 		isVue3 ? "plugin:vue/recommended" : "plugin:vue/vue2-recommended",
 		"plugin:prettier/recommended",
 	],
