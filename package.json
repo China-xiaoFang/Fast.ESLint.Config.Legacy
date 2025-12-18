@@ -1,7 +1,7 @@
 {
-	"name": "@fast-china/eslint-config",
-	"version": "1.0.32",
-	"description": "Fast ESLint 规则库.",
+	"name": "@fast-china/eslint-config-legacy",
+	"version": "1.0.0",
+	"description": "Fast ESLint Legacy 规则库.",
 	"type": "module",
 	"keywords": [
 		"fast",
@@ -10,11 +10,11 @@
 	"license": "Apache-2.0",
 	"homepage": "https://fastdotnet.com",
 	"bugs": {
-		"url": "https://gitee.com/FastDotnet/fast.eslint.config/issues"
+		"url": "https://gitee.com/FastDotnet/fast.eslint.config.legacy/issues"
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://gitee.com/FastDotnet/fast.eslint.config"
+		"url": "https://gitee.com/FastDotnet/fast.eslint.config.legacy"
 	},
 	"author": "小方",
 	"files": [
@@ -24,68 +24,56 @@
 		"./README.zh.md",
 		"./dist"
 	],
-	"main": "dist/v8/index.cjs",
+	"main": "dist/index.cjs",
 	"exports": {
 		".": {
-			"default": "./dist/v8/index.cjs"
+			"default": "./dist/index.cjs"
 		},
 		"./rules": {
 			"types": "./dist/rules/index.d.ts",
 			"require": "./dist/rules/index.js",
 			"import": "./dist/rules/index.js"
-		},
-		"./flat": {
-			"types": "./dist/flat/index.d.ts",
-			"require": "./dist/flat/index.js",
-			"import": "./dist/flat/index.js"
 		}
 	},
 	"publishConfig": {
 		"access": "public"
 	},
 	"scripts": {
-		"dev": "eslint-config-inspector --config src/eslint-inspector.config.ts",
-		"build:dev": "eslint-config-inspector build --config src/eslint-inspector.config.ts",
-		"typegen": "tsx scripts/typegen.ts",
-		"build": "pnpm run typegen && tsup",
+		"build": "tsup",
 		"lint:eslint": "eslint --max-warnings 0 \"src/**/*.{vue,js,ts,tsx}\" --fix",
 		"lint:prettier": "prettier --write \"src/**/*.{vue,js,ts,jsx,tsx,md,json,css,scss,less,html}\"",
 		"lint": "pnpm lint:eslint && pnpm lint:prettier"
 	},
 	"peerDependencies": {
-		"eslint": "^8 || ^9",
+		"eslint": "^8",
 		"prettier": "^3"
 	},
 	"dependencies": {
-		"@eslint/js": "^9",
-		"@eslint/markdown": "^7",
-		"@typescript-eslint/eslint-plugin": "^8",
-		"@typescript-eslint/parser": "^8",
-		"eslint-config-flat-gitignore": "^2",
+		"@typescript-eslint/eslint-plugin": "^7",
+		"@typescript-eslint/parser": "^7",
 		"eslint-config-prettier": "^10",
 		"eslint-plugin-import": "^2",
 		"eslint-plugin-jsonc": "^2",
-		"eslint-plugin-markdown": "^5",
+		"eslint-plugin-markdown": "^3",
 		"eslint-plugin-prettier": "^5",
-		"eslint-plugin-regexp": "^2",
-		"eslint-plugin-vue": "^10",
-		"globals": "^16",
+		"eslint-plugin-regexp": "^1",
+		"eslint-plugin-vue": "^9",
+		"globals": "^13",
 		"jsonc-eslint-parser": "^2",
 		"local-pkg": "^1",
-		"typescript-eslint": "^8",
-		"vue-eslint-parser": "^10"
+		"typescript-eslint": "^7",
+		"vue-eslint-parser": "^9"
 	},
 	"devDependencies": {
-		"@eslint/config-inspector": "latest",
-		"@types/eslint": "^8 || ^9",
+		"@types/eslint": "^8",
 		"@types/node": "^24",
-		"eslint": "^8 || ^9",
-		"eslint-typegen": "^2",
+		"eslint": "^8",
+		"eslint-define-config": "^1",
 		"prettier": "^3",
-		"tsup": "^8",
+		"tsup": "^6",
 		"typescript": "^5"
 	},
 	"engines": {
-		"node": ">=14.0.0"
+		"node": ">=16.0.0"
 	}
 }

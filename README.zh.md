@@ -1,17 +1,17 @@
-**中** | [En](https://github.com/China-xiaoFang/Fast.ESLint.Config)
+**中** | [En](https://github.com/China-xiaoFang/Fast.ESLint.Config.Legacy)
 
-<h1 align="center">Fast.ESLint.Config</h1>
+<h1 align="center">Fast.ESLint.Config.Legacy</h1>
 
 <p align="center">
   <code>Fast</code> 平台下基于 <code>ESLint</code> 构建的规则库。
 </p>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/@fast-china/eslint-config">
-    <img src="https://img.shields.io/npm/v/@fast-china/eslint-config?color=orange&label=" alt="version" />
+  <a href="https://www.npmjs.com/package/@fast-china/eslint-config-legacy">
+    <img src="https://img.shields.io/npm/v/@fast-china/eslint-config-legacy?color=orange&label=" alt="version" />
   </a>
-  <a href="https://gitee.com/FastDotnet/Fast.ESLint.Config/blob/master/LICENSE">
-    <img src="https://img.shields.io/npm/l/@fast-china/eslint-config" alt="license" />
+  <a href="https://gitee.com/FastDotnet/Fast.ESLint.Config.Legacy/blob/master/LICENSE">
+    <img src="https://img.shields.io/npm/l/@fast-china/eslint-config-legacy" alt="license" />
   </a>
 </p>
 
@@ -23,13 +23,13 @@
 # 选择一个你喜欢的包管理器
 
 # NPM
-npm install @fast-china/eslint-config --save-dev
+npm install @fast-china/eslint-config-legacy --save-dev
 
 # Yarn
-yarn add @fast-china/eslint-config --dev
+yarn add @fast-china/eslint-config-legacy --dev
 
 # pnpm（推荐）
-pnpm install @fast-china/eslint-config --save-dev
+pnpm install @fast-china/eslint-config-legacy --save-dev
 ```
 
 ## 使用
@@ -38,8 +38,8 @@ pnpm install @fast-china/eslint-config --save-dev
 
 ```javascript
 module.exports = {
-	root: true,
-	extends: ["@fast-china"],
+  root: true,
+  extends: ["@fast-china/eslint-config-legacy"],
 };
 ```
 
@@ -47,42 +47,18 @@ module.exports = {
 const { defineConfig } = require("eslint-define-config");
 
 module.exports = defineConfig({
-	root: true,
-	extends: ["@fast-china/eslint-config"],
-});
-```
-
-#### eslint.config.mjs 示例
-
-```typescript
-import fastChinaFlat from "@fast-china/eslint-config/flat";
-
-export default [...fastChinaFlat];
-```
-
-```typescript
-import fastChinaFlat from "@fast-china/eslint-config/flat";
-import { defineConfig } from "eslint/config";
-
-export default defineConfig(...fastChinaFlat);
-```
-
-```typescript
-import fastChinaFlat from "@fast-china/eslint-config/flat";
-import tseslint from "typescript-eslint";
-
-export default tseslint.config({
-	extends: [...fastChinaFlat],
+  root: true,
+  extends: ["@fast-china/eslint-config-legacy"],
 });
 ```
 
 ## 更新日志
 
-更新日志 [点击查看](https://gitee.com/FastDotnet/Fast.ESLint.Config/commits/master)
+更新日志 [点击查看](https://gitee.com/FastDotnet/Fast.ESLint.Config.Legacy/commits/master)
 
 ## 协议
 
-[Fast.ESLint.Config](https://gitee.com/FastDotnet/Fast.ESLint.Config) 遵循 [Apache-2.0](https://gitee.com/FastDotnet/Fast.ESLint.Config/blob/master/LICENSE) 开源协议，欢迎大家提交 `PR` 或 `Issue`。
+[Fast.ESLint.Config.Legacy](https://gitee.com/FastDotnet/Fast.ESLint.Config.Legacy) 遵循 [Apache-2.0](https://gitee.com/FastDotnet/Fast.ESLint.Config.Legacy/blob/master/LICENSE) 开源协议，欢迎大家提交 `PR` 或 `Issue`。
 
 ```
 Apache开源许可证
@@ -116,8 +92,8 @@ Apache开源许可证
 
 感谢他们的所做的一切贡献！
 
-<a href="https://github.com/China-xiaoFang/Fast.ESLint.Config/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=China-xiaoFang/Fast.ESLint.Config" />
+<a href="https://github.com/China-xiaoFang/Fast.ESLint.Config.Legacy/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=China-xiaoFang/Fast.ESLint.Config.Legacy" />
 </a>
 
 ## 补充说明

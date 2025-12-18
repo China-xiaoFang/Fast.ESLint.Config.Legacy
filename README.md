@@ -1,17 +1,17 @@
-[中](https://gitee.com/FastDotnet/Fast.ESLint.Config) | **En**
+[中](https://gitee.com/FastDotnet/Fast.ESLint.Config.Legacy) | **En**
 
-<h1 align="center">Fast.ESLint.Config</h1>
+<h1 align="center">Fast.ESLint.Config.Legacy</h1>
 
 <p align="center">
   <code>Fast</code> platform An rule library built based on <code>ESLint</code>.
 </p>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/@fast-china/eslint-config">
-    <img src="https://img.shields.io/npm/v/@fast-china/eslint-config?color=orange&label=" alt="version" />
+  <a href="https://www.npmjs.com/package/@fast-china/eslint-config-legacy">
+    <img src="https://img.shields.io/npm/v/@fast-china/eslint-config-legacy?color=orange&label=" alt="version" />
   </a>
-  <a href="https://gitee.com/FastDotnet/Fast.ESLint.Config/blob/master/LICENSE">
-    <img src="https://img.shields.io/npm/l/@fast-china/eslint-config" alt="license" />
+  <a href="https://gitee.com/FastDotnet/Fast.ESLint.Config.Legacy/blob/master/LICENSE">
+    <img src="https://img.shields.io/npm/l/@fast-china/eslint-config-legacy" alt="license" />
   </a>
 </p>
 
@@ -23,13 +23,13 @@
 # Choose a package manager of your choice
 
 # NPM
-npm install @fast-china/eslint-config --save-dev
+npm install @fast-china/eslint-config-legacy --save-dev
 
 # Yarn
-yarn add @fast-china/eslint-config --dev
+yarn add @fast-china/eslint-config-legacy --dev
 
 # pnpm (recommend)
-pnpm install @fast-china/eslint-config --save-dev
+pnpm install @fast-china/eslint-config-legacy --save-dev
 ```
 
 ## Use
@@ -38,8 +38,8 @@ pnpm install @fast-china/eslint-config --save-dev
 
 ```javascript
 module.exports = {
-	root: true,
-	extends: ["@fast-china"],
+  root: true,
+  extends: ["@fast-china/eslint-config-legacy"],
 };
 ```
 
@@ -47,42 +47,18 @@ module.exports = {
 const { defineConfig } = require("eslint-define-config");
 
 module.exports = defineConfig({
-	root: true,
-	extends: ["@fast-china/eslint-config"],
-});
-```
-
-#### eslint.config.mjs Example
-
-```typescript
-import fastChinaFlat from "@fast-china/eslint-config/flat";
-
-export default [...fastChinaFlat];
-```
-
-```typescript
-import fastChinaFlat from "@fast-china/eslint-config/flat";
-import { defineConfig } from "eslint/config";
-
-export default defineConfig(...fastChinaFlat);
-```
-
-```typescript
-import fastChinaFlat from "@fast-china/eslint-config/flat";
-import tseslint from "typescript-eslint";
-
-export default tseslint.config({
-	extends: [...fastChinaFlat],
+  root: true,
+  extends: ["@fast-china/eslint-config-legacy"],
 });
 ```
 
 ## Update log
 
-Update log [Click to view](https://gitee.com/FastDotnet/Fast.ESLint.Config/commits/master)
+Update log [Click to view](https://gitee.com/FastDotnet/Fast.ESLint.Config.Legacy/commits/master)
 
 ## Protocol
 
-[Fast.ESLint.Config](https://gitee.com/FastDotnet/Fast.ESLint.Config) complies with the [Apache-2.0](https://gitee.com/FastDotnet/Fast.ESLint.Config/blob/master/LICENSE) open source agreement. Welcome to submit `PR` or `Issue`.
+[Fast.ESLint.Config.Legacy](https://gitee.com/FastDotnet/Fast.ESLint.Config.Legacy) complies with the [Apache-2.0](https://gitee.com/FastDotnet/Fast.ESLint.Config.Legacy/blob/master/LICENSE) open source agreement. Welcome to submit `PR` or `Issue`.
 
 ```
 Apache Open Source License
@@ -116,8 +92,8 @@ Please do not use it for projects that violate our country's laws
 
 Thank you for all their contributions!
 
-<a href="https://github.com/China-xiaoFang/Fast.ESLint.Config/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=China-xiaoFang/Fast.ESLint.Config" />
+<a href="https://github.com/China-xiaoFang/Fast.ESLint.Config.Legacy/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=China-xiaoFang/Fast.ESLint.Config.Legacy" />
 </a>
 
 ## Supplementary instructions

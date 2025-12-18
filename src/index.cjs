@@ -10,8 +10,8 @@ const {
 	CONST_JSONC,
 	CONST_JSON5,
 	CONST_JSON6,
-} = require("../constants/index");
-const { isVue3 } = require("../env/index");
+} = require("./constants/index");
+const { isVue3 } = require("./env/index");
 const {
 	commonRules,
 	importRules,
@@ -21,7 +21,7 @@ const {
 	tsconfigJsonSortRules,
 	typescriptRules,
 	vueRules,
-} = require("../rules");
+} = require("./rules");
 
 // @see: http://eslint.cn
 module.exports = {
@@ -30,14 +30,13 @@ module.exports = {
 		browser: true,
 		node: true,
 	},
-	plugins: ["@typescript-eslint", "regexp", "promise", "prettier"],
+	plugins: ["@typescript-eslint", "regexp", "prettier"],
 	// 继承某些已有的规则
 	extends: [
 		"eslint:recommended",
 		"plugin:@typescript-eslint/recommended",
 		"plugin:import/recommended",
 		"plugin:regexp/recommended",
-		"plugin:promise/recommended",
 		"plugin:jsonc/recommended-with-jsonc",
 		"plugin:markdown/recommended-legacy",
 		isVue3 ? "plugin:vue/recommended" : "plugin:vue/vue2-recommended",

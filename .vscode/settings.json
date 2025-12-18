@@ -42,6 +42,6 @@
 	"explorer.fileNesting.enabled": true,
 	"explorer.fileNesting.patterns": {
 		".prettierrc.cjs": ".eslintrc.cjs, eslint.config.mjs",
-		"package.json": "pnpm-lock.yaml"
+		"package.json": "package-lock.json, pnpm-lock.yaml"
 	}
 }

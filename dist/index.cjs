@@ -722,8 +722,7 @@ var init_rules = __esm({
   }
 });
 
-// src/v8/index.cjs
-var { defineConfig } = require("eslint-define-config");
+// src/index.cjs
 var {
   CONST_JS: CONST_JS2,
   CONST_JSX: CONST_JSX2,
@@ -748,23 +747,23 @@ var {
   typescriptRules: typescriptRules2,
   vueRules: vueRules2
 } = (init_rules(), __toCommonJS(rules_exports));
-module.exports = defineConfig({
+module.exports = {
   env: {
     es6: true,
     browser: true,
     node: true
   },
-  plugins: ["regexp", "@typescript-eslint", "prettier"],
+  plugins: ["@typescript-eslint", "regexp", "prettier"],
   // 继承某些已有的规则
   extends: [
     "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
     "plugin:import/recommended",
     "plugin:regexp/recommended",
-    "plugin:@typescript-eslint/recommended",
     "plugin:jsonc/recommended-with-jsonc",
+    "plugin:markdown/recommended-legacy",
     isVue32 ? "plugin:vue/recommended" : "plugin:vue/vue2-recommended",
-    "plugin:prettier/recommended",
-    "plugin:markdown/recommended-legacy"
+    "plugin:prettier/recommended"
   ],
   globals: {
     $: "readonly",
@@ -894,5 +893,5 @@ module.exports = defineConfig({
     // 确保 Prettier 错误被 ESLint 捕获
     "prettier/prettier": "error"
   }
-});
+};
 //# sourceMappingURL=index.cjs.map
