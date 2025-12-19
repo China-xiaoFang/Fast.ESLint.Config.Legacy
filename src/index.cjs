@@ -33,7 +33,7 @@ module.exports = {
 	},
 	plugins: ["regexp", "prettier"],
 	// 继承某些已有的规则
-	extends: ["eslint:recommended", "plugin:import/recommended", "plugin:regexp/recommended", "plugin:prettier/recommended"],
+	extends: ["eslint:recommended", "plugin:import/recommended", "plugin:regexp/recommended", "plugin:prettier/recommended", "prettier"],
 	globals: {
 		$: "readonly",
 		$$: "readonly",
@@ -88,7 +88,7 @@ module.exports = {
 			files: [CONST_TS, CONST_TSX],
 			plugins: ["@typescript-eslint"],
 			// 继承某些已有的规则
-			extends: ["plugin:@typescript-eslint/recommended"],
+			extends: ["plugin:@typescript-eslint/recommended", "prettier"],
 			parser: "@typescript-eslint/parser",
 			parserOptions: {
 				//  允许使用最新的 ECMAScript 语法特性
@@ -129,7 +129,7 @@ module.exports = {
 			files: [CONST_JSON, CONST_JSONC, CONST_JSON5, CONST_JSON6],
 			plugins: ["jsonc"],
 			// 继承某些已有的规则
-			extends: ["plugin:jsonc/recommended-with-jsonc"],
+			extends: ["plugin:jsonc/recommended-with-jsonc", "prettier"],
 			parser: "jsonc-eslint-parser",
 		},
 		/**
@@ -151,26 +151,9 @@ module.exports = {
 		 */
 		{
 			files: [CONST_VUE],
-			plugins: ["@typescript-eslint"],
-			// 继承某些已有的规则
-			extends: ["plugin:@typescript-eslint/recommended"],
-			parser: "@typescript-eslint/parser",
-			parserOptions: {
-				//  允许使用最新的 ECMAScript 语法特性
-				ecmaVersion: "latest",
-				ecmaFeatures: {
-					// 允许使用 TSX 语法，适用于 Vue 组件中的 TSX 代码。
-					tsx: true,
-				},
-				sourceType: "module",
-			},
-			rules: typescriptRules,
-		},
-		{
-			files: [CONST_VUE],
 			plugins: ["@typescript-eslint", "vue"],
 			// 继承某些已有的规则
-			extends: [isVue3 ? "plugin:vue/recommended" : "plugin:vue/vue2-recommended"],
+			extends: ["plugin:@typescript-eslint/recommended", isVue3 ? "plugin:vue/recommended" : "plugin:vue/vue2-recommended"],
 			// 允许 ESLint 处理 Vue 文件中的模板和脚本
 			parser: "vue-eslint-parser",
 			parserOptions: {
@@ -189,6 +172,8 @@ module.exports = {
 				sourceType: "module",
 			},
 			rules: {
+				...typescriptRules,
+
 				...vueRules,
 
 				// 关闭 - 禁止使用未声明的变量，以避免在 .vue 文件中出现关于未定义变量的警告，这在 Vue 单文件组件中可能不适用或会导致不必要的警告
