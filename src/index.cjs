@@ -6,7 +6,6 @@ import {
 	CONST_JSON6,
 	CONST_JSONC,
 	CONST_JSX,
-	CONST_MD,
 	CONST_TS,
 	CONST_TSCONFIG,
 	CONST_TSX,
@@ -31,9 +30,18 @@ module.exports = {
 		browser: true,
 		node: true,
 	},
-	plugins: ["regexp", "prettier"],
+	plugins: ["@typescript-eslint", "regexp", "jsonc", "markdown", "prettier"],
 	// 继承某些已有的规则
-	extends: ["eslint:recommended", "plugin:import/recommended", "plugin:regexp/recommended", "plugin:prettier/recommended", "prettier"],
+	extends: [
+		"eslint:recommended",
+		"plugin:@typescript-eslint/recommended",
+		"plugin:import/recommended",
+		"plugin:regexp/recommended",
+		"plugin:jsonc/recommended-with-jsonc",
+		"plugin:markdown/recommended",
+		isVue3 ? "plugin:vue/recommended" : "plugin:vue/vue2-recommended",
+		"plugin:prettier/recommended",
+	],
 	globals: {
 		$: "readonly",
 		$$: "readonly",
@@ -86,9 +94,7 @@ module.exports = {
 		 */
 		{
 			files: [CONST_TS, CONST_TSX],
-			plugins: ["@typescript-eslint"],
 			// 继承某些已有的规则
-			extends: ["plugin:@typescript-eslint/recommended", "prettier"],
 			parser: "@typescript-eslint/parser",
 			parserOptions: {
 				//  允许使用最新的 ECMAScript 语法特性
@@ -99,7 +105,6 @@ module.exports = {
 				},
 				sourceType: "module",
 			},
-			rules: typescriptRules,
 		},
 		{
 			files: [CONST_DTS],
@@ -127,9 +132,7 @@ module.exports = {
 		 */
 		{
 			files: [CONST_JSON, CONST_JSONC, CONST_JSON5, CONST_JSON6],
-			plugins: ["jsonc"],
-			// 继承某些已有的规则
-			extends: ["plugin:jsonc/recommended-with-jsonc", "prettier"],
+			// 允许 ESLint 处理 JSON 文件中的模板和脚本
 			parser: "jsonc-eslint-parser",
 		},
 		/**
@@ -151,9 +154,6 @@ module.exports = {
 		 */
 		{
 			files: [CONST_VUE],
-			plugins: ["@typescript-eslint", "vue"],
-			// 继承某些已有的规则
-			extends: ["plugin:@typescript-eslint/recommended", isVue3 ? "plugin:vue/recommended" : "plugin:vue/vue2-recommended"],
 			// 允许 ESLint 处理 Vue 文件中的模板和脚本
 			parser: "vue-eslint-parser",
 			parserOptions: {
@@ -161,7 +161,6 @@ module.exports = {
 				ecmaVersion: "latest",
 				// 允许在 Vue 文件中的脚本部分使用 TypeScript 语法
 				parser: "@typescript-eslint/parser",
-				// parser: "@typescript-eslint/parser",
 				// 指定额外的文件扩展名，告诉解析器 .vue 文件也需要处理
 				extraFileExtensions: [".vue"],
 				// 允许使用 JSX/TSX 语法，适用于 Vue 组件中的 JSX/TSX 代码。
@@ -172,25 +171,12 @@ module.exports = {
 				sourceType: "module",
 			},
 			rules: {
-				...typescriptRules,
-
-				...vueRules,
-
 				// 关闭 - 禁止使用未声明的变量，以避免在 .vue 文件中出现关于未定义变量的警告，这在 Vue 单文件组件中可能不适用或会导致不必要的警告
 				"no-undef": "off",
 
 				// 关闭 - 要求在 TypeScript 函数和方法中显式地指定返回类型
 				"@typescript-eslint/explicit-function-return-type": "off",
 			},
-		},
-		/**
-		 * markdown配置
-		 */
-		{
-			files: [CONST_MD],
-			plugins: ["markdown"],
-			// 继承某些已有的规则
-			extends: ["plugin:markdown/recommended"],
 		},
 	],
 	/**
@@ -199,16 +185,17 @@ module.exports = {
 	 * "error" 或 2  ==>  规则作为一个错误（代码不能执行，界面报错）
 	 */
 	rules: {
-		// 公共配置
 		...commonRules,
 
-		// JavaScript配置
 		...javascriptRules,
 
-		// import配置
 		...importRules,
 
 		...importUseLodashUnifiedRules,
+
+		...typescriptRules,
+
+		...vueRules,
 
 		// 确保 Prettier 错误被 ESLint 捕获
 		"prettier/prettier": "error",
