@@ -1,98 +1,83 @@
-import type { Linter } from "eslint";
+import type { RuleOptions } from "../typegen";
 
 /**
- * JavaScript规则
+ * 适用于普通脚本的核心 ESLint 规则。
+ * 高影响规则的解释与关闭方式见 `docs/rules-risk.zh.md`。
  */
-export const javascriptRules: Linter.RulesRecord = {
-	// JS/TS (http://eslint.cn/docs/rules)
-
-	// 强制使用 camelCase 命名风格
-	camelcase: [
-		"error",
-		{
-			// 允许对象属性使用非 camelCase 风格
-			properties: "never",
-		},
-	],
-	// 禁止使用控制台
+export const javascriptRules = {
+	// 控制台调用在应用源码中需要人工确认；warn/error 仍可用于必要的诊断输出。
 	"no-console": [
 		"warn",
 		{
-			// 允许除 warn/error 之外的其他 console.xx 方法
 			allow: ["warn", "error"],
 		},
 	],
-	// 禁止使用 debugger
-	"no-debugger": "warn",
-	// 禁止在条件语句中使用常量条件
+	// 防止调试断点进入发布代码并中断运行。
+	"no-debugger": "error",
+	// 禁止意外的恒定条件，但允许 while (true) 等有明确退出逻辑的循环。
 	"no-constant-condition": [
 		"error",
 		{
-			// 允许在循环语句中使用常量条件
 			checkLoops: false,
 		},
 	],
-	// 禁止使用某些特定的语法
-	"no-restricted-syntax": [
-		"error",
-		// 禁止使用标记语句（labeled statements）
-		"LabeledStatement",
-		// 禁止使用 with 语句
-		"WithStatement",
-	],
-	// 禁止在 return 语句中使用 await
-	"no-return-await": "error",
-	// 禁止使用 var 关键字，强制使用 let 或 const
+	// [高影响] 禁止标签语句；包含多层循环 labeled break/continue 的代码需先重构控制流。
+	"no-restricted-syntax": ["error", "LabeledStatement"],
+	// [高影响][可自动修复] 使用 let/const 替代 var；迁移时需复核循环闭包和声明提升行为。
 	"no-var": "error",
-	// 禁止使用空的块语句
+	// 禁止无说明的空代码块；允许用于“忽略失败”语义的空 catch。
 	"no-empty": [
 		"error",
 		{
-			// 允许空的 catch 块
 			allowEmptyCatch: true,
 		},
 	],
-	// 该规则禁止使用不规则或不标准的空白字符
+	// 拒绝肉眼难以识别、可能导致解析差异的非常规空白字符。
 	"no-irregular-whitespace": "error",
-	// 禁止在函数或变量定义之前使用它们
-	"no-use-before-define": "warn",
-	// 强制使用 const 声明不被修改的变量
+	// 变量和类先声明后使用；函数声明允许提升。使用 warn 降低旧项目迁移阻力。
+	"no-use-before-define": [
+		"warn",
+		{
+			classes: true,
+			functions: false,
+			variables: true,
+		},
+	],
+	// [可自动修复] 能保持引用不变的变量优先使用 const；读取先于赋值时不做不可靠判断。
 	"prefer-const": [
 		"warn",
 		{
-			// 在解构赋值时也推荐使用 const
 			destructuring: "all",
-			// 允许在变量首次赋值前读取变量的值
 			ignoreReadBeforeAssign: true,
 		},
 	],
-	// 强制使用箭头函数而非普通函数
+	// [高影响][可自动修复] 优先箭头回调；批量迁移后应复核 this、arguments 与函数名栈信息。
 	"prefer-arrow-callback": [
 		"error",
 		{
-			// 不允许使用命名函数作为回调函数
 			allowNamedFunctions: false,
-			// 允许在箭头函数中使用 this 绑定的上下文
 			allowUnboundThis: true,
 		},
 	],
-	// 强制使用对象字面量的方法和属性简写语法
+	// [可自动修复] 属性和值同名时使用对象简写，带引号键名不强制改写。
 	"object-shorthand": [
 		"error",
 		"always",
 		{
-			// 不忽略构造函数中的属性简写
 			ignoreConstructors: false,
-			// 强制避免在属性名中使用引号
 			avoidQuotes: true,
 		},
 	],
-	// 强制使用 rest 参数代替 arguments 对象
+	// [高影响][可自动修复] 使用 ||=、&&=、??=；涉及 getter/Proxy 时应复核求值次数。
+	"logical-assignment-operators": ["error", "always", { enforceForIfStatements: true }],
+	// [可自动修复] 合并对象时优先展开语法，避免 Object.assign 的额外目标对象样板。
+	"prefer-object-spread": "error",
+	// 可变参数函数优先 rest 参数，避免依赖类数组 arguments；该规则只报告，不自动改写签名。
 	"prefer-rest-params": "error",
-	// 强制使用展开运算符（...）代替 Function.prototype.apply
+	// 调用可迭代对象时优先 spread；该规则只报告，避免自动改变 apply 的 this 语义。
 	"prefer-spread": "error",
-	// 强制使用模板字面量代替字符串连接
+	// [可自动修复] 字符串拼接优先模板字符串，便于阅读和多段插值。
 	"prefer-template": "error",
-	// 禁止在同一作用域中重新声明变量
+	// 同一作用域禁止重复声明，避免后声明遮盖前声明。
 	"no-redeclare": "error",
-};
+} satisfies RuleOptions;

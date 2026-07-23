@@ -1,68 +1,37 @@
-import type { Linter } from "eslint";
+import type { RuleOptions } from "../typegen";
 
 /**
- * Vue规则
+ * Vue SFC 本地覆写规则。
+ * 上游 recommended 预置负责基础正确性，这里只记录项目取舍与附加约束。
  */
-export const vueRules: Linter.RulesRecord = {
-	// vue (https://eslint.vuejs.org/rules)
-
-	// 允许使用 v-html
-	"vue/no-v-html": "off",
-	// 禁用所有 props 必填时，必须提供默认值
+export const vueRules = {
+	// [安全关注] v-html 可能引入 XSS；保留 warn 以兼容经过可靠净化的富文本场景。
+	"vue/no-v-html": "warn",
+	// [默认关闭] TypeScript 类型 props 和 required 声明已能表达可选性，不强制提供默认值。
 	"vue/require-default-prop": "off",
-	// 强制组件中必须使用 emits 选项声明事件
+	// [高影响] 组件必须声明对外事件；旧组件迁移时会暴露未建模的公共事件 API。
 	"vue/require-explicit-emits": "error",
-	// 禁用组件名称必须是多单词
+	// [默认关闭] 允许 App、Layout 等约定俗成的单词组件名。
 	"vue/multi-word-component-names": "off",
-	// 关闭 - 强制从 vue 中导入 Vue相关 API
-	"vue/prefer-import-from-vue": "off",
-	// 强制 HTML 属性使用 camelCase 风格
-	"vue/attribute-hyphenation": [
-		"error",
-		"never",
-		{
-			ignore: [
-				// 忽略 Element-Plus 加载文案"element-loading-text"
-				"element-loading-text",
-
-				// 忽略 UniApp view 标签的一些属性
-				"hover-class",
-				"hover-stop-propagation",
-				"hover-start-time",
-				"hover-stay-time",
-			],
-		},
-	],
-
-	// 禁止重复的字段名
+	// 优先从 vue 入口导入由 Vue 重新导出的 API，避免依赖内部包边界。
+	"vue/prefer-import-from-vue": "warn",
+	// 防止 props、data、computed、methods 等组件命名空间出现冲突。
 	"vue/no-dupe-keys": "error",
-	// 禁止直接修改 props 的值
+	// [高影响] 禁止组件直接修改 props，要求通过事件或本地状态维持单向数据流。
 	"vue/no-mutating-props": "error",
-	// 禁止使用 Vue.js 内置的保留组件名称（如 transition、keep-alive 等）作为自定义组件名称
+	// 避免自定义组件名与 Vue 内置组件冲突。
 	"vue/no-reserved-component-names": "error",
-	// 禁止在自定义组件上使用 v-text 或 v-html 指令
-	"vue/no-v-text-v-html-on-component": "off",
-	// 防止<script setup>使用的变量<template>被标记为未使用，此规则仅在启用该no-unused-vars规则时有效。
-	// "vue/script-setup-uses-vars": "error",
-	// 强制自定义事件名称使用 camelCase 风格命名
+	// [安全关注] 禁止在组件节点上使用 v-text/v-html，避免覆盖组件内容和模糊数据边界。
+	"vue/no-v-text-v-html-on-component": "error",
+	// 统一模板与脚本中的自定义事件名称为 camelCase。
 	"vue/custom-event-name-casing": ["error", "camelCase"],
-	// 强制每个 Vue 文件中只包含一个 Vue 组件
+	// [默认关闭] 允许在一个 SFC 中声明仅供当前文件使用的小型辅助组件。
 	"vue/one-component-per-file": "off",
-	// 闭合标签换行风格
-	"vue/html-closing-bracket-newline": [
-		"error",
-		{
-			// 强制要求当 HTML 元素跨多行时，闭合标签必须出现在新的一行上
-			multiline: "always",
-			// 强制要求当 HTML 元素只有一行时，闭合标签应与开始标签在同一行上
-			singleline: "never",
-		},
-	],
-	// 强制 Vue 模板中 HTML 元素的属性按照指定的顺序排列
+	// [高影响][可自动修复] 统一模板属性分组；首次启用可能产生大量仅排序的模板差异。
 	"vue/attributes-order": [
 		"error",
 		{
 			order: ["DEFINITION", "LIST_RENDERING", "CONDITIONALS", "RENDER_MODIFIERS", "GLOBAL", "UNIQUE", "OTHER_ATTR", "EVENTS", "CONTENT"],
 		},
 	],
-};
+} satisfies RuleOptions;

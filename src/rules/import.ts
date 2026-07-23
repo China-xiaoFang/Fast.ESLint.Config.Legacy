@@ -1,10 +1,11 @@
-import type { Linter } from "eslint";
+import type { RuleOptions } from "../typegen";
 
 /**
- * 导入使用 lodash-unified 模块规则
+ * 按需启用：要求项目统一使用 lodash-unified。
+ * 该组织偏好不会进入默认配置，使用者需从 rules 子路径显式导入。
  */
-export const importUseLodashUnifiedRules: Linter.RulesRecord = {
-	// 限制某些模块导入
+export const importUseLodashUnifiedRules = {
+	// [高影响][按需启用] 阻止 lodash/lodash-es 及其子路径，启用前应先完成依赖迁移。
 	"no-restricted-imports": [
 		"error",
 		{
@@ -20,13 +21,14 @@ export const importUseLodashUnifiedRules: Linter.RulesRecord = {
 			],
 		},
 	],
-};
+} satisfies RuleOptions;
 
 /**
- * 导入使用 lodash 模块规则
+ * 按需启用：要求项目统一使用 lodash。
+ * 该组织偏好不会进入默认配置，使用者需从 rules 子路径显式导入。
  */
-export const importUseLodashRules: Linter.RulesRecord = {
-	// 限制某些模块导入
+export const importUseLodashRules = {
+	// [高影响][按需启用] 阻止 lodash-es/lodash-unified 及其子路径，启用前应完成依赖迁移。
 	"no-restricted-imports": [
 		"error",
 		{
@@ -42,100 +44,59 @@ export const importUseLodashRules: Linter.RulesRecord = {
 			],
 		},
 	],
-};
+} satisfies RuleOptions;
 
-/**
- * import规则
- */
-export const importRules: Linter.RulesRecord = {
-	// 确保所有的 import 语句位于文件的顶部，紧接在文件的开头部分，且在任何其他代码之前
+/** 默认启用的模块导入正确性与排序规则。 */
+export const importRules = {
+	// import 必须位于其他语句之前，避免模块依赖散落在执行逻辑中。
 	"import/first": "error",
-	// 禁止在同一文件中出现重复的 import 语句
+	// 合并同一模块的重复 import，避免绑定分散或副作用被误读。
 	"import/no-duplicates": "error",
-	// 导入模块排序风格
+	// [高影响][可自动修复] 按来源分组并排序；带副作用的裸 import 只报告，移动前必须确认执行顺序。
 	"import/order": [
 		"error",
 		{
-			// 导入模块分组
 			groups: [
 				// Node.js 内置模块
 				"builtin",
-				// 第三方模块
+				// 第三方依赖
 				"external",
-				// 项目内部模块
+				// 项目内部别名模块
 				"internal",
-				// 父级目录中的模块
+				// 父级目录模块
 				"parent",
-				// 具有相同父级的模块
+				// 同级目录模块
 				"sibling",
-				// 当前目录的 index.js 或 index.ts 文件
+				// 当前目录入口模块
 				"index",
+				// TypeScript import = require() 导入
 				"object",
+				// TypeScript 类型导入
 				"type",
+				// 无法识别分类的导入
 				"unknown",
 			],
-			pathGroups: [
-				{
-					pattern: "@dcloudio/*",
-					group: "external",
-					position: "before",
-				},
-				{
-					pattern: "vue",
-					group: "external",
-					position: "before",
-				},
-				{
-					pattern: "@vue/**",
-					group: "external",
-					position: "before",
-				},
-				{
-					pattern: "element-plus",
-					group: "external",
-					position: "before",
-				},
-				{
-					pattern: "@element-plus/**",
-					group: "external",
-					position: "before",
-				},
-				{
-					pattern: "fast-element-plus",
-					group: "external",
-					position: "before",
-				},
-				{
-					pattern: "@fast-element-plus/**",
-					group: "external",
-					position: "before",
-				},
-				{
-					pattern: "@fast-china/**",
-					group: "external",
-					position: "before",
-				},
-			],
-			pathGroupsExcludedImportTypes: ["type"],
-			// 禁止不同组之间进行换行
-			"newlines-between": "never",
-			//根据字母顺序对每个组内的顺序进行排序
+			// 不同 import 分组之间必须保留一个空行
+			"newlines-between": "always",
+			// 同一分组内按照模块路径字母升序排列。
 			alphabetize: {
 				order: "asc",
 				caseInsensitive: true,
 			},
+			// 副作用导入参与顺序检查，但插件不会自动移动它们。
+			warnOnUnassignedImports: true,
 		},
 	],
-	// 关闭 - 禁用对无法解析的模块导入的检查
+	// [默认关闭] Vite/TypeScript 别名由项目 resolver 校验，避免共享配置绑定特定方案。
 	"import/no-unresolved": "off",
-	// 关闭 - 禁用对命名空间导入（例如，import * as）的检查
+	// [默认关闭] 未配置 resolver 时，namespace 导出的静态分析容易产生误报。
 	"import/namespace": "off",
-	// 关闭 - 禁用对默认导入的检查
+	// [默认关闭] 未配置 resolver 时，默认导出的静态分析容易产生误报。
 	"import/default": "off",
-	// 关闭 - 禁用对以默认导出方式作为命名导入的检查
+	// [默认关闭] 不限制同时存在默认导出与相近命名导出的模块 API 风格。
 	"import/no-named-as-default": "off",
-	// 关闭 - 禁用对将默认导出成员当作命名导入的检查
+	// [默认关闭] 不限制通过默认导入对象访问同名属性的项目 API 风格。
 	"import/no-named-as-default-member": "off",
-	// 关闭 - 禁用对命名导入（即从模块中导入特定命名的内容）的检查
+	// [默认关闭] 未配置 resolver 时，命名导出的静态分析容易产生误报。
 	"import/named": "off",
-};
+} satisfies RuleOptions;

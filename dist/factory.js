@@ -1,7 +1,27 @@
 'use strict';
 
-// src/define-rules.ts
-var defineRules = (rules) => rules;
+// src/constants/index.ts
+var CONST_JS = "**/*.?([cm])js";
+var CONST_JSX = "**/*.?([cm])jsx";
+var CONST_TS = "**/*.?([cm])ts";
+var CONST_TSX = "**/*.?([cm])tsx";
+var CONST_DTS = "**/*.d.?([cm])ts";
+var CONST_JSON = "**/*.json";
+var CONST_JSONC = "**/*.jsonc";
+var CONST_JSON5 = "**/*.json5";
+var CONST_VUE = "**/*.vue";
+var GLOB_JAVASCRIPT = [CONST_JS, CONST_JSX];
+var GLOB_TYPESCRIPT = [CONST_TS, CONST_TSX];
+var GLOB_NODE = [
+  "**/*.{config,setup}.{js,cjs,mjs,ts,cts,mts}",
+  "**/.*rc.{js,cjs,mjs,ts,cts,mts}",
+  "**/{scripts,bin}/**/*.{js,cjs,mjs,ts,cts,mts}",
+  "**/{test,tests}/**/*.{js,cjs,mjs,ts,cts,mts}",
+  "**/cli.{js,cjs,mjs,ts,cts,mts}"
+];
+var CONST_TSCONFIG = ["**/tsconfig.json", "**/tsconfig.*.json"];
+var GLOB_JSONC_AS_JSON = [...CONST_TSCONFIG, "**/.vscode/settings.json"];
+var GLOB_COMMONJS = ["**/*.cjs", "**/*.cts"];
 
 // src/rules/common.ts
 var commonRules = {
@@ -42,42 +62,6 @@ var commonRules = {
 };
 
 // src/rules/import.ts
-var importUseLodashUnifiedRules = {
-  // [高影响][按需启用] 阻止 lodash/lodash-es 及其子路径，启用前应先完成依赖迁移。
-  "no-restricted-imports": [
-    "error",
-    {
-      paths: [
-        { name: "lodash", message: "Use lodash-unified instead." },
-        { name: "lodash-es", message: "Use lodash-unified instead." }
-      ],
-      patterns: [
-        {
-          group: ["lodash/*", "lodash-es/*"],
-          message: "Use lodash-unified instead."
-        }
-      ]
-    }
-  ]
-};
-var importUseLodashRules = {
-  // [高影响][按需启用] 阻止 lodash-es/lodash-unified 及其子路径，启用前应完成依赖迁移。
-  "no-restricted-imports": [
-    "error",
-    {
-      paths: [
-        { name: "lodash-es", message: "Use lodash instead." },
-        { name: "lodash-unified", message: "Use lodash instead." }
-      ],
-      patterns: [
-        {
-          group: ["lodash-es/*", "lodash-unified/*"],
-          message: "Use lodash instead."
-        }
-      ]
-    }
-  ]
-};
 var importRules = {
   // import 必须位于其他语句之前，避免模块依赖散落在执行逻辑中。
   "import/first": "error",
@@ -523,15 +507,223 @@ var vueRules = {
   ]
 };
 
-exports.commonRules = commonRules;
-exports.defineRules = defineRules;
-exports.importRules = importRules;
-exports.importUseLodashRules = importUseLodashRules;
-exports.importUseLodashUnifiedRules = importUseLodashUnifiedRules;
-exports.javascriptRules = javascriptRules;
-exports.packageJsonSortRules = packageJsonSortRules;
-exports.tsconfigJsonSortRules = tsconfigJsonSortRules;
-exports.typescriptRules = typescriptRules;
-exports.vueRules = vueRules;
-//# sourceMappingURL=index.js.map
-//# sourceMappingURL=index.js.map
+// src/factory.ts
+var defaultOptions = Object.freeze({
+  environment: "browser",
+  imports: true,
+  json: true,
+  markdown: true,
+  prettier: true,
+  regexp: true,
+  typescript: true,
+  vue: 3
+});
+var createRuntimeEnv = (environment) => ({
+  es2022: true,
+  browser: environment !== "node",
+  node: environment !== "browser"
+});
+var createParserOptions = (options) => ({
+  ecmaVersion: "latest",
+  sourceType: "module",
+  ...options.typeChecked ? {
+    project: options.project ?? true,
+    tsconfigRootDir: options.tsconfigRootDir ?? process.cwd()
+  } : {}
+});
+var createCodeExtends = (options, languageExtends = [], withTypeScriptImportSettings = false) => [
+  "eslint:recommended",
+  ...languageExtends,
+  ...options.imports ? ["plugin:import/recommended", ...withTypeScriptImportSettings ? ["plugin:import/typescript"] : []] : [],
+  ...options.regexp ? ["plugin:regexp/recommended"] : [],
+  ...options.prettier ? ["prettier"] : []
+];
+var createJsonExtends = (dialect, prettier) => [
+  `plugin:jsonc/recommended-with-${dialect}`,
+  ...prettier ? ["plugin:jsonc/prettier"] : []
+];
+var createConfig = (options = {}) => {
+  const resolvedOptions = { ...defaultOptions, ...options };
+  const typeScriptEnabled = resolvedOptions.typescript !== false;
+  const typeScriptOptions = typeof resolvedOptions.typescript === "object" ? resolvedOptions.typescript : {};
+  const vueEnabled = resolvedOptions.vue !== false;
+  let vueOptions = {
+    ...typeScriptOptions,
+    version: 3
+  };
+  if (typeof resolvedOptions.vue === "number") {
+    vueOptions = { ...vueOptions, version: resolvedOptions.vue };
+  } else if (typeof resolvedOptions.vue === "object") {
+    vueOptions = { ...vueOptions, ...resolvedOptions.vue };
+  }
+  const sharedExtendsOptions = {
+    imports: resolvedOptions.imports,
+    prettier: resolvedOptions.prettier,
+    regexp: resolvedOptions.regexp
+  };
+  const runtimeEnv = createRuntimeEnv(resolvedOptions.environment);
+  const overrides = [];
+  overrides.push({
+    files: [...GLOB_JAVASCRIPT],
+    extends: createCodeExtends(sharedExtendsOptions),
+    env: runtimeEnv,
+    parserOptions: {
+      ecmaVersion: "latest",
+      ecmaFeatures: { jsx: true },
+      sourceType: "module"
+    },
+    rules: {
+      ...commonRules,
+      ...javascriptRules,
+      ...resolvedOptions.imports ? importRules : {}
+    }
+  });
+  if (typeScriptEnabled) {
+    const typeScriptExtends = [
+      "plugin:@typescript-eslint/recommended",
+      "plugin:@typescript-eslint/stylistic",
+      ...typeScriptOptions.typeChecked ? ["plugin:@typescript-eslint/recommended-type-checked", "plugin:@typescript-eslint/stylistic-type-checked"] : []
+    ];
+    overrides.push({
+      files: [...GLOB_TYPESCRIPT],
+      extends: createCodeExtends(sharedExtendsOptions, typeScriptExtends, true),
+      env: runtimeEnv,
+      parser: "@typescript-eslint/parser",
+      parserOptions: {
+        ...createParserOptions(typeScriptOptions),
+        ecmaFeatures: { jsx: true }
+      },
+      rules: {
+        ...commonRules,
+        ...javascriptRules,
+        ...resolvedOptions.imports ? importRules : {},
+        ...typescriptRules
+      }
+    });
+  }
+  if (vueEnabled) {
+    const vueVersion = vueOptions.version ?? 3;
+    const vueExtends = [
+      "plugin:@typescript-eslint/recommended",
+      "plugin:@typescript-eslint/stylistic",
+      ...vueOptions.typeChecked ? ["plugin:@typescript-eslint/recommended-type-checked", "plugin:@typescript-eslint/stylistic-type-checked"] : [],
+      vueVersion === 3 ? "plugin:vue/recommended" : "plugin:vue/vue2-recommended"
+    ];
+    overrides.push({
+      files: [CONST_VUE],
+      extends: createCodeExtends(sharedExtendsOptions, vueExtends, true),
+      env: runtimeEnv,
+      parser: "vue-eslint-parser",
+      parserOptions: {
+        ...createParserOptions(vueOptions),
+        parser: "@typescript-eslint/parser",
+        extraFileExtensions: [".vue"],
+        ecmaFeatures: { jsx: true }
+      },
+      rules: {
+        ...commonRules,
+        ...javascriptRules,
+        ...resolvedOptions.imports ? importRules : {},
+        ...typescriptRules,
+        ...vueRules
+      }
+    });
+  }
+  if (resolvedOptions.json) {
+    overrides.push({
+      files: [CONST_JSON],
+      excludedFiles: [...GLOB_JSONC_AS_JSON],
+      extends: createJsonExtends("json", resolvedOptions.prettier)
+    });
+    overrides.push({
+      files: [CONST_JSONC],
+      extends: createJsonExtends("jsonc", resolvedOptions.prettier)
+    });
+    overrides.push({
+      files: [CONST_JSON5],
+      extends: createJsonExtends("json5", resolvedOptions.prettier)
+    });
+    overrides.push({
+      files: ["**/.vscode/settings.json"],
+      extends: createJsonExtends("jsonc", resolvedOptions.prettier)
+    });
+    overrides.push({
+      files: ["**/package.json"],
+      rules: packageJsonSortRules
+    });
+    overrides.push({
+      files: [...CONST_TSCONFIG],
+      extends: createJsonExtends("jsonc", resolvedOptions.prettier),
+      rules: tsconfigJsonSortRules
+    });
+  }
+  if (typeScriptEnabled) {
+    overrides.push({
+      files: [CONST_DTS],
+      rules: {
+        "@typescript-eslint/consistent-type-imports": "off",
+        "@typescript-eslint/no-unused-vars": "off"
+      }
+    });
+  }
+  overrides.push({
+    files: [...GLOB_COMMONJS],
+    rules: {
+      "@typescript-eslint/no-require-imports": "off"
+    }
+  });
+  overrides.push({
+    files: [...GLOB_NODE],
+    env: {
+      es2022: true,
+      browser: false,
+      node: true
+    },
+    rules: {
+      "no-console": "off"
+    }
+  });
+  if (resolvedOptions.markdown) {
+    overrides.push({
+      files: ["**/*.md/**"],
+      rules: {
+        "@typescript-eslint/no-unused-vars": "off",
+        "import/no-duplicates": "off",
+        "import/no-unresolved": "off",
+        "no-console": "off",
+        "no-undef": "off"
+      }
+    });
+  }
+  return {
+    ...resolvedOptions.markdown ? { extends: ["plugin:markdown/recommended"] } : {},
+    reportUnusedDisableDirectives: true,
+    overrides
+  };
+};
+var PresetJavaScriptConfig = createConfig({
+  json: false,
+  markdown: false,
+  typescript: false,
+  vue: false
+});
+var PresetTypeScriptConfig = createConfig({
+  json: false,
+  markdown: false,
+  vue: false
+});
+var PresetBasicConfig = createConfig({ markdown: false, vue: false });
+var PresetNodeConfig = createConfig({ environment: "node", vue: false });
+var PresetVue2Config = createConfig({ vue: 2 });
+var PresetVueConfig = createConfig();
+
+exports.PresetBasicConfig = PresetBasicConfig;
+exports.PresetJavaScriptConfig = PresetJavaScriptConfig;
+exports.PresetNodeConfig = PresetNodeConfig;
+exports.PresetTypeScriptConfig = PresetTypeScriptConfig;
+exports.PresetVue2Config = PresetVue2Config;
+exports.PresetVueConfig = PresetVueConfig;
+exports.createConfig = createConfig;
+exports.defaultOptions = defaultOptions;
+//# sourceMappingURL=factory.js.map
+//# sourceMappingURL=factory.js.map

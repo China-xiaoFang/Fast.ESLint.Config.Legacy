@@ -1,11 +1,19 @@
 {
 	"name": "@fast-china/eslint-config-legacy",
-	"version": "1.0.5",
-	"description": "Fast ESLint Legacy 规则库.",
-	"type": "module",
+	"version": "1.1.0",
+	"packageManager": "npm@10.9.8",
+	"description": "A production-ready ESLint 8 legacy config for Vue 3, Vite, TypeScript, and JavaScript projects.",
+	"type": "commonjs",
 	"keywords": [
 		"fast",
-		"ESLint"
+		"eslint",
+		"eslint-config",
+		"eslintrc",
+		"legacy-config",
+		"typescript",
+		"vite",
+		"vue",
+		"vue3"
 	],
 	"license": "Apache-2.0",
 	"homepage": "https://fastdotnet.com",
@@ -18,62 +26,79 @@
 	},
 	"author": "小方",
 	"files": [
-		"./Fast.png",
-		"./LICENSE",
-		"./README.md",
-		"./README.zh.md",
-		"./dist"
+		"Fast.png",
+		"LICENSE",
+		"README.md",
+		"README.zh.md",
+		"dist",
+		"docs"
 	],
-	"main": "dist/index.cjs",
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
 	"exports": {
 		".": {
-			"default": "./dist/index.cjs"
+			"types": "./dist/index.d.ts",
+			"require": "./dist/index.js",
+			"default": "./dist/index.js"
+		},
+		"./factory": {
+			"types": "./dist/factory.d.ts",
+			"require": "./dist/factory.js",
+			"default": "./dist/factory.js"
 		},
 		"./rules": {
 			"types": "./dist/rules/index.d.ts",
 			"require": "./dist/rules/index.js",
-			"import": "./dist/rules/index.js"
-		}
+			"default": "./dist/rules/index.js"
+		},
+		"./package.json": "./package.json"
 	},
+	"sideEffects": false,
 	"publishConfig": {
 		"access": "public"
 	},
 	"scripts": {
-		"build": "tsup",
-		"lint:eslint": "eslint --max-warnings 0 \"src/**/*.{vue,js,ts,tsx}\" --fix",
-		"lint:prettier": "prettier --write \"src/**/*.{vue,js,ts,jsx,tsx,md,json,css,scss,less,html}\"",
-		"lint": "pnpm lint:eslint && pnpm lint:prettier"
+		"typegen": "node scripts/typegen.cjs",
+		"typegen:check": "node scripts/typegen.cjs --check",
+		"build": "npm run typegen:check && tsup && node scripts/postbuild.cjs",
+		"typecheck": "tsc --noEmit",
+		"lint": "eslint . --ext .js,.cjs,.mjs,.ts,.cts,.mts,.tsx,.vue,.json,.jsonc,.json5,.md --max-warnings 0",
+		"lint:fix": "npm run lint -- --fix",
+		"format": "prettier --write .",
+		"format:check": "prettier --check .",
+		"test:types": "tsc --noEmit --project tests/tsconfig.json",
+		"test": "npm run test:types && node --test tests/*.test.cjs",
+		"check": "npm run build && npm run typecheck && npm run lint && npm run format:check && npm test",
+		"prepack": "npm run check"
 	},
 	"peerDependencies": {
-		"eslint": "^8",
-		"prettier": "^3"
+		"eslint": "^8.57.0",
+		"typescript": ">=4.8.4 <6.1.0"
 	},
 	"dependencies": {
-		"@typescript-eslint/eslint-plugin": "^7",
-		"@typescript-eslint/parser": "^7",
-		"eslint-config-prettier": "^10",
-		"eslint-plugin-import": "^2",
-		"eslint-plugin-jsonc": "^2",
-		"eslint-plugin-markdown": "^3",
-		"eslint-plugin-prettier": "^5",
-		"eslint-plugin-regexp": "^1",
-		"eslint-plugin-vue": "^9",
-		"globals": "^13",
-		"jsonc-eslint-parser": "^2",
-		"local-pkg": "^1",
-		"typescript-eslint": "^7",
-		"vue-eslint-parser": "^9"
+		"@typescript-eslint/eslint-plugin": "^8.65.0",
+		"@typescript-eslint/parser": "^8.65.0",
+		"eslint-config-prettier": "^10.1.8",
+		"eslint-plugin-import": "^2.32.0",
+		"eslint-plugin-jsonc": "^2.21.0",
+		"eslint-plugin-markdown": "^3.0.1",
+		"eslint-plugin-regexp": "^1.15.0",
+		"eslint-plugin-vue": "^10.10.0",
+		"jsonc-eslint-parser": "^2.4.2",
+		"vue-eslint-parser": "^10.4.1"
 	},
 	"devDependencies": {
-		"@types/eslint": "^8",
-		"@types/node": "^24",
-		"eslint": "^8",
-		"eslint-define-config": "^1",
-		"prettier": "^3",
-		"tsup": "^6",
-		"typescript": "^5"
+		"@types/eslint": "^8.56.12",
+		"@types/node": "^24.10.4",
+		"eslint": "^8.57.1",
+		"prettier": "^3.7.4",
+		"tsup": "8.4.0",
+		"typescript": "^5.9.3"
 	},
 	"engines": {
-		"node": ">=16.0.0"
+		"node": "^18.18.0 || ^20.9.0 || >=21.1.0"
+	},
+	"overrides": {
+		"esbuild": "0.25.12"
 	}
 }

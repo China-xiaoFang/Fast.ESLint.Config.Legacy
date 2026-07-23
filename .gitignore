@@ -6,6 +6,8 @@ node_modules
 
 # local env files
 .eslintcache
-
-# eslint-config
 .eslint-config-inspector
+
+# Build and test outputs
+coverage
+*.tgz

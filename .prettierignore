@@ -1,3 +1,8 @@
 # Prettier 会忽略的文件
 
-*.md
+coverage
+dist
+node_modules
+Fast.png
+package-lock.json
+src/typegen.d.ts

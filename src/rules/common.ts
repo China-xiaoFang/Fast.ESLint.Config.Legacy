@@ -1,50 +1,44 @@
-import type { Linter } from "eslint";
+import type { RuleOptions } from "../typegen";
 
 /**
- * 公共规则
- * @description 最佳实践
+ * 跨 JavaScript、TypeScript 与 Vue 脚本生效的公共规则。
+ *
+ * 维护约定：每条本地覆写都要说明启用原因；可能造成大面积改动、迁移阻断或
+ * 行为变化的规则使用 `[高影响]` 标记，并同步维护规则风险文档。
  */
-export const commonRules: Linter.RulesRecord = {
-	// 确保数组的回调函数（如 Array.prototype.map、Array.prototype.filter、Array.prototype.reduce 等）总是有一个返回值
+export const commonRules = {
+	// 数组回调必须在所有可到达分支返回值，避免 map/filter 等调用静默产生 undefined。
 	"array-callback-return": "error",
-	// 强制使用块级作用域变量（let 或 const），避免使用函数作用域变量（var）
-	"block-scoped-var": "error",
-	// 禁止使用 alert、confirm 和 prompt 等浏览器弹出对话框
+	// 浏览器弹窗通常不适合生产代码；保留为警告以兼容原型开发和已有管理页面。
 	"no-alert": "warn",
-	// 禁止在 switch 语句的 case 或 default 子句中声明变量
+	// switch 的 case 不创建词法作用域；要求用花括号包裹声明，避免跨 case 冲突。
 	"no-case-declarations": "error",
-	// 禁止使用多行字符串，即不允许使用反斜杠 \ 来连接多行字符串
+	// 禁止反斜杠续行字符串，优先使用可读性更好的模板字符串。
 	"no-multi-str": "error",
-	// 禁止使用 with 语句
+	// with 会让标识符解析不可预测，并且在严格模式和 ESM 中不可用。
 	"no-with": "error",
-	// 禁止使用 void 操作符
-	"no-void": "error",
-	// 禁止多个空行
-	"no-multiple-empty-lines": [
+	// 允许用 `void promise` 明确忽略 Promise，但禁止在普通表达式中滥用 void。
+	"no-void": [
 		"error",
 		{
-			// 最多允许1行
-			max: 1,
+			allowAsStatement: true,
 		},
 	],
-
-	// import 排序
+	// 要求严格相等；保留 `value == null` 同时判断 null/undefined 的常用写法。
+	eqeqeq: ["error", "always", { null: "ignore" }],
+	// 幂运算统一使用 **，减少 Math.pow 嵌套并保持现代语法风格。
+	"prefer-exponentiation-operator": "error",
+	// 使用 Object.hasOwn，避免对象覆盖或缺少 hasOwnProperty 时产生异常。
+	"prefer-object-has-own": "error",
+	// [可自动修复] 声明间顺序交给 import 插件；这里只排序同一 import 的成员。
 	"sort-imports": [
 		"warn",
 		{
-			// 不忽略导入语句中模块名的大小写
 			ignoreCase: false,
-			// 忽略导入声明的排序
 			ignoreDeclarationSort: true,
-			// 不忽略导入成员的排序
 			ignoreMemberSort: false,
-			// 成员语法排序顺序
 			memberSyntaxSortOrder: ["none", "all", "multiple", "single"],
-			// 不允许分组导入
 			allowSeparatedGroups: false,
 		},
 	],
-
-	// 强制在数学运算中使用 ** 运算符代替 Math.pow()
-	"prefer-exponentiation-operator": "error",
-};
+} satisfies RuleOptions;

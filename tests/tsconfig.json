@@ -1,14 +1,13 @@
 {
 	"compilerOptions": {
 		"target": "ES2021",
-		"module": "CommonJS",
-		"moduleResolution": "Node",
+		"module": "Node16",
+		"moduleResolution": "Node16",
 		"types": ["node"],
 		"strict": true,
 		"noEmit": true,
 		"esModuleInterop": true,
-		"forceConsistentCasingInFileNames": true,
 		"skipLibCheck": true
 	},
-	"include": ["src", "tsup.config.ts"]
+	"include": ["consumer.test.cts"]
 }

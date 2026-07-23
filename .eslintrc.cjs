@@ -1,6 +1,5 @@
-const { defineConfig } = require("eslint-define-config");
-
-module.exports = defineConfig({
+module.exports = {
 	root: true,
-	extends: ["./dist/index.cjs"],
-});
+	extends: ["./dist/index.js"],
+	ignorePatterns: ["coverage", "dist", "node_modules", "src/typegen.d.ts"],
+};

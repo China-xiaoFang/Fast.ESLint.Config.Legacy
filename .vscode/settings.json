@@ -3,7 +3,7 @@
 	"editor.codeActionsOnSave": {
 		"source.fixAll.eslint": "explicit"
 	},
-	"eslint.validate": ["javascript", "typescript", "typescriptreact", "vue"],
+	"eslint.validate": ["javascript", "typescript", "typescriptreact", "vue", "json", "jsonc", "json5", "markdown"],
 	"[vue]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
@@ -41,7 +41,7 @@
 	// Enable file nesting
 	"explorer.fileNesting.enabled": true,
 	"explorer.fileNesting.patterns": {
-		".prettierrc.cjs": ".eslintrc.cjs, eslint.config.mjs",
-		"package.json": "package-lock.json, pnpm-lock.yaml"
+		".prettierrc.cjs": ".eslintrc.cjs",
+		"package.json": "package-lock.json"
 	}
 }

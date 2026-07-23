@@ -1,84 +1,60 @@
-/**
- * JS
- */
+/** JavaScript 文件。 */
 export const CONST_JS = "**/*.?([cm])js";
 
-/**
- * JSX
- */
+/** JSX 文件。 */
 export const CONST_JSX = "**/*.?([cm])jsx";
 
-/**
- * TS
- */
+/** TypeScript 文件。 */
 export const CONST_TS = "**/*.?([cm])ts";
 
-/**
- * TSX
- */
+/** TSX 文件。 */
 export const CONST_TSX = "**/*.?([cm])tsx";
 
-/**
- * .d.ts
- */
-export const CONST_DTS = "**/*.d.ts";
+/** TypeScript 声明文件。 */
+export const CONST_DTS = "**/*.d.?([cm])ts";
 
-/**
- * JSON
- */
+/** 严格 JSON 文件。 */
 export const CONST_JSON = "**/*.json";
 
-/**
- * JSONC
- */
+/** JSON with Comments 文件。 */
 export const CONST_JSONC = "**/*.jsonc";
 
-/**
- * JSON5
- */
+/** JSON5 文件。 */
 export const CONST_JSON5 = "**/*.json5";
 
-/**
- * JSON6
- */
-export const CONST_JSON6 = "**/*.json6";
-
-/**
- * MD
- */
+/** Markdown 文件。 */
 export const CONST_MD = "**/*.md";
 
-/**
- * VUE
- */
+/** Vue 单文件组件。 */
 export const CONST_VUE = "**/*.vue";
 
-/**
- * YAML
- */
-export const CONST_YAML = "**/*.y?(a)ml";
+/** JavaScript 文件集合。 */
+export const GLOB_JAVASCRIPT = [CONST_JS, CONST_JSX];
+
+/** TypeScript 文件集合。 */
+export const GLOB_TYPESCRIPT = [CONST_TS, CONST_TSX];
+
+/** ESLint 可以处理的脚本和组件文件。 */
+export const GLOB_CODE = [...GLOB_JAVASCRIPT, ...GLOB_TYPESCRIPT, CONST_VUE];
 
 /**
- * node_modules
+ * 默认按照 Node.js 环境处理的工程文件。
+ *
+ * 应用源码仍使用 factory 选择的运行时环境，避免 browser/node 全局变量互相掩盖。
  */
-export const CONST_NODE_MODULES = "**/node_modules";
+export const GLOB_NODE = [
+	"**/*.{config,setup}.{js,cjs,mjs,ts,cts,mts}",
+	"**/.*rc.{js,cjs,mjs,ts,cts,mts}",
+	"**/{scripts,bin}/**/*.{js,cjs,mjs,ts,cts,mts}",
+	"**/{test,tests}/**/*.{js,cjs,mjs,ts,cts,mts}",
+	"**/cli.{js,cjs,mjs,ts,cts,mts}",
+];
 
-/**
- * 打包目录 dist
- */
-export const CONST_DIST = "**/dist";
-
-/**
- * 包管理 lock 文件
- */
-export const CONST_LOCKFILE = ["**/package-lock.json", "**/yarn.lock", "**/pnpm-lock.yaml", "**/bun.lockb"];
-
-/**
- * public
- */
-export const CONST_PUBLIC = "**/public";
-
-/**
- * TS 配置文件
- */
+/** TypeScript 配置文件。 */
 export const CONST_TSCONFIG = ["**/tsconfig.json", "**/tsconfig.*.json"];
+
+/** 允许注释、但扩展名仍为 .json 的常见工具配置。 */
+export const GLOB_JSONC_AS_JSON = [...CONST_TSCONFIG, "**/.vscode/settings.json"];
+
+/** CommonJS 文件；这些文件允许显式 require()。 */
+export const GLOB_COMMONJS = ["**/*.cjs", "**/*.cts"];
