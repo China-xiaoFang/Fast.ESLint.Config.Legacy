@@ -1,8 +1,12 @@
 import type { RuleOptions } from "../typegen";
 
 /**
- * 适用于普通脚本的核心 ESLint 规则。
- * 高影响规则的解释与关闭方式见 `docs/rules-risk.zh.md`。
+ * JavaScript、JSX 以及框架脚本共同使用的 ESLint 核心规则记录。
+ *
+ * TypeScript 和 Vue 配置会在该记录之后关闭不理解扩展语法的核心规则。记录本身不包含
+ * parserOptions 或文件范围；高影响规则的行为与项目级覆盖方式见规则风险文档。
+ *
+ * @public
  */
 export const javascriptRules = {
 	// 控制台调用在应用源码中需要人工确认；warn/error 仍可用于必要的诊断输出。
@@ -23,7 +27,7 @@ export const javascriptRules = {
 	],
 	// [高影响] 禁止标签语句；包含多层循环 labeled break/continue 的代码需先重构控制流。
 	"no-restricted-syntax": ["error", "LabeledStatement"],
-	// [高影响][可自动修复] 使用 let/const 替代 var；迁移时需复核循环闭包和声明提升行为。
+	// [高影响][可自动修复] 使用 let/const 替代 var；修复后需复核循环闭包和声明提升行为。
 	"no-var": "error",
 	// 禁止无说明的空代码块；允许用于“忽略失败”语义的空 catch。
 	"no-empty": [
@@ -34,7 +38,7 @@ export const javascriptRules = {
 	],
 	// 拒绝肉眼难以识别、可能导致解析差异的非常规空白字符。
 	"no-irregular-whitespace": "error",
-	// 变量和类先声明后使用；函数声明允许提升。使用 warn 降低旧项目迁移阻力。
+	// 变量和类先声明后使用；函数声明允许提升。使用 warn 避免首次启用时产生过多阻断。
 	"no-use-before-define": [
 		"warn",
 		{
@@ -51,7 +55,7 @@ export const javascriptRules = {
 			ignoreReadBeforeAssign: true,
 		},
 	],
-	// [高影响][可自动修复] 优先箭头回调；批量迁移后应复核 this、arguments 与函数名栈信息。
+	// [高影响][可自动修复] 优先箭头回调；批量修复后应复核 this、arguments 与函数名栈信息。
 	"prefer-arrow-callback": [
 		"error",
 		{

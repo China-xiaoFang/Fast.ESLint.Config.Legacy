@@ -1,14 +1,16 @@
 {
 	"compilerOptions": {
-		"target": "ES2021",
-		"module": "CommonJS",
-		"moduleResolution": "Node",
+		"target": "ES2022",
+		"module": "Preserve",
+		"moduleResolution": "Bundler",
 		"types": ["node"],
 		"strict": true,
 		"noEmit": true,
+		"isolatedModules": true,
+		"stableTypeOrdering": true,
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
 		"skipLibCheck": true
 	},
-	"include": ["src", "tsup.config.ts"]
+	"include": ["src", "tsdown.config.mts"]
 }

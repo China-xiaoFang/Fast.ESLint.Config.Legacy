@@ -1,59 +1,21 @@
 import type { RuleOptions } from "../typegen";
 
 /**
- * 按需启用：要求项目统一使用 lodash-unified。
- * 该组织偏好不会进入默认配置，使用者需从 rules 子路径显式导入。
+ * 模块导入正确性、去重与确定性排序规则。
+ *
+ * 该记录由所有脚本完整预置在 `plugin:import-x/recommended` 之后应用。共享配置无法知道
+ * 消费项目的 alias、tsconfig paths 或 bundler resolver，因此依赖具体解析器的规则保持关闭。
+ * 副作用 import 会参与顺序诊断，但不会被插件自动移动。
+ *
+ * @public
  */
-export const importUseLodashUnifiedRules = {
-	// [高影响][按需启用] 阻止 lodash/lodash-es 及其子路径，启用前应先完成依赖迁移。
-	"no-restricted-imports": [
-		"error",
-		{
-			paths: [
-				{ name: "lodash", message: "Use lodash-unified instead." },
-				{ name: "lodash-es", message: "Use lodash-unified instead." },
-			],
-			patterns: [
-				{
-					group: ["lodash/*", "lodash-es/*"],
-					message: "Use lodash-unified instead.",
-				},
-			],
-		},
-	],
-} satisfies RuleOptions;
-
-/**
- * 按需启用：要求项目统一使用 lodash。
- * 该组织偏好不会进入默认配置，使用者需从 rules 子路径显式导入。
- */
-export const importUseLodashRules = {
-	// [高影响][按需启用] 阻止 lodash-es/lodash-unified 及其子路径，启用前应完成依赖迁移。
-	"no-restricted-imports": [
-		"error",
-		{
-			paths: [
-				{ name: "lodash-es", message: "Use lodash instead." },
-				{ name: "lodash-unified", message: "Use lodash instead." },
-			],
-			patterns: [
-				{
-					group: ["lodash-es/*", "lodash-unified/*"],
-					message: "Use lodash instead.",
-				},
-			],
-		},
-	],
-} satisfies RuleOptions;
-
-/** 默认启用的模块导入正确性与排序规则。 */
 export const importRules = {
 	// import 必须位于其他语句之前，避免模块依赖散落在执行逻辑中。
-	"import/first": "error",
+	"import-x/first": "error",
 	// 合并同一模块的重复 import，避免绑定分散或副作用被误读。
-	"import/no-duplicates": "error",
+	"import-x/no-duplicates": "error",
 	// [高影响][可自动修复] 按来源分组并排序；带副作用的裸 import 只报告，移动前必须确认执行顺序。
-	"import/order": [
+	"import-x/order": [
 		"error",
 		{
 			groups: [
@@ -88,15 +50,15 @@ export const importRules = {
 		},
 	],
 	// [默认关闭] Vite/TypeScript 别名由项目 resolver 校验，避免共享配置绑定特定方案。
-	"import/no-unresolved": "off",
+	"import-x/no-unresolved": "off",
 	// [默认关闭] 未配置 resolver 时，namespace 导出的静态分析容易产生误报。
-	"import/namespace": "off",
+	"import-x/namespace": "off",
 	// [默认关闭] 未配置 resolver 时，默认导出的静态分析容易产生误报。
-	"import/default": "off",
+	"import-x/default": "off",
 	// [默认关闭] 不限制同时存在默认导出与相近命名导出的模块 API 风格。
-	"import/no-named-as-default": "off",
+	"import-x/no-named-as-default": "off",
 	// [默认关闭] 不限制通过默认导入对象访问同名属性的项目 API 风格。
-	"import/no-named-as-default-member": "off",
+	"import-x/no-named-as-default-member": "off",
 	// [默认关闭] 未配置 resolver 时，命名导出的静态分析容易产生误报。
-	"import/named": "off",
+	"import-x/named": "off",
 } satisfies RuleOptions;

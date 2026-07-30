@@ -3,8 +3,11 @@ import type { RuleOptions } from "../typegen";
 /**
  * 跨 JavaScript、TypeScript 与 Vue 脚本生效的公共规则。
  *
- * 维护约定：每条本地覆写都要说明启用原因；可能造成大面积改动、迁移阻断或
+ * 维护约定：每条本地覆写都要说明启用原因；可能造成大面积改动、采用阻力或
  * 行为变化的规则使用 `[高影响]` 标记，并同步维护规则风险文档。
+ * 该记录不包含文件范围，直接消费时应由调用方把它放入适当的 Legacy override。
+ *
+ * @public
  */
 export const commonRules = {
 	// 数组回调必须在所有可到达分支返回值，避免 map/filter 等调用静默产生 undefined。

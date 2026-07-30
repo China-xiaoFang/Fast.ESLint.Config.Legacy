@@ -4,6 +4,9 @@ import type { RuleOptions } from "../typegen";
  * TypeScript 本地覆写规则。
  *
  * 先关闭会误判 TypeScript 语法的核心规则，再启用 typescript-eslint 对应实现。
+ * 该记录不启动类型服务；需要类型信息的规则由 `/type-aware` 的上游预置提供。
+ *
+ * @public
  */
 export const typescriptRules = {
 	// TypeScript 编译器负责派生类构造器校验，核心规则无法完整理解 TS 扩展语法。
@@ -49,7 +52,7 @@ export const typescriptRules = {
 
 	// 使用 TypeScript 版本避免误判声明合并、类型和值的同名声明。
 	"@typescript-eslint/no-redeclare": "error",
-	// [高影响] 未使用符号视为错误；以下划线开头可显式表示参数或变量被有意忽略。
+	// [高影响][可自动修复] 未使用符号视为错误；自动删除前需确认 import 副作用，以下划线表示有意忽略。
 	"@typescript-eslint/no-unused-vars": [
 		"error",
 		{
@@ -63,7 +66,7 @@ export const typescriptRules = {
 	],
 	// [默认关闭] 声明文件、全局扩展和部分 SDK 仍需要 namespace。
 	"@typescript-eslint/no-namespace": "off",
-	// any 会绕过类型检查，但在迁移和第三方边界中有合理用途，因此只警告。
+	// any 会绕过类型检查，但在渐进类型化和第三方边界中有合理用途，因此只警告。
 	"@typescript-eslint/no-explicit-any": "warn",
 	// [高影响] 默认要求 ESM import；CommonJS 扩展名会在专用 override 中关闭此规则。
 	"@typescript-eslint/no-require-imports": "error",
@@ -77,7 +80,7 @@ export const typescriptRules = {
 	],
 	// [可自动修复] 删除可由 TypeScript 明确推断的原始值类型标注，减少重复信息。
 	"@typescript-eslint/no-inferrable-types": "error",
-	// 非空断言可能隐藏空值缺陷；以警告提示逐步消除而不阻断首次迁移。
+	// 非空断言可能隐藏空值缺陷；以警告提示逐步消除而不阻断首次启用。
 	"@typescript-eslint/no-non-null-assertion": "warn",
 	// 可选链之后再做非空断言逻辑矛盾，通常表示边界条件设计有误。
 	"@typescript-eslint/no-non-null-asserted-optional-chain": "error",

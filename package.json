@@ -1,8 +1,7 @@
 {
 	"name": "@fast-china/eslint-config-legacy",
-	"version": "1.1.0",
-	"packageManager": "npm@10.9.8",
-	"description": "A production-ready ESLint 8 legacy config for Vue 3, Vite, TypeScript, and JavaScript projects.",
+	"version": "2.0.0",
+	"description": "Production-ready ESLint 8 Legacy Config presets for Vue 2/3, React, Angular, Node.js, TypeScript, and JavaScript.",
 	"type": "commonjs",
 	"keywords": [
 		"fast",
@@ -10,9 +9,13 @@
 		"eslint-config",
 		"eslintrc",
 		"legacy-config",
+		"angular",
+		"nodejs",
+		"react",
 		"typescript",
 		"vite",
 		"vue",
+		"vue2",
 		"vue3"
 	],
 	"license": "Apache-2.0",
@@ -26,30 +29,87 @@
 	},
 	"author": "小方",
 	"files": [
+		"CHANGELOG.md",
+		"CONTRIBUTING.md",
 		"Fast.png",
 		"LICENSE",
 		"README.md",
 		"README.zh.md",
+		"SECURITY.md",
 		"dist",
-		"docs"
+		"docs",
+		"src"
 	],
-	"main": "./dist/index.js",
-	"types": "./dist/index.d.ts",
 	"exports": {
-		".": {
-			"types": "./dist/index.d.ts",
-			"require": "./dist/index.js",
-			"default": "./dist/index.js"
+		"./angular": {
+			"types": "./dist/angular.d.ts",
+			"require": "./dist/angular.js",
+			"default": "./dist/angular.js"
 		},
-		"./factory": {
-			"types": "./dist/factory.d.ts",
-			"require": "./dist/factory.js",
-			"default": "./dist/factory.js"
+		"./base": {
+			"types": "./dist/base.d.ts",
+			"require": "./dist/base.js",
+			"default": "./dist/base.js"
+		},
+		"./javascript": {
+			"types": "./dist/javascript.d.ts",
+			"require": "./dist/javascript.js",
+			"default": "./dist/javascript.js"
+		},
+		"./lodash": {
+			"types": "./dist/lodash.d.ts",
+			"require": "./dist/lodash.js",
+			"default": "./dist/lodash.js"
+		},
+		"./lodash-unified": {
+			"types": "./dist/lodash-unified.d.ts",
+			"require": "./dist/lodash-unified.js",
+			"default": "./dist/lodash-unified.js"
+		},
+		"./node": {
+			"types": "./dist/node.d.ts",
+			"require": "./dist/node.js",
+			"default": "./dist/node.js"
+		},
+		"./react": {
+			"types": "./dist/react.d.ts",
+			"require": "./dist/react.js",
+			"default": "./dist/react.js"
 		},
 		"./rules": {
 			"types": "./dist/rules/index.d.ts",
 			"require": "./dist/rules/index.js",
 			"default": "./dist/rules/index.js"
+		},
+		"./sort-package": {
+			"types": "./dist/sort-package.d.ts",
+			"require": "./dist/sort-package.js",
+			"default": "./dist/sort-package.js"
+		},
+		"./sort-tsconfig": {
+			"types": "./dist/sort-tsconfig.d.ts",
+			"require": "./dist/sort-tsconfig.js",
+			"default": "./dist/sort-tsconfig.js"
+		},
+		"./type-aware": {
+			"types": "./dist/type-aware.d.ts",
+			"require": "./dist/type-aware.js",
+			"default": "./dist/type-aware.js"
+		},
+		"./typescript": {
+			"types": "./dist/typescript.d.ts",
+			"require": "./dist/typescript.js",
+			"default": "./dist/typescript.js"
+		},
+		"./vue2": {
+			"types": "./dist/vue2.d.ts",
+			"require": "./dist/vue2.js",
+			"default": "./dist/vue2.js"
+		},
+		"./vue3": {
+			"types": "./dist/vue3.d.ts",
+			"require": "./dist/vue3.js",
+			"default": "./dist/vue3.js"
 		},
 		"./package.json": "./package.json"
 	},
@@ -58,47 +118,59 @@
 		"access": "public"
 	},
 	"scripts": {
+		"audit": "node scripts/audit.cjs",
 		"typegen": "node scripts/typegen.cjs",
 		"typegen:check": "node scripts/typegen.cjs --check",
-		"build": "npm run typegen:check && tsup && node scripts/postbuild.cjs",
+		"build": "pnpm run typegen:check && tsdown",
 		"typecheck": "tsc --noEmit",
-		"lint": "eslint . --ext .js,.cjs,.mjs,.ts,.cts,.mts,.tsx,.vue,.json,.jsonc,.json5,.md --max-warnings 0",
-		"lint:fix": "npm run lint -- --fix",
+		"lint": "eslint . --ext .js,.cjs,.mjs,.jsx,.ts,.cts,.mts,.tsx,.vue,.html,.json,.jsonc,.json5,.yaml,.yml,.md --max-warnings 0",
+		"lint:fix": "eslint . --ext .js,.cjs,.mjs,.jsx,.ts,.cts,.mts,.tsx,.vue,.html,.json,.jsonc,.json5,.yaml,.yml,.md --fix",
 		"format": "prettier --write .",
 		"format:check": "prettier --check .",
 		"test:types": "tsc --noEmit --project tests/tsconfig.json",
-		"test": "npm run test:types && node --test tests/*.test.cjs",
-		"check": "npm run build && npm run typecheck && npm run lint && npm run format:check && npm test",
-		"prepack": "npm run check"
+		"test:runtime": "node --test tests/*.test.cjs",
+		"test": "pnpm run test:types && pnpm run test:runtime",
+		"check": "pnpm run build && pnpm run typecheck && pnpm run lint && pnpm run format:check && pnpm run test",
+		"prepack": "pnpm run check"
 	},
 	"peerDependencies": {
 		"eslint": "^8.57.0",
 		"typescript": ">=4.8.4 <6.1.0"
 	},
 	"dependencies": {
+		"@angular-eslint/eslint-plugin": "^21.4.0",
+		"@angular-eslint/eslint-plugin-template": "^21.4.0",
+		"@angular-eslint/template-parser": "^21.4.0",
 		"@typescript-eslint/eslint-plugin": "^8.65.0",
 		"@typescript-eslint/parser": "^8.65.0",
 		"eslint-config-prettier": "^10.1.8",
-		"eslint-plugin-import": "^2.32.0",
-		"eslint-plugin-jsonc": "^2.21.0",
-		"eslint-plugin-markdown": "^3.0.1",
-		"eslint-plugin-regexp": "^1.15.0",
+		"eslint-plugin-import-x": "^4.17.1",
+		"eslint-plugin-jsonc": "^2.21.1",
+		"eslint-plugin-jsx-a11y": "^6.10.2",
+		"eslint-plugin-markdown": "^5.1.0",
+		"eslint-plugin-promise": "^7.3.0",
+		"eslint-plugin-react": "^7.37.5",
+		"eslint-plugin-react-hooks": "^7.1.1",
+		"eslint-plugin-regexp": "^2.10.0",
 		"eslint-plugin-vue": "^10.10.0",
+		"eslint-plugin-yml": "^1.19.1",
 		"jsonc-eslint-parser": "^2.4.2",
-		"vue-eslint-parser": "^10.4.1"
+		"vue-eslint-parser": "^10.4.1",
+		"yaml-eslint-parser": "^1.3.2"
 	},
 	"devDependencies": {
+		"@arethetypeswrong/core": "^0.18.5",
 		"@types/eslint": "^8.56.12",
-		"@types/node": "^24.10.4",
+		"@types/node": "^24.13.3",
 		"eslint": "^8.57.1",
-		"prettier": "^3.7.4",
-		"tsup": "8.4.0",
-		"typescript": "^5.9.3"
+		"prettier": "^3.9.6",
+		"publint": "^0.3.22",
+		"react": "^19.2.8",
+		"tsdown": "^0.22.14",
+		"typescript": "^6.0.3"
 	},
 	"engines": {
-		"node": "^18.18.0 || ^20.9.0 || >=21.1.0"
-	},
-	"overrides": {
-		"esbuild": "0.25.12"
+		"node": "^22.18.0 || >=24.11.0",
+		"pnpm": "^11.0.0"
 	}
 }

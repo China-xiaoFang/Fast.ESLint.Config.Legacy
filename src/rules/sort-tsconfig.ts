@@ -3,14 +3,17 @@ import type { RuleOptions } from "../typegen";
 /**
  * tsconfig.json 属性排序规则。
  *
- * `[高影响][可自动修复]`：首次修复会重排大量字段，但只改变 JSONC 的阅读顺序，
+ * `[高影响][可自动修复][按需启用]`：由 `/sort-tsconfig` 显式开启，首次修复会重排大量字段，但只改变 JSONC 的阅读顺序，
  * 不改变 TypeScript 编译选项值。
+ * 记录只描述排序规则，JSONC parser 和推荐规则由配置层负责提供。
+ *
+ * @public
  */
 export const tsconfigJsonSortRules = {
 	// tsconfig 是 JSONC，注释用于解释编译器取舍，必须保留。
 	"jsonc/no-comments": "off",
 
-	// [高影响][可自动修复] 只调整顶层和 compilerOptions 的键顺序，不改写选项值或数组。
+	// [高影响][可自动修复][按需启用] 只调整顶层和 compilerOptions 的键顺序，不改写选项值或数组。
 	"jsonc/sort-keys": [
 		"error",
 		// 顶层按继承、选项、项目引用和文件范围的阅读顺序排列。

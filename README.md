@@ -2,165 +2,139 @@
 
 # @fast-china/eslint-config-legacy
 
-An ESLint 8 `.eslintrc` shareable config for Vue 3, Vite, TypeScript, and JavaScript projects.
+Production-ready shareable configs for the ESLint 8 `.eslintrc` ecosystem. The package provides explicit presets for Vue 2, Vue 3, React, Angular, Node.js, TypeScript, JavaScript, JSON, YAML, Markdown, Promise, RegExp, and import rules.
 
 [![npm version](https://img.shields.io/npm/v/@fast-china/eslint-config-legacy?color=orange)](https://www.npmjs.com/package/@fast-china/eslint-config-legacy)
 [![license](https://img.shields.io/npm/l/@fast-china/eslint-config-legacy)](./LICENSE)
 
-## Version policy
+## Scope
 
-This package is the ESLint 8.57 Legacy Config line for projects that still use `.eslintrc.cjs`. ESLint 9 is treated as a Flat Config transition release and is outside this package's support matrix. Use [`@fast-china/eslint-config`](https://www.npmjs.com/package/@fast-china/eslint-config) for ESLint 10.
+The current 2.x release line supports ESLint 8.57 Legacy Config only. ESLint 9 is outside the support range; ESLint 10 projects should use [`@fast-china/eslint-config`](https://www.npmjs.com/package/@fast-china/eslint-config).
 
-| ESLint major | Package                            | Configuration format   |
-| ------------ | ---------------------------------- | ---------------------- |
-| 8.57         | `@fast-china/eslint-config-legacy` | `.eslintrc.cjs`        |
-| 9            | No compatibility commitment        | Migrate to Flat Config |
-| 10           | `@fast-china/eslint-config`        | `eslint.config.mjs`    |
+| ESLint | Package                            | Format              |
+| ------ | ---------------------------------- | ------------------- |
+| 8.57   | `@fast-china/eslint-config-legacy` | `.eslintrc.cjs`     |
+| 9      | Unsupported                        | —                   |
+| 10     | `@fast-china/eslint-config`        | `eslint.config.mjs` |
 
-## Features
+## Design
 
-- Explicit Vue 3 + Vite + TypeScript defaults; no runtime Vue-version guessing.
-- File-scoped JavaScript, TypeScript, Vue SFC, JSON, JSONC, JSON5, Markdown, RegExp, and import rules.
-- A `createConfig()` factory for browser, Node.js, universal, JavaScript-only, Vue 2, and type-aware projects.
-- Node.js globals only for Vite configs, scripts, tests, bins, and CLI files instead of every browser source file.
-- Prettier compatibility without executing Prettier as an ESLint rule.
-- Generated bundled rule names and a `defineRules()` helper that rejects misspelled known rule names.
-- Runtime, consumer-type, auto-fix, risk-documentation, package-entry, and multi-version CI coverage.
+- Public APIs are static `extends` subpaths. There is no ambiguous package-root config or runtime configuration factory.
+- `src/configs` owns configuration creation, `src/rules` owns local rule records, `src/core/index.ts` assembles deterministic presets, and `src/presets` contains public entry files.
+- Every complete preset scopes JavaScript, TypeScript, framework templates, and data formats with Legacy `overrides`.
+- Node.js is a complete `/node` preset. Build and configuration files still receive narrowly scoped Node globals in browser presets.
+- Type-aware linting is retained as an explicit `/type-aware` overlay using typescript-eslint Project Service.
+- Prettier runs separately; ESLint only disables conflicting formatting rules.
+- Exact rule-name types are generated from ESLint 8 and bundled plugins.
+- TypeScript 6 and tsdown emit directly requireable CommonJS presets with `export =` declarations and source maps.
 
 ## Requirements
 
-- Node.js `^18.18.0`, `^20.9.0`, or `>=21.1.0`
+- Node.js `^22.18.0 || >=24.11.0`
+- pnpm `^11.0.0` for repository development
 - ESLint `^8.57.0`
 - TypeScript `>=4.8.4 <6.1.0`
+
+CI uses the same Node.js 22.18.0 and 24.11.0 matrix as the Flat Config project. The package remains consumable through pnpm, npm, Yarn, or Bun; pnpm is the repository's lockfile and workflow authority.
 
 ## Install
 
 ```sh
-npm install --save-dev eslint@^8.57.0 typescript @fast-china/eslint-config-legacy
+pnpm add -D eslint@^8.57.0 typescript @fast-china/eslint-config-legacy
 ```
 
-Equivalent pnpm, Yarn, and Bun commands are also supported.
+Parsers and plugins are direct dependencies of this package.
 
-## Quick start: Vue 3 + Vite
+## Complete presets
 
-Create `.eslintrc.cjs`:
+Each complete preset can be used as the only shared entry in `.eslintrc.cjs`.
+
+| Extends name                                  | Project type                                   |
+| --------------------------------------------- | ---------------------------------------------- |
+| `@fast-china/eslint-config-legacy/base`       | Framework-free JS + TS + data + Markdown       |
+| `@fast-china/eslint-config-legacy/javascript` | JavaScript and JSX                             |
+| `@fast-china/eslint-config-legacy/typescript` | JavaScript + TypeScript and TSX                |
+| `@fast-china/eslint-config-legacy/node`       | Node.js + JavaScript + TypeScript + data       |
+| `@fast-china/eslint-config-legacy/vue2`       | Vue 2 + TypeScript + Vite/Webpack              |
+| `@fast-china/eslint-config-legacy/vue3`       | Vue 3 + TypeScript + Vite                      |
+| `@fast-china/eslint-config-legacy/react`      | React + TypeScript + Hooks + JSX accessibility |
+| `@fast-china/eslint-config-legacy/angular`    | Angular TS + inline/external templates         |
+
+Every subpath exports the config object itself, so ESLint 8 never needs `.default`.
+
+### Vue 3
 
 ```js
+// .eslintrc.cjs
 module.exports = {
 	root: true,
-	extends: ["@fast-china/eslint-config-legacy"],
+	extends: ["@fast-china/eslint-config-legacy/vue3"],
 };
 ```
 
-Run every supported file type:
+Use `/vue2`, `/react`, or `/angular` in the same way. Angular projects should include `.html` when invoking ESLint so external templates are checked.
 
-```sh
-npx eslint . --ext .js,.cjs,.mjs,.ts,.cts,.mts,.tsx,.vue,.json,.jsonc,.json5,.md
-```
-
-The default config enables Vue 3, TypeScript, JavaScript, JSON dialects, Markdown, import ordering, RegExp checks, and browser globals. Common config, script, test, bin, and CLI files receive Node.js globals.
-
-## Other project types
-
-Load the factory from its dedicated subpath when the root preset does not match the project.
-
-### Node.js + TypeScript
-
-```js
-const { createConfig } = require("@fast-china/eslint-config-legacy/factory");
-
-module.exports = createConfig({
-	environment: "node",
-	vue: false,
-});
-```
-
-### JavaScript only
-
-```js
-const { createConfig } = require("@fast-china/eslint-config-legacy/factory");
-
-module.exports = createConfig({
-	environment: "node",
-	json: false,
-	markdown: false,
-	typescript: false,
-	vue: false,
-});
-```
-
-### Vue 2
-
-```js
-const { createConfig } = require("@fast-china/eslint-config-legacy/factory");
-
-module.exports = createConfig({ vue: 2 });
-```
-
-### Type-aware TypeScript and Vue
-
-```js
-const { createConfig } = require("@fast-china/eslint-config-legacy/factory");
-
-module.exports = createConfig({
-	typescript: {
-		typeChecked: true,
-		tsconfigRootDir: __dirname,
-	},
-	vue: {
-		typeChecked: true,
-		tsconfigRootDir: __dirname,
-		version: 3,
-	},
-});
-```
-
-Type-aware mode enables the `recommended-type-checked` and `stylistic-type-checked` presets. Every linted file must belong to a `tsconfig.json` found through `parserOptions.project`.
-
-## Factory options
-
-| Option        | Default     | Purpose                                                          |
-| ------------- | ----------- | ---------------------------------------------------------------- |
-| `environment` | `"browser"` | Select `"browser"`, `"node"`, or `"universal"` globals.          |
-| `imports`     | `true`      | Enable import correctness and ordering.                          |
-| `json`        | `true`      | Enable JSON dialects and package/tsconfig ordering.              |
-| `markdown`    | `true`      | Enable the Markdown processor and fenced-code handling.          |
-| `prettier`    | `true`      | Disable ESLint/plugin rules that conflict with Prettier.         |
-| `regexp`      | `true`      | Enable the RegExp recommended preset.                            |
-| `typescript`  | `true`      | Disable or pass `typeChecked`, `project`, and `tsconfigRootDir`. |
-| `vue`         | `3`         | Disable, select `2`/`3`, or pass Vue and type-aware options.     |
-
-Named factory exports include `PresetJavaScriptConfig`, `PresetTypeScriptConfig`, `PresetBasicConfig`, `PresetNodeConfig`, `PresetVue2Config`, and `PresetVueConfig`.
-
-## Project overrides
-
-Overrides declared after the shared config take precedence:
+### Node.js
 
 ```js
 module.exports = {
 	root: true,
-	extends: ["@fast-china/eslint-config-legacy"],
-	overrides: [
-		{
-			files: ["src/**/*.ts", "src/**/*.vue"],
-			rules: {
-				"@typescript-eslint/no-unused-vars": "warn",
-				"no-console": "off",
-			},
-		},
+	extends: ["@fast-china/eslint-config-legacy/node"],
+};
+```
+
+The Node preset provides Node globals without imposing a separate Node rule plugin.
+
+## Composable overlays
+
+Overlay presets must follow a complete preset in `extends`.
+
+| Extends name                                      | Purpose                                                 |
+| ------------------------------------------------- | ------------------------------------------------------- |
+| `@fast-china/eslint-config-legacy/type-aware`     | Type-aware TS, TSX, Angular TS, and Vue script checks   |
+| `@fast-china/eslint-config-legacy/sort-package`   | Safe `package.json` sorting                             |
+| `@fast-china/eslint-config-legacy/sort-tsconfig`  | Sort `tsconfig*.json` by TypeScript documentation topic |
+| `@fast-china/eslint-config-legacy/lodash`         | Require the `lodash` package entry                      |
+| `@fast-china/eslint-config-legacy/lodash-unified` | Require the `lodash-unified` package entry              |
+
+### Type-aware linting
+
+```js
+module.exports = {
+	root: true,
+	extends: ["@fast-china/eslint-config-legacy/vue3", "@fast-china/eslint-config-legacy/type-aware"],
+};
+```
+
+`/type-aware` enables `recommended-type-checked`, `stylistic-type-checked`, and Project Service for TypeScript and Vue files. Every linted file must belong to a discoverable tsconfig. A complex monorepo can add a project-owned override with `parserOptions.tsconfigRootDir`.
+
+### Opt-in sorting
+
+```js
+module.exports = {
+	root: true,
+	extends: [
+		"@fast-china/eslint-config-legacy/base",
+		"@fast-china/eslint-config-legacy/sort-package",
+		"@fast-china/eslint-config-legacy/sort-tsconfig",
 	],
 };
 ```
 
-## Rule-name types and opt-in rules
+Sorting remains opt-in because the first automatic fix can create a large diff. Conditional keys inside `package.json#exports` are never reordered.
+
+## Typed project rules
 
 ```ts
 import { type RuleOptions, defineRules } from "@fast-china/eslint-config-legacy/rules";
 
-const projectRules = defineRules({
+const rules = defineRules({
+	"@angular-eslint/template/alt-text": "error",
 	"@typescript-eslint/no-unused-vars": ["error", { args: "after-used" }],
-	"import/order": ["error", { "newlines-between": "always" }],
+	"jsx-a11y/alt-text": "error",
+	"react-hooks/rules-of-hooks": "error",
 	"vue/attributes-order": "error",
+	"yml/no-empty-document": "error",
 });
 
 const reusableRules = {
@@ -168,47 +142,25 @@ const reusableRules = {
 } satisfies RuleOptions;
 ```
 
-The generated type covers ESLint 8 core and every bundled plugin rule name. Options use ESLint 8's general `RuleEntry` type. Rules from additional project-installed plugins are outside this name set.
-
-Organization-specific `importUseLodashRules` and `importUseLodashUnifiedRules` remain available from `/rules`, but no default preset enables them.
-
-## Prettier
-
-Prettier is no longer a peer dependency, and `eslint-plugin-prettier` is not installed. Run formatting separately:
-
-```sh
-npm install --save-dev prettier
-npx prettier --check .
-```
-
-Use `createConfig({ prettier: false })` with another formatter or when you want to retain every stylistic ESLint rule.
+Place project-specific rules in the consuming `.eslintrc` `rules` or `overrides`. Rules supplied only by consumer-installed plugins are outside this package's generated type.
 
 ## High-impact defaults
 
-Some defaults can create broad ordering changes, block legacy patterns, or require review of import side effects, type imports, loop closures, Vue props, and emitted component events. Source comments use `[高影响]`, `[可自动修复]`, and `[安全关注]`, and tests keep those labels synchronized with rule metadata and documentation.
+Read [Default rules and high-impact risks](./docs/rules-risk.md) before enabling a preset or running `eslint --fix`. It identifies high-impact framework rules, broad automatic fixes, upstream recommended sets, and opt-in policies.
 
-See [Default rules and disruptive risks](./docs/rules-risk.md) before running `eslint --fix` on an existing codebase. Apply fixes in an isolated commit and run type checking, builds, and tests.
+Every local override has a rationale comment. `[高影响]`, `[可自动修复]`, `[安全关注]`, `[默认关闭]`, and `[按需启用]` mark important decisions.
 
-## Migration from 1.0.5 and earlier
-
-- The peer range is now ESLint `^8.57.0`, with Node.js aligned to current TypeScript/Vue plugin requirements.
-- Vue 3 is deterministic. Vue 2 must be selected through the factory.
-- The default no longer forces lodash-unified.
-- Prettier is no longer run inside ESLint or declared as a peer.
-- `import/order` now requires blank lines between groups, and several modern syntax/component API rules are errors.
-- Explicit function return types are no longer mandatory.
-- The package root only exports the ESLint-loadable config; composition is under `/factory`, and raw rules are under `/rules`.
-
-## Development
+## Development and release checks
 
 ```sh
-npm install
-npm run typegen
-npm run check
-npm pack --dry-run --ignore-scripts
+pnpm install
+pnpm typegen
+pnpm check
+pnpm audit
+pnpm --config.ignore-scripts=true pack --dry-run
 ```
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) and the [Chinese engineering audit](./docs/engineering-audit.zh.md).
+See the [engineering audit](./docs/engineering-audit.zh.md), [dependency compatibility matrix](./docs/dependency-compatibility.md), [changelog](./CHANGELOG.md), [contribution guide](./CONTRIBUTING.md), and [security policy](./SECURITY.md).
 
 ## License
 
