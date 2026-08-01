@@ -14,7 +14,7 @@ Rules such as `vue/no-v-html`, JSX accessibility checks, and Angular template di
 
 The ESLint 8 dependency graph is reported through [GHSA-mh99-v99m-4gvg](https://github.com/advisories/GHSA-mh99-v99m-4gvg), a denial-of-service issue in brace expansion. npm's supported dependency-tree fix upgrades ESLint to 10, which is intentionally outside this Legacy Config package.
 
-The affected glob patterns are developer-controlled configuration and CLI inputs in this package; do not build lint glob patterns from untrusted input. `pnpm audit` accepts only findings whose complete advisory chain ends at this documented advisory. Any unrelated or newly introduced advisory still fails the command. The exception should be removed if an ESLint 8-compatible upstream fix becomes available.
+The affected glob patterns are developer-controlled configuration and CLI inputs in this package; do not build lint glob patterns from untrusted input. Run the standard `pnpm audit` command and review every finding against the lockfile and this documented compatibility boundary. The repository does not suppress or allowlist advisories in executable code. Remove this notice if an ESLint 8-compatible upstream fix becomes available.
 
 ## Dependency install scripts
 

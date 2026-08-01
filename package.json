@@ -118,7 +118,6 @@
 		"access": "public"
 	},
 	"scripts": {
-		"audit": "node scripts/audit.cjs",
 		"typegen": "node scripts/typegen.cjs",
 		"typegen:check": "node scripts/typegen.cjs --check",
 		"build": "pnpm run typegen:check && tsdown",
