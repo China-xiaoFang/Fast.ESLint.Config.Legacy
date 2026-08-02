@@ -1,1 +1,1 @@
-{"version":3,"file":"typescript.d.ts","names":[],"sources":["../src/presets/typescript.ts"],"mappings":";;;;;;;;;;;;;;;;;;cAoBM,QAAQ,OAAO"}
+{"version":3,"file":"typescript.d.ts","names":[],"sources":["../src/configs/typescript/index.ts"],"mappings":";;;;;;;;;;;;;;;;;;cAoBM,QAAQ,OAAO"}

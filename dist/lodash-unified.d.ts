@@ -1,18 +1,16 @@
 import { Linter } from "eslint";
-//#region src/presets/lodash-unified.d.ts
+//#region src/configs/lodash-unified/index.d.ts
 /**
- * 将静态 Lodash 导入来源统一为 `lodash-unified` 的叠加预置。
+ * lodash-unified 导入来源策略的 ESLint 8 Legacy Config 叠加配置。
  *
- * 必须放在一个完整预置之后。该策略拒绝 `lodash`、`lodash-es` 及其子路径，
- * 但不会检查动态 `import()` 或 CommonJS `require()`，也不会修改项目依赖。
+ * 该配置要求 JavaScript、TypeScript 与 Vue 代码统一从 `lodash-unified` 导入工具函数，
+ * 并限制直接使用 `lodash`。
+ * 它不包含语言 parser 或基础规则，应在完整语言配置之后按需叠加。
  *
  * @example
  * ```js
  * module.exports = {
- *   extends: [
- *     "@fast-china/eslint-config-legacy/vue3",
- *     "@fast-china/eslint-config-legacy/lodash-unified",
- *   ],
+ *   extends: ["@fast-china/eslint-config-legacy", "@fast-china/eslint-config-legacy/lodash-unified"],
  * };
  * ```
  *

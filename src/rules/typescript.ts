@@ -4,7 +4,7 @@ import type { RuleOptions } from "../typegen";
  * TypeScript 本地覆写规则。
  *
  * 先关闭会误判 TypeScript 语法的核心规则，再启用 typescript-eslint 对应实现。
- * 该记录不启动类型服务；需要类型信息的规则由 `/type-aware` 的上游预置提供。
+ * 该记录不启动类型服务；需要类型信息的规则由 `createTypeAwareConfigs()` 提供。
  *
  * @public
  */

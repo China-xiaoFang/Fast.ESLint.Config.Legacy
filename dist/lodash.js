@@ -1,24 +1,25 @@
-//#region src/presets/lodash.ts
+const require_constants_index = require("./constants/index.js");
+//#region src/configs/lodash/index.ts
 /**
-* 将静态 Lodash 导入来源统一为 `lodash` 的叠加预置。
+* lodash 导入来源策略的 ESLint 8 Legacy Config 叠加配置。
 *
-* 必须放在一个完整预置之后。该策略拒绝 `lodash-es`、`lodash-unified` 及其子路径，
-* 但允许 `lodash` 根入口和 `lodash/*` 子路径。它不检查动态 `import()` 或 CommonJS
-* `require()`，也不会安装或替换任何依赖。
+* 该配置要求 JavaScript、TypeScript 与 Vue 代码统一从 `lodash` 导入工具函数，
+* 并限制 `lodash-unified` 等替代来源。
+* 它不包含语言 parser 或基础规则，应在完整语言配置之后按需叠加。
 *
 * @example
 * ```js
 * module.exports = {
-*   extends: [
-*     "@fast-china/eslint-config-legacy/typescript",
-*     "@fast-china/eslint-config-legacy/lodash",
-*   ],
+*   extends: ["@fast-china/eslint-config-legacy", "@fast-china/eslint-config-legacy/lodash"],
 * };
 * ```
 *
 * @public
 */
-const config = (0, require("./core/index").createPreset)("lodash");
+const config = {
+	reportUnusedDisableDirectives: true,
+	overrides: require("./configs/lodash/factory.js").createLodashConfigs("lodash", require_constants_index.GLOBS_CODE)
+};
 //#endregion
 module.exports = config;
 

@@ -31,7 +31,7 @@ export const reactRules = {
 /**
  * React 自动 JSX runtime 的兼容规则记录。
  *
- * `/react` 默认采用 automatic runtime，因此不要求每个 JSX/TSX 文件显式导入 React。
+ * React 配置创建器默认采用 automatic runtime，因此不要求每个 JSX/TSX 文件显式导入 React。
  * 使用 classic runtime 的自定义组合不应应用该记录。
  *
  * @public

@@ -1,1 +1,1 @@
-{"version":3,"file":"node.d.ts","names":[],"sources":["../src/presets/node.ts"],"mappings":";;;;;;;;;;;;;;;;;;cAoBM,QAAQ,OAAO"}
+{"version":3,"file":"node.d.ts","names":[],"sources":["../src/configs/node/index.ts"],"mappings":";;;;;;;;;;;;;;;;;cAoBM,QAAQ,OAAO"}

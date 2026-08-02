@@ -1,1 +1,1 @@
-{"version":3,"file":"lodash-unified.d.ts","names":[],"sources":["../src/presets/lodash-unified.ts"],"mappings":";;;;;;;;;;;;;;;;;;;;cAsBM,QAAQ,OAAO"}
+{"version":3,"file":"lodash-unified.d.ts","names":[],"sources":["../src/configs/lodash-unified/index.ts"],"mappings":";;;;;;;;;;;;;;;;;;cAqBM,QAAQ,OAAO"}

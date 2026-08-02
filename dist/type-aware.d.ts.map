@@ -1,1 +1,1 @@
-{"version":3,"file":"type-aware.d.ts","names":[],"sources":["../src/presets/type-aware.ts"],"mappings":";;;;;;;;;;;;;;;;;;;;;;cAwBM,QAAQ,OAAO"}
+{"version":3,"file":"type-aware.d.ts","names":[],"sources":["../src/configs/type-aware/index.ts"],"mappings":";;;;;;;;;;;;;;;;;;cAoBM,QAAQ,OAAO"}

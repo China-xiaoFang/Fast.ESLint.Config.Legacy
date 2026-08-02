@@ -1,6 +1,6 @@
 # 默认规则、高影响风险与维护约定
 
-本文档说明 `@fast-china/eslint-config-legacy` 2.x 的 `/vue3` 默认预置和其他直接预置启用了什么，以及哪些规则在首次启用或执行 `eslint --fix` 时可能造成大面积差异、结构性改动或行为变化。
+本文档说明 `@fast-china/eslint-config-legacy` 2.x 的包根配置和可复用创建器启用了什么，以及哪些规则在首次启用或执行 `eslint --fix` 时可能造成大面积差异、结构性改动或行为变化。
 
 ## 风险标记
 
@@ -13,13 +13,13 @@
 
 ## 默认继承的上游预置
 
-`/vue3` 默认预置面向 Vue 3 + Vite + TypeScript，并对不同文件类型分别应用预置，避免规则跨语言污染。
+包根是唯一合并配置，面向 Vue 3 + Vite + TypeScript 浏览器管理项目，并对不同文件类型分别应用配置，避免规则跨语言污染。
 
 | 范围             | 默认继承                                                                                             | 说明                                                                           |
 | ---------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
 | JavaScript/JSX   | `eslint:recommended`                                                                                 | 基础语法和运行时正确性，包括 `no-undef`、`no-unused-vars`。                    |
 | TypeScript/TSX   | `eslint:recommended`、`plugin:@typescript-eslint/recommended`、`plugin:@typescript-eslint/stylistic` | 默认不读取类型信息；会显式关闭不理解 TypeScript 的核心替代规则。               |
-| Vue 3 SFC        | JavaScript、TypeScript 非类型感知预置、`plugin:vue/recommended`                                      | Vue 2 只由明确的 `/vue2` 子路径启用 `plugin:vue/vue2-recommended`。            |
+| Vue 3 SFC        | JavaScript、TypeScript 非类型感知配置、`plugin:vue/recommended`                                      | `/vue` 默认为 Vue 3；Vue 2 使用 `/vue2`。                                      |
 | import           | `plugin:import-x/recommended`                                                                        | 本库补充导入位置、去重和排序；依赖 resolver 的高误报规则默认关闭。             |
 | Promise          | `plugin:promise/recommended`                                                                         | 检查 Promise 链返回、异常处理、回调名称与反模式；默认作用于所有脚本语言。      |
 | RegExp           | `plugin:regexp/recommended`                                                                          | 部分规则可以自动改写正则，修复后必须运行覆盖真实输入的测试。                   |
@@ -30,22 +30,22 @@
 
 上游预置的实际规则集合由 `pnpm-lock.yaml` 中的版本决定。升级 ESLint 或插件时，应使用 `ESLint#calculateConfigForFile()`、集成测试和锁文件核对实际结果，而不是维护一份容易过期的完整复制列表。
 
-## 其他直接预置继承的规则
+## 独立配置继承的规则
 
-以下规则不会进入 `/vue3` 预置，只在对应子路径中启用：
+以下框架规则不会进入包根配置，只由对应创建器启用：
 
-| 预置       | 上游预置与本地能力                                                                                        | 主要边界                                                                |
-| ---------- | --------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| `/node`    | 完整 JS/TS/数据文件规则与 Node globals                                                                    | 不引入专用 Node 规则插件。                                              |
-| `/vue2`    | `plugin:vue/vue2-recommended`                                                                             | 显式关闭 Vue 3 风格的 `vue/require-explicit-emits`。                    |
-| `/react`   | `plugin:react/recommended`、`react/jsx-runtime`、`plugin:react-hooks/recommended`、`jsx-a11y/recommended` | TSX 不重复检查 PropTypes；本地规则补充 button、iframe 等 DOM 安全约束。 |
-| `/angular` | `plugin:@angular-eslint/recommended`、template recommended、template accessibility、本地 OnPush 约束      | 检查 `.ts`、`.html` 和内联模板；selector 前缀必须由应用自行配置。       |
+| 创建器          | 上游预置与本地能力                                                                                        | 主要边界                                                                |
+| --------------- | --------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| `/node`         | Node globals                                                                                              | 不引入专用 Node 规则插件，也不包含其他语言或数据文件规则。              |
+| `/vue`、`/vue2` | Vue 3 与 Vue 2 独立默认导出；仍可使用 `createVueConfigs({ version })`                                     | 按版本选择 Vue SFC parser 与组件规则。                                  |
+| `/react`        | `plugin:react/recommended`、`react/jsx-runtime`、`plugin:react-hooks/recommended`、`jsx-a11y/recommended` | TSX 不重复检查 PropTypes；本地规则补充 button、iframe 等 DOM 安全约束。 |
+| `/angular`      | `plugin:@angular-eslint/recommended`、template recommended、template accessibility、本地 OnPush 约束      | 检查 `.ts`、`.html` 和内联模板；selector 前缀必须由应用自行配置。       |
 
 browser 预置只在窄范围工程文件中提供 Node globals。
 
 ## 本地高影响规则
 
-“默认”指规则在它所属的直接预置中默认启用：Vue 规则属于 `/vue3` 或 `/vue2`，React 规则只属于 `/react`，不会污染其他项目。
+“默认”指规则在它所属的配置中默认启用：Vue 3 规则属于包根和 `/vue`，Vue 2、React 与 Angular 规则分别通过 `/vue2`、`/react`、`/angular` 或对应创建器启用。
 
 | 规则                                                        | 等级       | 自动修复   | 主要影响                                                                           | 采用建议                                                 |
 | ----------------------------------------------------------- | ---------- | ---------- | ---------------------------------------------------------------------------------- | -------------------------------------------------------- |
@@ -67,7 +67,7 @@ browser 预置只在窄范围工程文件中提供 Node globals。
 
 ## 上游推荐预置的高影响行为
 
-- `plugin:promise/recommended` 在 `/vue3` 和所有脚本预置中默认启用。`promise/always-return`、`promise/catch-or-return` 等规则可能要求重写已有 Promise 链；不要用空 catch 机械消除诊断，应确认异常传播和返回值语义。
+- `plugin:promise/recommended` 在包根和 `createPromiseConfigs()` 中启用。`promise/always-return`、`promise/catch-or-return` 等规则可能要求重写已有 Promise 链；不要用空 catch 机械消除诊断，应确认异常传播和返回值语义。
 - React Hooks 7 的 recommended 不仅包含 `rules-of-hooks` 与 `exhaustive-deps`，还包含静态组件、不可变性、refs、effect 内 setState、purity 等 React Compiler 规则。已有 React 代码首次启用时可能出现结构性问题，应逐组件处理，而不是整体关闭预置。
 - React 本地规则要求 button 显式声明 `type`，并提示缺失 iframe sandbox；这些约束用于避免意外提交和过宽的嵌入权限，不应作为纯格式噪声处理。
 - `plugin:jsx-a11y/recommended` 与 Angular template accessibility 会暴露缺少替代文本、键盘交互、label、ARIA 属性或焦点支持的问题。这些通常是产品可用性缺陷，不应只为通过 CI 而禁用。
@@ -79,9 +79,9 @@ browser 预置只在窄范围工程文件中提供 Node globals。
 
 ## 明确不默认启用的高影响能力
 
-- TypeScript 和 Vue 的类型感知规则只在完整预置之后叠加 `/type-aware` 时启用；它会启动 Project Service、增加项目服务开销，并启用 `no-floating-promises` 等需要类型信息的规则。
-- Vue 2、React 和 Angular 规则只在对应直接预置中启用。
-- `preferLodashRules` 与 `preferLodashUnifiedRules` 是组织级导入来源策略，可从 `/rules` 导入；`/lodash` 与 `/lodash-unified` 会将其作为显式叠加预置启用。
+- TypeScript 和 Vue 的类型感知规则只在叠加 `/type-aware` 或组合 `createTypeAwareConfigs()` 时启用；它会启动 Project Service、增加项目服务开销，并启用 `no-floating-promises` 等需要类型信息的规则。
+- React 和 Angular 规则通过 `/react`、`/angular` 或对应创建器启用；Vue 2 使用 `/vue2` 或 `createVueConfigs({ version: 2 })`，`/vue` 默认为 Vue 3。
+- `preferLodashRules` 与 `preferLodashUnifiedRules` 是组织级导入来源策略，可从 `/rules` 导入；`createLodashConfigs()` 可应用对应策略。
 - `import-x/no-unresolved`、`import-x/named` 等依赖具体 resolver 或别名配置的检查默认关闭。
 - `/sort-package` 与 `/sort-tsconfig` 只在显式叠加时启用。其 `jsonc/sort-keys` 与 `jsonc/sort-array-values` 可能形成较大清单差异，应独立提交并复核。
 - 即使开启排序，`package.json#exports` 内部键也永不自动排序。Node 条件导出按照键顺序匹配，改写顺序可能改变实际加载文件。
@@ -94,7 +94,7 @@ browser 预置只在窄范围工程文件中提供 Node globals。
 ```js
 module.exports = {
 	root: true,
-	extends: ["@fast-china/eslint-config-legacy/vue3"],
+	extends: ["@fast-china/eslint-config-legacy"],
 	overrides: [
 		{
 			files: ["**/*.{ts,tsx,mts,cts,vue}"],
@@ -132,5 +132,5 @@ module.exports = {
 3. 同步更新本文件、英文版、两份 README 和 `CHANGELOG.md`。
 4. 排序规则不得触碰键顺序有语义的映射，包括 `package.json#exports` 条件对象。
 5. ESLint 或内置插件版本变化后运行 `pnpm typegen`，审查并提交 `src/typegen.d.ts`。
-6. 为解析器、插件、作用域、自动修复、公开导出、完整预置或叠加预置变化增加集成测试。
+6. 为解析器、插件、作用域、自动修复、公开导出、根配置或可复用创建器变化增加集成测试。
 7. 完成后运行 `pnpm check` 和 `pnpm --config.ignore-scripts=true pack --dry-run`，并检查真实发布清单。

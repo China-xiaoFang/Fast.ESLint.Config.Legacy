@@ -4,29 +4,35 @@ All notable changes to this project are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and releases follow Semantic Versioning.
 
-## [2.0.0] - Unreleased
+## [2.0.1] - 2026-08-02
 
-### Presets
+### Configuration
 
-- Complete CommonJS presets: `/base`, `/javascript`, `/typescript`, `/node`, `/vue2`, `/vue3`, `/react`, and `/angular`.
-- Explicit overlays: `/type-aware`, `/sort-package`, `/sort-tsconfig`, `/lodash`, and `/lodash-unified`.
+- The package root is the only merged config and targets Vue 3, TypeScript, Vite browser administration projects.
+- Top-level granular subpaths remain directly usable from Legacy `extends`; `/vue` targets Vue 3 and `/vue2` targets Vue 2.
+- `/configs` exports reusable language, data-file, framework, import, Promise, RegExp, environment, compatibility, and policy creators.
+- `/constants` and `/rules` expose shared globs and typed local rule records.
 - React coverage includes Hooks, JSX accessibility, TypeScript props, automatic JSX runtime, button behavior, and iframe sandbox diagnostics.
 - Angular coverage includes TypeScript, external templates, inline-template processing, template accessibility, and OnPush diagnostics.
-- Vue 2 and Vue 3 use separate upstream presets and framework-specific rule boundaries.
+- `createVueConfigs()` retains Vue 2 and Vue 3 upstream presets and framework-specific rule boundaries.
 
 ### Architecture
 
-- Public configuration APIs use explicit Legacy `extends` subpaths; the package root is intentionally not exported.
-- `src/configs` owns configuration construction, `src/rules` owns rule records, `src/core/index.ts` owns deterministic composition, and `src/presets` owns public entries.
+- Public exports include the package root, granular Legacy configs, `/configs`, `/constants`, `/rules`, and package metadata.
+- Each `src/configs/<name>` directory colocates its directly loadable default config in `index.ts` and reusable config construction in `factory.ts`; `src/rules` owns rule records.
+- Granular build entries now point directly to `src/configs`; the redundant `src/extends` adapter directory has been removed without requiring consumers to access `.default`.
+- `defineRules` is implemented directly in `src/rules/index.ts` without a separate helper module.
 - `src/typegen.d.ts` contains generated ESLint 8 and bundled-plugin rule names used by the public `/rules` API.
-- Type-aware linting is an explicit Project Service overlay for TypeScript, TSX, Angular TypeScript, and Vue scripts.
-- Node.js is a complete preset with correctly scoped globals and no additional Node rule plugin.
+- Type-aware linting is an explicit `/configs` Project Service fragment for TypeScript, TSX, Angular TypeScript, and Vue scripts.
+- Node.js globals are provided by environment config creators without an additional Node rule plugin.
 - JSON, JSONC, JSON5, YAML, Markdown, Promise, RegExp, import-x, and Prettier compatibility are scoped by file type.
 
 ### Toolchain
 
+- Registry metadata was reviewed on 2026-08-02. All dependencies already use the newest ESLint 8-compatible release; incompatible ESLint 9/10 and TypeScript 7 major upgrades remain intentionally excluded.
+
 - pnpm 11 is the repository package manager and `pnpm-lock.yaml` is the only dependency lockfile.
-- CI runs on Node.js 22.18.0 and 24.11.0 with frozen-lockfile installation.
+- CI runs on Node.js 22.18.0 and 24.18.0 with frozen-lockfile installation.
 - TypeScript 6 and tsdown produce ESLint 8-compatible CommonJS entries, `export =` declarations, declaration maps, and runtime source maps.
 - Package and tsconfig sorting remain explicit overlays and never reorder semantic `package.json#exports` condition keys.
 

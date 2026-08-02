@@ -1,11 +1,10 @@
 import { Linter } from "eslint";
-//#region src/presets/node.d.ts
+//#region src/configs/node/index.d.ts
 /**
- * Node.js 项目的完整 ESLint 8 Legacy Config 预置。
+ * Node.js 项目的 ESLint 8 Legacy Config 运行环境配置。
  *
- * JavaScript、TypeScript、JSON 方言、YAML 与 Markdown 均包含在预置中；代码文件
- * 获得 Node.js globals，不会混入 browser globals。本预置不引入专用 Node 规则插件，
- * 因此不会强加特定 Node.js API 风格。如需类型感知规则，请在其后叠加 `/type-aware`。
+ * 该配置为 JavaScript、JSX、TypeScript、TSX、Vue 及常见工程脚本启用 Node.js 和
+ * ES2022 globals，不包含浏览器 globals，也不引入专用 Node.js 规则插件。
  *
  * @example
  * ```js

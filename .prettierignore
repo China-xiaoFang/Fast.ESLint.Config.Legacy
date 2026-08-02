@@ -5,4 +5,5 @@ dist
 node_modules
 Fast.png
 package-lock.json
+pnpm-lock.yaml
 src/typegen.d.ts

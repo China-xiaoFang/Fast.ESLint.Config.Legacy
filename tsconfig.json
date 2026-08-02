@@ -1,16 +1,28 @@
 {
 	"compilerOptions": {
+		// 使用 Node.js 22 支持的现代语法，避免构建阶段执行不必要的降级转换。
 		"target": "ES2022",
+		// 保留源码中的模块语法，交由 tsdown 统一转换为发布所需的 CommonJS。
 		"module": "Preserve",
+		// 按打包器规则解析 package exports 和 TypeScript 源文件。
 		"moduleResolution": "Bundler",
+		// 仅加载 Node.js 全局类型，避免无关环境类型污染配置与源码。
 		"types": ["node"],
+		// 对项目源码启用完整的严格类型检查。
 		"strict": true,
+		// TypeScript 只负责类型检查，构建产物由 tsdown 生成。
 		"noEmit": true,
-		"isolatedModules": true,
+		// 固定联合类型和交叉类型的输出顺序，保持声明产物稳定。
 		"stableTypeOrdering": true,
+		// 兼容以 CommonJS 方式导出的第三方模块。
 		"esModuleInterop": true,
+		// 防止仅文件名大小写不同的导入在跨平台环境中失效。
 		"forceConsistentCasingInFileNames": true,
+		// 确保每个文件都能由 tsdown 独立安全地转换。
+		"isolatedModules": true,
+		// 跳过依赖声明文件检查，避免第三方类型问题影响本项目验证。
 		"skipLibCheck": true
 	},
+	// 检查源码及构建配置，测试目录使用独立的 tsconfig。
 	"include": ["src", "tsdown.config.mts"]
 }

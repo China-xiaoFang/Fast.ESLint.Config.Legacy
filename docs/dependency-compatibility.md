@@ -1,6 +1,6 @@
 # Dependency versions and compatibility
 
-Reviewed on 2026-07-29 against registry metadata and the sibling `Fast.ESLint.Config` 2.0.1 strategy.
+Reviewed on 2026-08-02 against registry metadata and the sibling `Fast.ESLint.Config` 2.0.1 strategy.
 
 This package selects the newest release that ESLint 8.57 Legacy Config can load through CommonJS. It does not force incompatible latest majors.
 
@@ -8,10 +8,10 @@ This package selects the newest release that ESLint 8.57 Legacy Config can load 
 
 | Layer        | Range                                     | Reason                                               |
 | ------------ | ----------------------------------------- | ---------------------------------------------------- |
-| Runtime Node | `^22.18.0 \|\| >=24.11.0`                 | Matches the maintained Flat Config project matrix    |
-| CI Node      | 22.18.0 and 24.11.0                       | Shared quality matrix; Node 26 is not tested yet     |
+| Runtime Node | `^22.18.0 \|\| ^24.18.0`                  | Matches the maintained Flat Config project matrix    |
+| CI Node      | 22.18.0 and 24.18.0                       | Shared quality matrix; Node 26 is not tested yet     |
 | ESLint       | `^8.57.0`                                 | The package's only lint-engine product boundary      |
-| TypeScript   | `>=4.8.4 <6.1.0`                          | typescript-eslint 8.65 peer range                    |
+| TypeScript   | `^4.0.0 \|\| ^5.0.0 \|\| ^6.0.0`          | Published TypeScript compatibility range             |
 | Build tools  | TypeScript 6.0.3, tsdown 0.22.14, pnpm 11 | Output targets Node 22; lockfile pins exact packages |
 
 The package intentionally uses the same maintained Node baseline as `@fast-china/eslint-config`. ESLint 8 compatibility describes the configuration format, not a promise to preserve end-of-life Node releases.
@@ -59,13 +59,15 @@ These direct dependencies are current as of the review date:
 | Angular ESLint plugin/template/parser | 21.4.0  | 22.1.0 | 22.x peers accept ESLint 9/10 only                        |
 | `eslint-plugin-jsonc`                 | 2.21.1  | 3.3.0  | 3.x needs ESLint 9.38+ and is ESM-only                    |
 | `eslint-plugin-regexp`                | 2.10.0  | 3.1.1  | 3.x needs ESLint 9.38+                                    |
-| `eslint-plugin-yml`                   | 1.19.1  | 3.6.0  | 3.x needs ESLint 9.38+ and is ESM-only                    |
+| `eslint-plugin-yml`                   | 1.19.1  | 3.7.0  | 3.x needs ESLint 9.38+ and is ESM-only                    |
 | `jsonc-eslint-parser`                 | 2.4.2   | 3.1.0  | 3.x cannot be synchronously loaded as a Legacy parser     |
 | `yaml-eslint-parser`                  | 1.3.2   | 2.1.0  | 2.x cannot be synchronously loaded as a Legacy parser     |
 | `eslint`                              | 8.57.1  | 10.8.0 | The package intentionally exposes ESLint 8.57 `.eslintrc` |
 | `@types/eslint`                       | 8.56.12 | 9.6.1  | Declarations must model the ESLint 8 API                  |
 | `@types/node`                         | 24.13.3 | 26.x   | Types follow the maintained development baseline          |
 | `typescript`                          | 6.0.3   | 7.0.2  | typescript-eslint 8.65 requires TypeScript below 6.1      |
+
+`eslint-plugin-markdown` 5.1.0 is deprecated upstream, but its replacement targets the newer ESLint configuration model. This package retains the final `recommended-legacy` release while it supports ESLint 8 Legacy Config.
 
 ## Resolver and build-script boundary
 

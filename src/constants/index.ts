@@ -46,7 +46,7 @@ export const GLOBS_CODE = [...GLOBS_JAVASCRIPT, ...GLOBS_TYPESCRIPT, GLOB_VUE] a
 /**
  * 默认按照 Node.js 环境处理的工程文件。
  *
- * 完整预置决定应用源码环境，避免 browser/node 全局变量互相掩盖。
+ * 根配置或消费项目决定应用源码环境，避免 browser/node 全局变量互相掩盖。
  */
 export const GLOBS_NODE_TOOLING = [
 	"**/*.{config,setup}.{js,cjs,mjs,jsx,ts,cts,mts,tsx}",

@@ -3,7 +3,7 @@ import type { RuleOptions } from "../typegen";
 /**
  * 模块导入正确性、去重与确定性排序规则。
  *
- * 该记录由所有脚本完整预置在 `plugin:import-x/recommended` 之后应用。共享配置无法知道
+ * 该记录由 import 配置创建器在 `plugin:import-x/recommended` 之后应用。共享配置无法知道
  * 消费项目的 alias、tsconfig paths 或 bundler resolver，因此依赖具体解析器的规则保持关闭。
  * 副作用 import 会参与顺序诊断，但不会被插件自动移动。
  *

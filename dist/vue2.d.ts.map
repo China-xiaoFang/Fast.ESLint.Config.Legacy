@@ -1,1 +1,1 @@
-{"version":3,"file":"vue2.d.ts","names":[],"sources":["../src/presets/vue2.ts"],"mappings":";;;;;;;;;;;;;;;;;;cAoBM,QAAQ,OAAO"}
+{"version":3,"file":"vue2.d.ts","names":[],"sources":["../src/configs/vue2/index.ts"],"mappings":";;;;;;;;;;;;;;;;;;cAoBM,QAAQ,OAAO"}

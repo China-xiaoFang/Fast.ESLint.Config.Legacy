@@ -1,11 +1,11 @@
 import { Linter } from "eslint";
-//#region src/presets/typescript.d.ts
+//#region src/configs/typescript/index.d.ts
 /**
- * JavaScript、JSX、TypeScript 与 TSX 项目的完整 ESLint 8 Legacy Config 预置。
+ * TypeScript 与 TSX 文件的 ESLint 8 Legacy Config 基础配置。
  *
- * 该预置启用非类型感知的 typescript-eslint recommended/stylistic 规则，同时为
- * TypeScript 关闭无法理解类型语法的 ESLint 核心规则。它不加载框架或数据文件配置；
- * 需要类型信息时应在本预置之后叠加 `/type-aware`。
+ * 该配置启用 typescript-eslint 的 recommended 与 stylistic 规则，并关闭由
+ * TypeScript 版本替代的 ESLint 核心规则。默认不读取类型信息，速度适合日常检查；
+ * 需要类型感知规则时，应在该配置之后叠加 `/type-aware`。
  *
  * @example
  * ```js

@@ -1,11 +1,11 @@
 import { Linter } from "eslint";
-//#region src/presets/vue2.d.ts
+//#region src/configs/vue2/index.d.ts
 /**
- * Vue 2 应用的完整 ESLint 8 Legacy Config 预置。
+ * Vue 2 单文件组件的完整 ESLint 8 Legacy Config 配置。
  *
- * 该预置覆盖 JavaScript、TypeScript、Vue 2 SFC、JSON 方言、YAML 与 Markdown，
- * 使用 `plugin:vue/vue2-recommended`，并关闭仅适用于 Vue 3 公共事件契约的规则。
- * browser 源码与 Node.js 工程文件使用彼此隔离的环境。
+ * 该配置通过 vue-eslint-parser 检查 `.vue` 模板及 JavaScript、TypeScript script，
+ * 启用 Vue 2 对应的推荐配置和组件规则，不启用仅适用于 Vue 3 的 emits 契约。
+ * 需要类型感知规则时，应在该配置之后叠加 `/type-aware`。
  *
  * @example
  * ```js

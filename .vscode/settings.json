@@ -32,7 +32,7 @@
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 	"testing.automaticallyOpenPeekView": "never",
-	"cSpell.words": ["Unplugin"],
+	"cSpell.words": [],
 	"editor.fontSize": 14,
 	"prettier.endOfLine": "lf",
 

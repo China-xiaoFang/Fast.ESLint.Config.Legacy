@@ -1,6 +1,6 @@
 # 依赖版本与兼容性矩阵
 
-核对日期：2026-07-29。版本来源为 registry，并与同级 `Fast.ESLint.Config` 2.0.1 的依赖策略交叉核对。
+核对日期：2026-08-02。版本来源为 registry，并与同级 `Fast.ESLint.Config` 2.0.1 的依赖策略交叉核对。
 
 本库选择“仍能由 ESLint 8.57 Legacy Config 通过 CommonJS 加载的最新版”，而不是强行追随不兼容的最高主版本。
 
@@ -8,10 +8,10 @@
 
 | 层级           | 版本范围                                  | 说明                                        |
 | -------------- | ----------------------------------------- | ------------------------------------------- |
-| 运行时 Node.js | `^22.18.0 \|\| >=24.11.0`                 | 与 Flat Config 项目维护中的版本矩阵一致     |
-| CI Node.js     | 22.18.0、24.11.0                          | 共享质量矩阵，暂不测试 Node 26              |
+| 运行时 Node.js | `^22.18.0 \|\| ^24.18.0`                  | 与 Flat Config 项目维护中的版本矩阵一致     |
+| CI Node.js     | 22.18.0、24.18.0                          | 共享质量矩阵，暂不测试 Node 26              |
 | ESLint         | `^8.57.0`                                 | 本包唯一 lint 引擎产品边界                  |
-| TypeScript     | `>=4.8.4 <6.1.0`                          | 与 typescript-eslint 8.65 peer 一致         |
+| TypeScript     | `^4.0.0 \|\| ^5.0.0 \|\| ^6.0.0`          | 对外声明的 TypeScript 兼容范围              |
 | 构建工具       | TypeScript 6.0.3、tsdown 0.22.14、pnpm 11 | tsdown 输出 Node 22；锁文件固定精确依赖版本 |
 
 本包主动采用与 `@fast-china/eslint-config` 一致的受维护 Node 基线。兼容 ESLint 8 表示兼容 Legacy Config 格式，不再同时承诺已停止维护的 Node 版本。
@@ -61,13 +61,15 @@
 | `@angular-eslint/template-parser`        | 21.4.0  | 22.1.0   | 与 Angular ESLint 21 兼容线保持一致             |
 | `eslint-plugin-jsonc`                    | 2.21.1  | 3.3.0    | 3.x 要求 ESLint 9.38+ 且只导出 ESM              |
 | `eslint-plugin-regexp`                   | 2.10.0  | 3.1.1    | 3.x 要求 ESLint 9.38+                           |
-| `eslint-plugin-yml`                      | 1.19.1  | 3.6.0    | 3.x 要求 ESLint 9.38+ 且只导出 ESM              |
+| `eslint-plugin-yml`                      | 1.19.1  | 3.7.0    | 3.x 要求 ESLint 9.38+ 且只导出 ESM              |
 | `jsonc-eslint-parser`                    | 2.4.2   | 3.1.0    | 3.x 只导出 ESM，不能作为 Legacy parser 同步加载 |
 | `yaml-eslint-parser`                     | 1.3.2   | 2.1.0    | 2.x 只导出 ESM，不能作为 Legacy parser 同步加载 |
 | `eslint`                                 | 8.57.1  | 10.8.0   | 本包只提供 ESLint 8.57 `.eslintrc`              |
 | `@types/eslint`                          | 8.56.12 | 9.6.1    | 声明必须描述 ESLint 8 API                       |
 | `@types/node`                            | 24.13.3 | 26.x     | 类型基线跟随受维护的开发环境                    |
 | `typescript`                             | 6.0.3   | 7.0.2    | typescript-eslint 8.65 peer 上限是 `<6.1.0`     |
+
+`eslint-plugin-markdown` 5.1.0 已被上游标记为 deprecated，但替代包面向新版 ESLint 配置模型。本包仍需 ESLint 8 Legacy Config 的 `recommended-legacy`，因此继续保留其最终版本。
 
 ## Resolver 与构建脚本边界
 

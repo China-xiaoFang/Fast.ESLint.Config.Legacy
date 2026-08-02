@@ -1,1 +1,1 @@
-{"version":3,"file":"react.d.ts","names":[],"sources":["../src/presets/react.ts"],"mappings":";;;;;;;;;;;;;;;;;;cAoBM,QAAQ,OAAO"}
+{"version":3,"file":"react.d.ts","names":[],"sources":["../src/configs/react/index.ts"],"mappings":";;;;;;;;;;;;;;;;;cAmBM,QAAQ,OAAO"}

@@ -1,7 +1,7 @@
 {
 	"name": "@fast-china/eslint-config-legacy",
-	"version": "2.0.0",
-	"description": "Production-ready ESLint 8 Legacy Config presets for Vue 2/3, React, Angular, Node.js, TypeScript, and JavaScript.",
+	"version": "2.0.1",
+	"description": "Production-ready ESLint 8 Legacy Config for Vue web administration projects with direct extends and reusable config creators.",
 	"type": "commonjs",
 	"keywords": [
 		"fast",
@@ -41,20 +41,55 @@
 		"src"
 	],
 	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"require": "./dist/index.js",
+			"default": "./dist/index.js"
+		},
 		"./angular": {
 			"types": "./dist/angular.d.ts",
 			"require": "./dist/angular.js",
 			"default": "./dist/angular.js"
 		},
-		"./base": {
-			"types": "./dist/base.d.ts",
-			"require": "./dist/base.js",
-			"default": "./dist/base.js"
+		"./common": {
+			"types": "./dist/common.d.ts",
+			"require": "./dist/common.js",
+			"default": "./dist/common.js"
+		},
+		"./commonjs": {
+			"types": "./dist/commonjs.d.ts",
+			"require": "./dist/commonjs.js",
+			"default": "./dist/commonjs.js"
+		},
+		"./configs": {
+			"types": "./dist/configs/index.d.ts",
+			"require": "./dist/configs/index.js",
+			"default": "./dist/configs/index.js"
+		},
+		"./constants": {
+			"types": "./dist/constants/index.d.ts",
+			"require": "./dist/constants/index.js",
+			"default": "./dist/constants/index.js"
+		},
+		"./environment": {
+			"types": "./dist/environment.d.ts",
+			"require": "./dist/environment.js",
+			"default": "./dist/environment.js"
+		},
+		"./import": {
+			"types": "./dist/import.d.ts",
+			"require": "./dist/import.js",
+			"default": "./dist/import.js"
 		},
 		"./javascript": {
 			"types": "./dist/javascript.d.ts",
 			"require": "./dist/javascript.js",
 			"default": "./dist/javascript.js"
+		},
+		"./json": {
+			"types": "./dist/json.d.ts",
+			"require": "./dist/json.js",
+			"default": "./dist/json.js"
 		},
 		"./lodash": {
 			"types": "./dist/lodash.d.ts",
@@ -66,15 +101,35 @@
 			"require": "./dist/lodash-unified.js",
 			"default": "./dist/lodash-unified.js"
 		},
+		"./markdown": {
+			"types": "./dist/markdown.d.ts",
+			"require": "./dist/markdown.js",
+			"default": "./dist/markdown.js"
+		},
 		"./node": {
 			"types": "./dist/node.d.ts",
 			"require": "./dist/node.js",
 			"default": "./dist/node.js"
 		},
+		"./prettier": {
+			"types": "./dist/prettier.d.ts",
+			"require": "./dist/prettier.js",
+			"default": "./dist/prettier.js"
+		},
+		"./promise": {
+			"types": "./dist/promise.d.ts",
+			"require": "./dist/promise.js",
+			"default": "./dist/promise.js"
+		},
 		"./react": {
 			"types": "./dist/react.d.ts",
 			"require": "./dist/react.js",
 			"default": "./dist/react.js"
+		},
+		"./regexp": {
+			"types": "./dist/regexp.d.ts",
+			"require": "./dist/regexp.js",
+			"default": "./dist/regexp.js"
 		},
 		"./rules": {
 			"types": "./dist/rules/index.d.ts",
@@ -101,15 +156,20 @@
 			"require": "./dist/typescript.js",
 			"default": "./dist/typescript.js"
 		},
+		"./vue": {
+			"types": "./dist/vue.d.ts",
+			"require": "./dist/vue.js",
+			"default": "./dist/vue.js"
+		},
 		"./vue2": {
 			"types": "./dist/vue2.d.ts",
 			"require": "./dist/vue2.js",
 			"default": "./dist/vue2.js"
 		},
-		"./vue3": {
-			"types": "./dist/vue3.d.ts",
-			"require": "./dist/vue3.js",
-			"default": "./dist/vue3.js"
+		"./yaml": {
+			"types": "./dist/yaml.d.ts",
+			"require": "./dist/yaml.js",
+			"default": "./dist/yaml.js"
 		},
 		"./package.json": "./package.json"
 	},
@@ -126,14 +186,17 @@
 		"lint:fix": "eslint . --ext .js,.cjs,.mjs,.jsx,.ts,.cts,.mts,.tsx,.vue,.html,.json,.jsonc,.json5,.yaml,.yml,.md --fix",
 		"format": "prettier --write .",
 		"format:check": "prettier --check .",
-		"test": "pnpm run test:types && node --test tests/*.test.mjs",
+		"test": "pnpm run build && pnpm run test:types && pnpm run test:runtime && pnpm run test:rules && pnpm run test:package",
 		"test:types": "tsc --noEmit --project tests/tsconfig.json",
-		"check": "pnpm run build && pnpm run typecheck && pnpm run lint && pnpm run format:check && pnpm run test",
+		"test:runtime": "node --test tests/config.test.cjs",
+		"test:rules": "node --test tests/rules.test.cjs",
+		"test:package": "node --test tests/package.test.cjs",
+		"check": "pnpm run typecheck && pnpm run lint && pnpm run test && pnpm run format:check",
 		"prepack": "pnpm run check"
 	},
 	"peerDependencies": {
 		"eslint": "^8.57.0",
-		"typescript": ">=4.8.4 <6.1.0"
+		"typescript": "^4.0.0 || ^5.0.0 || ^6.0.0"
 	},
 	"dependencies": {
 		"@angular-eslint/eslint-plugin": "^21.4.0",
@@ -168,7 +231,7 @@
 		"typescript": "^6.0.3"
 	},
 	"engines": {
-		"node": "^22.18.0 || >=24.11.0",
+		"node": "^22.18.0 || ^24.18.0",
 		"pnpm": "^11.0.0"
 	}
 }

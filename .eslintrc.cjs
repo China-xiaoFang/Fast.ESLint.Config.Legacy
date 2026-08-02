@@ -1,5 +1,20 @@
 module.exports = {
 	root: true,
-	extends: ["./dist/vue3.js"],
-	ignorePatterns: ["coverage", "dist", "node_modules", "src/typegen.d.ts"],
+	extends: [
+		"@fast-china/eslint-config-legacy/common",
+		"@fast-china/eslint-config-legacy/import",
+		"@fast-china/eslint-config-legacy/javascript",
+		"@fast-china/eslint-config-legacy/typescript",
+		"@fast-china/eslint-config-legacy/commonjs",
+		"@fast-china/eslint-config-legacy/node",
+		"@fast-china/eslint-config-legacy/json",
+		"@fast-china/eslint-config-legacy/yaml",
+		"@fast-china/eslint-config-legacy/markdown",
+		"@fast-china/eslint-config-legacy/promise",
+		"@fast-china/eslint-config-legacy/regexp",
+		"@fast-china/eslint-config-legacy/prettier",
+		"@fast-china/eslint-config-legacy/sort-package",
+		"@fast-china/eslint-config-legacy/sort-tsconfig",
+	],
+	ignorePatterns: ["coverage", "dist", "node_modules", "src/typegen.d.ts", "tests/fixtures/*.vue"],
 };
