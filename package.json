@@ -1,6 +1,6 @@
 {
 	"name": "@fast-china/eslint-config-legacy",
-	"version": "2.0.1",
+	"version": "2.0.2",
 	"description": "Production-ready ESLint 8 Legacy Config for Vue web administration projects with direct extends and reusable config creators.",
 	"type": "commonjs",
 	"keywords": [

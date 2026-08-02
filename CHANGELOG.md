@@ -4,7 +4,7 @@ All notable changes to this project are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and releases follow Semantic Versioning.
 
-## [2.0.1] - 2026-08-02
+## [2.0.2] - 2026-08-02
 
 ### Configuration
 

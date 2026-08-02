@@ -1,6 +1,6 @@
 # Dependency versions and compatibility
 
-Reviewed on 2026-08-02 against registry metadata and the sibling `Fast.ESLint.Config` 2.0.1 strategy.
+Reviewed on 2026-08-02 against registry metadata and the sibling `Fast.ESLint.Config` 2.0.5 strategy.
 
 This package selects the newest release that ESLint 8.57 Legacy Config can load through CommonJS. It does not force incompatible latest majors.
 

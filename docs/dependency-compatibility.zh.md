@@ -1,6 +1,6 @@
 # 依赖版本与兼容性矩阵
 
-核对日期：2026-08-02。版本来源为 registry，并与同级 `Fast.ESLint.Config` 2.0.1 的依赖策略交叉核对。
+核对日期：2026-08-02。版本来源为 registry，并与同级 `Fast.ESLint.Config` 2.0.5 的依赖策略交叉核对。
 
 本库选择“仍能由 ESLint 8.57 Legacy Config 通过 CommonJS 加载的最新版”，而不是强行追随不兼容的最高主版本。
 
