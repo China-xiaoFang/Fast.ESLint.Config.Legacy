@@ -40,6 +40,6 @@
 	"explorer.fileNesting.enabled": true,
 	"explorer.fileNesting.patterns": {
 		".prettierrc.cjs": ".prettierignore, .eslintrc.cjs",
-		"package.json": ".nvmrc, pnpm-lock.yaml, pnpm-workspace.yaml"
+		"package.json": ".npmrc, .nvmrc, pnpm-lock.yaml, pnpm-workspace.yaml"
 	}
 }
