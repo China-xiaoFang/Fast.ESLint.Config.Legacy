@@ -1,15 +1,18 @@
-**中文** | [English](./README.md)
+<p align="left">
+	<strong>简体中文</strong> | <a href="./README.md">English</a>
+</p>
+
+<p align="center">
+	<img src="./Fast.png" alt="logo" width="160" />
+</p>
 
 # @fast-china/eslint-config-legacy
 
 面向 Vue Web 浏览器管理项目的生产级 ESLint 8 `.eslintrc` 配置。可复用创建器同时支持 Vue 2/3、React、Angular、Node.js、TypeScript、JavaScript、JSON、YAML、Markdown、Promise、RegExp 与 import 规则。
 
-[![npm version](https://img.shields.io/npm/v/@fast-china/eslint-config-legacy?color=orange)](https://www.npmjs.com/package/@fast-china/eslint-config-legacy)
-[![license](https://img.shields.io/npm/l/@fast-china/eslint-config-legacy)](./LICENSE)
+[![npm version](https://img.shields.io/npm/v/@fast-china/eslint-config-legacy?color=orange)](https://www.npmjs.com/package/@fast-china/eslint-config-legacy) [![Node.js](https://img.shields.io/badge/node-%5E22.18%20%7C%7C%20%5E24.18-brightgreen)](https://nodejs.org/) [![ESLint](https://img.shields.io/badge/eslint-%5E8.57-4b32c3)](https://eslint.org/) [![license](https://img.shields.io/npm/l/@fast-china/eslint-config-legacy)](./LICENSE)
 
 ## 版本定位
-
-2.x 只维护 ESLint 8.57 Legacy Config。ESLint 9 不在支持范围内；ESLint 10 项目请使用 [`@fast-china/eslint-config`](https://www.npmjs.com/package/@fast-china/eslint-config)。
 
 包提供一个合并配置入口、可直接继承的细粒度配置和三个编程入口：
 
@@ -116,21 +119,28 @@ const reusableRules = {
 
 `defineRules` 的实现直接位于 `src/rules/index.ts`，不再保留单独的辅助模块。
 
+## 文档
+
+- [依赖兼容矩阵](./docs/dependency-compatibility.zh.md)
+- [默认规则与风险指南](./docs/rules-risk.zh.md)
+- [工程质量审查报告](./docs/engineering-audit.zh.md)
+- [贡献指南](./CONTRIBUTING.md)
+- [安全策略](./SECURITY.md)
+- [更新日志](./CHANGELOG.md)
+
 ## 开发与发布检查
 
 ```sh
-pnpm install
+pnpm install --frozen-lockfile
 pnpm typegen
-pnpm test
 pnpm check
-pnpm audit
 pnpm --config.ignore-scripts=true pack --dry-run
 ```
 
-测试按照验证目标分为消费者类型、运行时配置、规则和包契约。`pnpm test` 会先构建，再依次运行四组测试。
+修改源码时可使用 `pnpm dev` 启动长期运行的 tsdown 监听构建。
 
-更多信息见[工程审查报告](./docs/engineering-audit.zh.md)、[依赖兼容矩阵](./docs/dependency-compatibility.zh.md)、[风险说明](./docs/rules-risk.zh.md)与[变更日志](./CHANGELOG.md)。
+测试按照验证目标分为消费者类型、运行时配置和包契约。`pnpm test` 会先构建，再依次运行三组测试。
 
-## License
+## 许可证
 
 [Apache-2.0](./LICENSE)

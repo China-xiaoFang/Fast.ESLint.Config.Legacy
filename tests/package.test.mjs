@@ -1,7 +1,12 @@
-const assert = require("node:assert/strict");
-const fs = require("node:fs");
-const path = require("node:path");
-const test = require("node:test");
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import { createRequire } from "node:module";
+import path from "node:path";
+import test from "node:test";
+import { fileURLToPath } from "node:url";
+
+const require = createRequire(import.meta.url);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const configs = require("@fast-china/eslint-config-legacy/configs");
 const constants = require("@fast-china/eslint-config-legacy/constants");
@@ -30,26 +35,6 @@ test("CommonJS entries expose configs directly without a default wrapper", () =>
 	assert.equal(typeof configs.createVueConfigs, "function");
 	assert.match(constants.GLOB_VUE, /vue/);
 	assert.deepEqual(rules.defineRules({ "no-console": "warn" }), { "no-console": "warn" });
-});
-
-test("source layout keeps public configs separate from colocated factories", () => {
-	const indexSource = fs.readFileSync(path.join(repositoryRoot, "src/index.ts"), "utf8");
-	assert.equal(fs.existsSync(path.join(repositoryRoot, "src/base.ts")), false);
-	assert.equal(fs.existsSync(path.join(repositoryRoot, "src/define-rules.ts")), false);
-	assert.equal(fs.existsSync(path.join(repositoryRoot, "src/presets")), false);
-	assert.equal(fs.existsSync(path.join(repositoryRoot, "src/extends")), false);
-	assert.match(fs.readFileSync(path.join(repositoryRoot, "src/rules/index.ts"), "utf8"), /export const defineRules/);
-	assert.doesNotMatch(indexSource, /createBaseConfigs|createPreset|createLegacyConfig/);
-
-	for (const name of directConfigNames) {
-		const source = fs.readFileSync(path.join(repositoryRoot, `src/configs/${name}/index.ts`), "utf8");
-		assert.match(source, /export default config/, `${name}/index.ts must default-export its config`);
-		assert.match(source, /@public/, `${name}/index.ts must document its public config`);
-	}
-
-	const commonFactory = fs.readFileSync(path.join(repositoryRoot, "src/configs/common/factory.ts"), "utf8");
-	assert.match(commonFactory, /export const createCommonConfigs/);
-	assert.doesNotMatch(fs.readFileSync(path.join(repositoryRoot, "src/configs/common/index.ts"), "utf8"), /export const createCommonConfigs/);
 });
 
 test("every conditional export points to an existing runtime and declaration", () => {

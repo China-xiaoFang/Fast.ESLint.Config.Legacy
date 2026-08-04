@@ -1,9 +1,6 @@
-# Prettier 会忽略的文件
-
-coverage
+# 构建产物、依赖、缓存和生成类型由对应工具维护，不参与格式化。
 dist
 node_modules
-Fast.png
-package-lock.json
+.pnpm-store
 pnpm-lock.yaml
 src/typegen.d.ts

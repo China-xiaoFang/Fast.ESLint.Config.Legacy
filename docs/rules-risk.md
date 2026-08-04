@@ -1,6 +1,6 @@
 # Default rules, high-impact risks, and maintenance
 
-This guide documents the package-root config, direct `extends` entries, and reusable creators in `@fast-china/eslint-config-legacy` 2.x, highlighting rules that require extra review during adoption or `eslint --fix`.
+This guide documents the package-root config, direct `extends` entries, and reusable creators in `@fast-china/eslint-config-legacy`, highlighting rules that require extra review during adoption or `eslint --fix`.
 
 ## Risk labels
 

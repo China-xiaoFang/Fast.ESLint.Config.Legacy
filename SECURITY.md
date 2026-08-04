@@ -2,7 +2,7 @@
 
 ## Supported versions
 
-Security fixes are provided for the current 2.x release line.
+Security fixes are provided for the current release.
 
 ## Reporting a vulnerability
 

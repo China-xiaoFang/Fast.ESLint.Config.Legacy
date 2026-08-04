@@ -16,7 +16,9 @@ pnpm check
 pnpm audit
 ```
 
-`pnpm test` first builds the package, then runs consumer-type, runtime-config, rule, and package-contract suites. TypeScript 6 and tsdown target Node 22; publint and Are the Types Wrong verify the built package exports and declaration contracts.
+Use `pnpm dev` when a long-running tsdown watch build is useful during implementation.
+
+`pnpm test` first builds the package, then runs consumer-type, runtime-config, and package-contract suites. TypeScript 6 and tsdown target Node 22; publint and Are the Types Wrong verify the built package exports and declaration contracts.
 
 `pnpm check` regenerates no source files. It type-checks source, lints every supported file type, runs the complete build and test workflow, and checks formatting.
 

@@ -5,3 +5,6 @@ storeDir: .pnpm-store
 
 allowBuilds:
     unrs-resolver: true
+
+overrides:
+    micromark: 2.11.4

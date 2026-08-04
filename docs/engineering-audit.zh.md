@@ -2,7 +2,7 @@
 
 审查日期：2026-08-02
 
-审查对象：`@fast-china/eslint-config-legacy` 2.0.2
+审查对象：`@fast-china/eslint-config-legacy` 2.0.3
 
 对照项目：同级 `Fast.ESLint.Config` 2.0.4（ESLint 10 Flat Config）
 
@@ -78,7 +78,7 @@ pnpm audit
 pnpm --config.ignore-scripts=true pack --dry-run
 ```
 
-测试按职责分层：`unit` 验证规则注释与 fixability 元数据，`integration` 使用真实 ESLint 覆盖 Legacy `extends`、Vue 2/3、框架、parser/processor、环境 globals、类型感知与自动修复，`contracts` 验证源码边界及发布入口，`types` 编译真实消费者导入。
+测试按职责分层：`integration` 使用真实 ESLint 覆盖 Legacy `extends`、Vue 2/3、框架、parser/processor、环境 globals、类型感知与自动修复，`contracts` 验证源码边界及发布入口，`types` 编译真实消费者导入。
 
 ## 已知边界
 

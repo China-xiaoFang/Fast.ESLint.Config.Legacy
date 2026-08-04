@@ -4,6 +4,14 @@ All notable changes to this project are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and releases follow Semantic Versioning.
 
+## [2.0.3] - 2026-08-04
+
+### Changed
+
+- Standardized the bilingual README, repository ignores, editor settings, TypeScript checks, and tsdown configuration with the other Fast frontend SDK repositories.
+- Renamed the package contract test and tsdown configuration to the shared `.mjs` and `.ts` conventions while preserving CommonJS package output.
+- Removed documentation- and comment-governance tests and kept runtime, type-consumer, package, Publint, and declaration validation.
+
 ## [2.0.2] - 2026-08-02
 
 ### Configuration
