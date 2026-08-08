@@ -49,8 +49,8 @@ const config: import("tsdown").UserConfig = {
 		generator: "tsc",
 		// 使用 TypeScript 的模块解析规则处理声明文件之间的引用。
 		resolver: "tsc",
-		// 声明文件与 JavaScript 一样发布可追踪的 source map，便于消费者定位到原始 TypeScript。
-		sourcemap: true,
+		// 不生成会指向未发布 src 的声明 Source Map。
+		sourcemap: false,
 	},
 	// 为 JavaScript 产物生成 source map，便于定位到原始 TypeScript 源码。
 	sourcemap: true,

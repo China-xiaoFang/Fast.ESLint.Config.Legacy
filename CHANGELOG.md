@@ -4,6 +4,14 @@ All notable changes to this project are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and releases follow Semantic Versioning.
 
+## [2.0.4] - 2026-08-08
+
+### Changed
+
+- Added consistent `fast` and `fast-china` package keywords and aligned the npm publish allowlist with the other Fast packages.
+- Removed `src` and declaration maps that referenced unpublished source files while retaining CommonJS runtime source maps.
+- Added package-contract coverage for the publish allowlist and declaration-map boundary.
+
 ## [2.0.3] - 2026-08-04
 
 ### Changed

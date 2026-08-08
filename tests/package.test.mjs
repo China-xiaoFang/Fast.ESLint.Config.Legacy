@@ -18,6 +18,13 @@ const { directConfigNames, directConfigs, rootConfig } = require("./helpers/esli
 
 const repositoryRoot = path.resolve(__dirname, "..");
 
+test("package metadata and publish allowlist identify the Fast package", () => {
+	assert.ok(manifest.keywords.includes("fast"));
+	assert.ok(manifest.keywords.includes("fast-china"));
+	assert.ok(manifest.files.includes("dist"));
+	assert.ok(!manifest.files.includes("src"));
+});
+
 test("package manifest exposes every supported public entry", () => {
 	for (const name of directConfigNames) assert.ok(manifest.exports[`./${name}`], `${name} export is missing`);
 	for (const name of [".", "./configs", "./constants", "./rules", "./package.json"]) {
@@ -43,4 +50,16 @@ test("every conditional export points to an existing runtime and declaration", (
 		assert.equal(fs.existsSync(path.join(repositoryRoot, entry.require)), true, `${name} runtime is missing`);
 		assert.equal(fs.existsSync(path.join(repositoryRoot, entry.types)), true, `${name} declarations are missing`);
 	}
+});
+
+test("declaration maps are not published without their source files", () => {
+	const visit = (directory) => {
+		for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+			const filePath = path.join(directory, entry.name);
+			if (entry.isDirectory()) visit(filePath);
+			else assert.ok(!entry.name.endsWith(".d.ts.map"), `unexpected declaration map: ${path.relative(repositoryRoot, filePath)}`);
+		}
+	};
+
+	visit(path.join(repositoryRoot, "dist"));
 });
