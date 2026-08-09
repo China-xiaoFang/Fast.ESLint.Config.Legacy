@@ -1,5 +1,4 @@
 import { GLOBS_JSONC_AS_JSON, GLOBS_TSCONFIG, GLOB_JSON, GLOB_JSON5, GLOB_JSONC } from "../../constants";
-
 import type { Linter } from "eslint";
 
 /**

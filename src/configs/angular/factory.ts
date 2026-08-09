@@ -1,7 +1,6 @@
 import { GLOB_ANGULAR_TEMPLATE, GLOB_ANGULAR_TYPESCRIPT } from "../../constants";
 import { angularRules } from "../../rules";
 import { type TypeScriptConfigOptions, createTypeScriptConfig } from "../typescript/factory";
-
 import type { Linter } from "eslint";
 
 /**

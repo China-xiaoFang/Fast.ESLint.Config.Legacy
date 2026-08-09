@@ -1,6 +1,5 @@
 import { GLOBS_CODE } from "../../constants";
 import { createEnvironmentConfigs, createNodeToolingConfigs } from "../environment/factory";
-
 import type { Linter } from "eslint";
 
 /**

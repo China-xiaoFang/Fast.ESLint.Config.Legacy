@@ -1,5 +1,4 @@
 import { createReactConfigs } from "./factory";
-
 import type { Linter } from "eslint";
 
 /**

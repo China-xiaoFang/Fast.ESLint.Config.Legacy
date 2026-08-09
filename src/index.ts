@@ -18,7 +18,6 @@ import { createTypeScriptConfigs, createTypeScriptDeclarationConfigs } from "./c
 import { createVueConfigs } from "./configs/vue/factory";
 import { createYamlConfigs } from "./configs/yaml/factory";
 import { GLOBS_CODE } from "./constants";
-
 import type { Linter } from "eslint";
 
 /** Markdown processor 需要根级 extends，虚拟代码块规则则合并到 overrides。 */

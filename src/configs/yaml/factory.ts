@@ -1,5 +1,4 @@
 import { GLOB_YAML } from "../../constants";
-
 import type { Linter } from "eslint";
 
 /**

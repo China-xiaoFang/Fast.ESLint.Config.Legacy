@@ -1,5 +1,4 @@
 import { createYamlConfigs } from "./factory";
-
 import type { Linter } from "eslint";
 
 /**

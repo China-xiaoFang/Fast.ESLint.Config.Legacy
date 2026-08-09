@@ -1,6 +1,5 @@
 const fs = require("node:fs");
 const path = require("node:path");
-
 const { builtinRules } = require("eslint/use-at-your-own-risk");
 
 const checkOnly = process.argv.includes("--check");

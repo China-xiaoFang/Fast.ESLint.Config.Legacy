@@ -1,8 +1,6 @@
 const assert = require("node:assert/strict");
 const test = require("node:test");
-
 const configs = require("@fast-china/eslint-config-legacy/configs");
-
 const { assertNoConfigFailure, composeWithRoot, createLinter, directConfigNames, directConfigs, rootConfig } = require("./helpers/eslint.cjs");
 
 test("every granular config resolves through its public Legacy extends name", async () => {

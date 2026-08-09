@@ -5,16 +5,15 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
-const require = createRequire(import.meta.url);
+// 这些调用用于验证 CommonJS 入口，使用别名避免与 import-x/order 的 require 分组产生格式冲突。
+const loadCommonJs = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const configs = require("@fast-china/eslint-config-legacy/configs");
-const constants = require("@fast-china/eslint-config-legacy/constants");
-const rules = require("@fast-china/eslint-config-legacy/rules");
-
-const manifest = require("../package.json");
-
-const { directConfigNames, directConfigs, rootConfig } = require("./helpers/eslint.cjs");
+const configs = loadCommonJs("@fast-china/eslint-config-legacy/configs");
+const constants = loadCommonJs("@fast-china/eslint-config-legacy/constants");
+const rules = loadCommonJs("@fast-china/eslint-config-legacy/rules");
+const manifest = loadCommonJs("../package.json");
+const { directConfigNames, directConfigs, rootConfig } = loadCommonJs("./helpers/eslint.cjs");
 
 const repositoryRoot = path.resolve(__dirname, "..");
 

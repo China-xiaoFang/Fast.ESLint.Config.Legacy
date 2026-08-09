@@ -1,5 +1,4 @@
 import { preferLodashRules, preferLodashUnifiedRules } from "../../rules";
-
 import type { Linter } from "eslint";
 
 /**

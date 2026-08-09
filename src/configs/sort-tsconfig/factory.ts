@@ -1,7 +1,6 @@
 import { GLOBS_TSCONFIG } from "../../constants";
 import { tsconfigJsonSortRules } from "../../rules";
 import { createJsonExtends } from "../json/factory";
-
 import type { Linter } from "eslint";
 
 /**

@@ -1,6 +1,5 @@
 import { GLOBS_TYPESCRIPT, GLOB_DECLARATION, GLOB_VUE } from "../../constants";
 import { javascriptRules, typescriptRules } from "../../rules";
-
 import type { Linter } from "eslint";
 
 interface TypeScriptConfigOverride extends Linter.ConfigOverride {

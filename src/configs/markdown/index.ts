@@ -1,5 +1,4 @@
 import { createMarkdownConfigs } from "./factory";
-
 import type { Linter } from "eslint";
 
 const markdownConfigs = createMarkdownConfigs();

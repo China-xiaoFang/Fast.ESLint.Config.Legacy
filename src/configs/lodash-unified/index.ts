@@ -1,6 +1,5 @@
 import { GLOBS_CODE } from "../../constants";
 import { createLodashConfigs } from "../lodash/factory";
-
 import type { Linter } from "eslint";
 
 /**

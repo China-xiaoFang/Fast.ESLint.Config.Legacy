@@ -1,5 +1,4 @@
 import { createTypeAwareConfigs } from "../typescript/factory";
-
 import type { Linter } from "eslint";
 
 /**

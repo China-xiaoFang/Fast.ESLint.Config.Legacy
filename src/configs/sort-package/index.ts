@@ -1,5 +1,4 @@
 import { createPackageJsonSortConfigs } from "./factory";
-
 import type { Linter } from "eslint";
 
 /**

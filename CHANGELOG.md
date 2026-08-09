@@ -4,6 +4,14 @@ All notable changes to this project are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and releases follow Semantic Versioning.
 
+## [2.0.5] - 2026-08-09
+
+### Changed
+
+- Added prioritized import path groups for the uni-app, Vue, Element Plus, Fast Element Plus, Fast China, and Lodash ecosystems while keeping type-only imports in the dedicated type group.
+- Changed import group spacing to a compact no-blank-line style and normalized the repository imports to the new policy.
+- Kept the CommonJS package test stable across ESLint and Prettier formatting.
+
 ## [2.0.4] - 2026-08-08
 
 ### Changed

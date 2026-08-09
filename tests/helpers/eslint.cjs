@@ -1,8 +1,6 @@
 const assert = require("node:assert/strict");
-
-const { ESLint } = require("eslint");
-
 const rootConfig = require("@fast-china/eslint-config-legacy");
+const { ESLint } = require("eslint");
 
 const directConfigNames = [
 	"angular",

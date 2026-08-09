@@ -1,6 +1,5 @@
 import { packageJsonSortRules } from "../../rules";
 import { createJsonExtends } from "../json/factory";
-
 import type { Linter } from "eslint";
 
 /**

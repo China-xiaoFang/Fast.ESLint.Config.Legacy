@@ -1,5 +1,4 @@
 import { GLOBS_NODE_TOOLING } from "../../constants";
-
 import type { Linter } from "eslint";
 
 /**

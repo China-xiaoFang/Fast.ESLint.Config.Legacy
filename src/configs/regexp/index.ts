@@ -1,7 +1,5 @@
 import { GLOBS_CODE } from "../../constants";
-
 import { createRegexpConfigs } from "./factory";
-
 import type { Linter } from "eslint";
 
 /**

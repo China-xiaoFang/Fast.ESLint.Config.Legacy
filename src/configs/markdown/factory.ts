@@ -1,5 +1,4 @@
 import { GLOB_MARKDOWN } from "../../constants";
-
 import type { Linter } from "eslint";
 
 /**

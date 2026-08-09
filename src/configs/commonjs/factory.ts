@@ -1,5 +1,4 @@
 import { GLOBS_COMMONJS } from "../../constants";
-
 import type { Linter } from "eslint";
 
 /**

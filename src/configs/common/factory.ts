@@ -1,6 +1,5 @@
 import { GLOBS_CODE } from "../../constants";
 import { commonRules } from "../../rules";
-
 import type { Linter } from "eslint";
 
 /**

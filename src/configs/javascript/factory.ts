@@ -1,6 +1,5 @@
 import { GLOBS_JAVASCRIPT } from "../../constants";
 import { javascriptRules } from "../../rules";
-
 import type { Linter } from "eslint";
 
 interface JavaScriptConfigOverride extends Linter.ConfigOverride {

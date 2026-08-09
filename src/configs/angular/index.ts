@@ -1,5 +1,4 @@
 import { createAngularConfigs } from "./factory";
-
 import type { Linter } from "eslint";
 
 /**

@@ -1,7 +1,6 @@
 import { GLOB_VUE } from "../../constants";
 import { javascriptRules, typescriptRules, vue2Rules, vue3Rules, vueCommonRules } from "../../rules";
 import { type TypeAwareOptions, createTypeScriptExtends, createTypeScriptParserOptions } from "../typescript/factory";
-
 import type { Linter } from "eslint";
 
 /**

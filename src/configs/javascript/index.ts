@@ -1,5 +1,4 @@
 import { createJavaScriptConfigs } from "./factory";
-
 import type { Linter } from "eslint";
 
 /**

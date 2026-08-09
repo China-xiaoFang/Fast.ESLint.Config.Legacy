@@ -1,5 +1,4 @@
 import { createTypeScriptConfigs } from "./factory";
-
 import type { Linter } from "eslint";
 
 /**

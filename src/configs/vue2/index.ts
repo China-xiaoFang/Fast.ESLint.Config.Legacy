@@ -1,5 +1,4 @@
 import { createVueConfigs } from "../vue/factory";
-
 import type { Linter } from "eslint";
 
 /**

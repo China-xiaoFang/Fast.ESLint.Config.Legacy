@@ -15,7 +15,6 @@ import { type RuleOptions, defineRules, preferLodashRules, preferLodashUnifiedRu
 import typeAwareConfig = require("@fast-china/eslint-config-legacy/type-aware");
 import vueConfig = require("@fast-china/eslint-config-legacy/vue");
 import vue2Config = require("@fast-china/eslint-config-legacy/vue2");
-
 import type { Linter } from "eslint";
 
 const defaultConfig: Linter.Config = config;
