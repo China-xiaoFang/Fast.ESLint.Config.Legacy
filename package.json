@@ -191,7 +191,7 @@
 		"test:types": "tsc --noEmit --project tests/tsconfig.json",
 		"test:runtime": "node --test tests/config.test.cjs",
 		"test:package": "node --test tests/package.test.mjs",
-		"check": "pnpm run typecheck && pnpm run lint && pnpm run test && pnpm run format:check",
+		"check": "pnpm run typecheck && pnpm run test && pnpm run lint && pnpm run format:check",
 		"prepack": "pnpm run check"
 	},
 	"peerDependencies": {
