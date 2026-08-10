@@ -1,5 +1,5 @@
 import { GLOBS_TYPESCRIPT, GLOB_DECLARATION, GLOB_VUE } from "../../constants";
-import { javascriptRules, typescriptRules } from "../../rules";
+import { javascriptRules, typescriptRules, typescriptTypeCheckedRules } from "../../rules";
 import type { Linter } from "eslint";
 
 interface TypeScriptConfigOverride extends Linter.ConfigOverride {
@@ -92,6 +92,7 @@ export const createTypeScriptConfig = (
 	rules: {
 		...javascriptRules,
 		...typescriptRules,
+		...(options.typeChecked ? typescriptTypeCheckedRules : {}),
 	},
 });
 
@@ -146,6 +147,7 @@ export const createTypeAwareConfigs = (): Linter.ConfigOverride[] => {
 				...createTypeScriptParserOptions(typeAwareOptions),
 				ecmaFeatures: { jsx: true },
 			},
+			rules: typescriptTypeCheckedRules,
 		},
 		{
 			files: [GLOB_VUE],
@@ -157,6 +159,7 @@ export const createTypeAwareConfigs = (): Linter.ConfigOverride[] => {
 				extraFileExtensions: [".vue"],
 				ecmaFeatures: { jsx: true },
 			},
+			rules: typescriptTypeCheckedRules,
 		},
 	];
 };

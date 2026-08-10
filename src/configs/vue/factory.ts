@@ -1,5 +1,5 @@
 import { GLOB_VUE } from "../../constants";
-import { javascriptRules, typescriptRules, vue2Rules, vue3Rules, vueCommonRules } from "../../rules";
+import { javascriptRules, typescriptRules, typescriptTypeCheckedRules, vue2Rules, vue3Rules, vueCommonRules } from "../../rules";
 import { type TypeAwareOptions, createTypeScriptExtends, createTypeScriptParserOptions } from "../typescript/factory";
 import type { Linter } from "eslint";
 
@@ -63,6 +63,7 @@ export const createVueConfigs = ({
 			rules: {
 				...javascriptRules,
 				...(typescript ? typescriptRules : {}),
+				...(typescript && typeScriptOptions.typeChecked ? typescriptTypeCheckedRules : {}),
 				...vueCommonRules,
 				...(version === 3 ? vue3Rules : vue2Rules),
 			},

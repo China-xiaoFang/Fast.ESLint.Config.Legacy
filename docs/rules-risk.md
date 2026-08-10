@@ -71,7 +71,7 @@ Each rule is a default only within its owning config. React rules do not enter t
 
 ## Explicitly opt-in behavior
 
-- Type-aware TypeScript/Vue sets are enabled only through `/type-aware` or `createTypeAwareConfigs()`; they start Project Service and add rules such as `no-floating-promises`.
+- Type-aware TypeScript/Vue sets are enabled only through `/type-aware` or `createTypeAwareConfigs()`; they start Project Service and add rules such as `no-floating-promises`. `prefer-promise-reject-errors` permits transparent forwarding of `unknown` rejection reasons while still reporting statically known non-`Error` values such as strings and numbers.
 - React and Angular behavior requires `/react`, `/angular`, or the corresponding creators. Vue 2 uses `/vue2` or `createVueConfigs({ version: 2 })`; `/vue` is Vue 3.
 - `preferLodashRules` and `preferLodashUnifiedRules` are organization import-source policies exposed from `/rules`; `createLodashConfigs()` applies either policy.
 - Resolver-dependent `import-x/no-unresolved` and related static export checks remain disabled.

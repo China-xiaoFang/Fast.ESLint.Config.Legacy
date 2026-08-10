@@ -81,6 +81,7 @@ test("type-aware overlay starts Project Service and enables typed rules", async 
 	assert.equal(result.fatalErrorCount, 0, result.messages.map((message) => message.message).join(", "));
 	const calculated = await linter.calculateConfigForFile("src/index.ts");
 	assert.ok(calculated.rules["@typescript-eslint/no-floating-promises"]);
+	assert.equal(calculated.rules["@typescript-eslint/prefer-promise-reject-errors"][1].allowThrowingUnknown, true);
 });
 
 test("package sorting preserves semantic exports condition order", async () => {

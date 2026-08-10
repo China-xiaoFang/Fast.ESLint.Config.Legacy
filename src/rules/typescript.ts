@@ -94,3 +94,9 @@ export const typescriptRules = {
 		},
 	],
 } satisfies RuleOptions;
+
+/** 仅在启用 Project Service 后应用的 TypeScript 类型感知规则覆写。 */
+export const typescriptTypeCheckedRules = {
+	// 允许透明转发外部 Promise 的未知拒绝原因；静态可知的 string、number 等仍会被报告。
+	"@typescript-eslint/prefer-promise-reject-errors": ["error", { allowThrowingUnknown: true }],
+} satisfies RuleOptions;
