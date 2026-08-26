@@ -9,6 +9,8 @@ import type { RuleOptions } from "../typegen";
  * @public
  */
 export const javascriptRules = {
+	// 变量和类型使用 camelCase；对象属性允许沿用外部协议字段名。
+	camelcase: ["error", { properties: "never" }],
 	// 控制台调用在应用源码中需要人工确认；warn/error 仍可用于必要的诊断输出。
 	"no-console": [
 		"warn",
@@ -25,8 +27,8 @@ export const javascriptRules = {
 			checkLoops: false,
 		},
 	],
-	// [高影响] 禁止标签语句；包含多层循环 labeled break/continue 的代码需先重构控制流。
-	"no-restricted-syntax": ["error", "LabeledStatement"],
+	// [高影响] 禁止标签语句和 with；包含多层循环 labeled break/continue 的代码需先重构控制流。
+	"no-restricted-syntax": ["error", "LabeledStatement", "WithStatement"],
 	// [高影响][可自动修复] 使用 let/const 替代 var；修复后需复核循环闭包和声明提升行为。
 	"no-var": "error",
 	// 禁止无说明的空代码块；允许用于“忽略失败”语义的空 catch。

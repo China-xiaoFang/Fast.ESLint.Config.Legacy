@@ -51,6 +51,8 @@ module.exports = {
 
 根入口默认启用 browser globals、JavaScript、TypeScript、Vue 3、import-x、Promise、RegExp、JSON 方言、YAML、Markdown、CommonJS/工程文件兼容与 Prettier 冲突处理。
 
+2.1.0 将 JavaScript、TypeScript、Vue、Lodash 与清单排序规则同步到现代配置基线；RegExp 改为显式维护正确性、安全性和灾难性回溯规则，不再继承包含样式偏好的完整 recommended 预置。Legacy 包仍保持 ESLint 8、可选类型感知检查和 Vue 2 支持。
+
 ## 细粒度 extends
 
 每个细粒度配置都可以直接继承：
@@ -118,6 +120,8 @@ const reusableRules = {
 ```
 
 `defineRules` 的实现直接位于 `src/rules/index.ts`，不再保留单独的辅助模块。
+
+`/rules` 同时导出 `regexpRules`，可用于需要自定义文件范围的 Legacy override；使用时仍需注册 `eslint-plugin-regexp`。
 
 ## 文档
 

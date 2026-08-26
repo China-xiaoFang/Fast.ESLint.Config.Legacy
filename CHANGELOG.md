@@ -4,6 +4,17 @@ All notable changes to this project are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and releases follow Semantic Versioning.
 
+## [2.1.0] - 2026-08-26
+
+### Added
+
+- Added the typed `regexpRules` record to the public `/rules` entry.
+
+### Changed
+
+- Synchronized the JavaScript, TypeScript, Vue, RegExp, Lodash, and package manifest rule policies with `@fast-china/eslint-config` while preserving the ESLint 8 Legacy architecture and Vue 2 compatibility.
+- Replaced the full RegExp recommended preset with an explicit correctness and safety rule set.
+
 ## [2.0.6] - 2026-08-10
 
 ### Changed

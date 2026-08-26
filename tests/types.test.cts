@@ -11,7 +11,7 @@ import {
 	createVueConfigs,
 } from "@fast-china/eslint-config-legacy/configs";
 import { GLOBS_CODE, GLOB_VUE } from "@fast-china/eslint-config-legacy/constants";
-import { type RuleOptions, defineRules, preferLodashRules, preferLodashUnifiedRules } from "@fast-china/eslint-config-legacy/rules";
+import { type RuleOptions, defineRules, preferLodashRules, preferLodashUnifiedRules, regexpRules } from "@fast-china/eslint-config-legacy/rules";
 import typeAwareConfig = require("@fast-china/eslint-config-legacy/type-aware");
 import vueConfig = require("@fast-china/eslint-config-legacy/vue");
 import vue2Config = require("@fast-china/eslint-config-legacy/vue2");
@@ -45,6 +45,7 @@ void projectRules;
 void typedRules;
 void preferLodashRules;
 void preferLodashUnifiedRules;
+void regexpRules;
 
 // @ts-expect-error Unknown rule names must be rejected.
 defineRules({ "vue/not-a-real-rule": "error" });

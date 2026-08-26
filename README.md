@@ -51,6 +51,8 @@ module.exports = {
 
 The root enables browser globals, JavaScript, TypeScript, Vue 3, import-x, Promise, RegExp, JSON dialects, YAML, Markdown, CommonJS/tooling compatibility, and the Prettier conflict-disable layer.
 
+Version 2.1.0 aligns JavaScript, TypeScript, Vue, Lodash, and manifest-ordering policies with the modern config baseline. RegExp now uses an explicit correctness, security, and catastrophic-backtracking rule set instead of the full style-oriented recommended preset. The Legacy package retains ESLint 8, opt-in type-aware linting, and Vue 2 support.
+
 ## Direct granular extends
 
 Each granular config can be used directly:
@@ -118,6 +120,8 @@ const reusableRules = {
 ```
 
 The `defineRules` implementation lives directly in `src/rules/index.ts`; there is no separate helper module.
+
+The `/rules` entry also exports `regexpRules` for Legacy overrides with custom file scopes; consumers must still register `eslint-plugin-regexp` when composing it directly.
 
 ## Documentation
 

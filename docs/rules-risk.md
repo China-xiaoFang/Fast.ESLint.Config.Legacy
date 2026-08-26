@@ -18,7 +18,7 @@ This guide documents the package-root config, direct `extends` entries, and reus
 | Vue 3 SFC              | JavaScript and TypeScript configs plus `plugin:vue/recommended`                                      |
 | Imports                | `plugin:import-x/recommended`; resolver-dependent checks remain disabled                             |
 | Promises               | `plugin:promise/recommended`                                                                         |
-| Regular expressions    | `plugin:regexp/recommended`                                                                          |
+| Regular expressions    | Explicit `eslint-plugin-regexp` correctness and safety rules                                         |
 | JSON dialects          | Matching `eslint-plugin-jsonc` recommended configs                                                   |
 | YAML                   | `plugin:yml/recommended` and `plugin:yml/prettier`                                                   |
 | Markdown               | `plugin:markdown/recommended-legacy`                                                                 |
@@ -41,23 +41,25 @@ Browser configs apply Node globals only to narrowly scoped tooling files.
 
 Each rule is a default only within its owning config. React rules do not enter the package-root config unless `/react` is extended, for example.
 
-| Rule                                                        | Fixable    | Main concern                                                                                     |
-| ----------------------------------------------------------- | ---------- | ------------------------------------------------------------------------------------------------ |
-| `import-x/order`                                            | Yes        | Reorders imports; manually moving side-effect imports can change initialization order.           |
-| `@typescript-eslint/no-unused-vars`                         | Yes        | Fixes can remove unused bindings or imports; review module side effects and parameter positions. |
-| `@typescript-eslint/consistent-type-imports`                | Yes        | Type-only imports can remove runtime module evaluation; preserve side effects explicitly.        |
-| `@typescript-eslint/no-require-imports`                     | No         | Blocks CommonJS in normal TS files; `.cjs` and `.cts` are exempt.                                |
-| `no-var`                                                    | Yes        | Block scope and loop-closure behavior need review.                                               |
-| `prefer-arrow-callback`                                     | Yes        | Review `this`, `arguments`, constructability, and stack names.                                   |
-| `logical-assignment-operators`                              | Yes        | Getter, Proxy, and reactive-object access counts need behavioral tests.                          |
-| `no-restricted-syntax` (`LabeledStatement`)                 | No         | Multi-level loop control may require refactoring.                                                |
-| `vue/require-explicit-emits`                                | No         | Makes Vue 3 emitted events part of the component API.                                            |
-| `vue/no-mutating-props`                                     | No         | Requires one-way data flow and often a component design change.                                  |
-| `vue/attributes-order`                                      | Yes        | Creates broad template-only ordering diffs.                                                      |
-| `react/self-closing-comp`                                   | Yes        | Rewrites empty JSX/TSX elements and can create a broad first-run diff.                           |
-| `@angular-eslint/prefer-on-push-component-change-detection` | No         | Requires Angular components to use OnPush and can change asynchronous view-update behavior.      |
-| JS `no-unused-vars` and `no-undef`                          | No         | Existing JS projects may have many errors until environment globals are configured.              |
-| RegExp recommended config                                   | Some rules | Fixes must be checked against real and boundary inputs.                                          |
+| Rule                                                        | Fixable    | Main concern                                                                                        |
+| ----------------------------------------------------------- | ---------- | --------------------------------------------------------------------------------------------------- |
+| `import-x/order`                                            | Yes        | Reorders imports; manually moving side-effect imports can change initialization order.              |
+| `@typescript-eslint/no-unused-vars`                         | Yes        | Fixes can remove unused bindings or imports; review module side effects and parameter positions.    |
+| `@typescript-eslint/consistent-type-imports`                | Yes        | Type-only imports can remove runtime module evaluation; preserve side effects explicitly.           |
+| `@typescript-eslint/no-require-imports`                     | No         | Blocks CommonJS in normal TS files; `.cjs` and `.cts` are exempt.                                   |
+| `@typescript-eslint/explicit-module-boundary-types`         | No         | Requires explicit parameter and return types on exported APIs without affecting internal callbacks. |
+| `@typescript-eslint/no-non-null-assertion`                  | No         | Requires real null-boundary handling instead of suppressing it with `!`.                            |
+| `no-var`                                                    | Yes        | Block scope and loop-closure behavior need review.                                                  |
+| `prefer-arrow-callback`                                     | Yes        | Review `this`, `arguments`, constructability, and stack names.                                      |
+| `logical-assignment-operators`                              | Yes        | Getter, Proxy, and reactive-object access counts need behavioral tests.                             |
+| `no-restricted-syntax` (`LabeledStatement`)                 | No         | Multi-level loop control may require refactoring.                                                   |
+| `vue/require-explicit-emits`                                | No         | Makes Vue 3 emitted events part of the component API.                                               |
+| `vue/no-mutating-props`                                     | No         | Requires one-way data flow and often a component design change.                                     |
+| `vue/attributes-order`                                      | Yes        | Creates broad template-only ordering diffs.                                                         |
+| `react/self-closing-comp`                                   | Yes        | Rewrites empty JSX/TSX elements and can create a broad first-run diff.                              |
+| `@angular-eslint/prefer-on-push-component-change-detection` | No         | Requires Angular components to use OnPush and can change asynchronous view-update behavior.         |
+| JS `no-unused-vars` and `no-undef`                          | No         | Existing JS projects may have many errors until environment globals are configured.                 |
+| Explicit RegExp correctness and safety rules                | Some rules | Invalid structures and super-linear backtracking are checked; fixes need representative tests.      |
 
 `vue/no-v-html` is a warning and a security signal. Only use it with trusted or reliably sanitized HTML.
 
@@ -71,7 +73,7 @@ Each rule is a default only within its owning config. React rules do not enter t
 
 ## Explicitly opt-in behavior
 
-- Type-aware TypeScript/Vue sets are enabled only through `/type-aware` or `createTypeAwareConfigs()`; they start Project Service and add rules such as `no-floating-promises`. `prefer-promise-reject-errors` permits transparent forwarding of `unknown` rejection reasons while still reporting statically known non-`Error` values such as strings and numbers.
+- Type-aware TypeScript/Vue sets are enabled only through `/type-aware` or `createTypeAwareConfigs()`; they start Project Service and add rules such as `no-floating-promises` and `return-await`. `prefer-promise-reject-errors` permits transparent forwarding of `unknown` rejection reasons while still reporting statically known non-`Error` values such as strings and numbers.
 - React and Angular behavior requires `/react`, `/angular`, or the corresponding creators. Vue 2 uses `/vue2` or `createVueConfigs({ version: 2 })`; `/vue` is Vue 3.
 - `preferLodashRules` and `preferLodashUnifiedRules` are organization import-source policies exposed from `/rules`; `createLodashConfigs()` applies either policy.
 - Resolver-dependent `import-x/no-unresolved` and related static export checks remain disabled.

@@ -28,7 +28,6 @@ export const packageJsonSortRules = {
 				"version",
 				"private",
 				"packageManager",
-				"allowScripts",
 				"description",
 				"type",
 				"keywords",

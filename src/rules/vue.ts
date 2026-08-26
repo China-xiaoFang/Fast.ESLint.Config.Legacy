@@ -15,8 +15,10 @@ export const vueCommonRules = {
 	"vue/require-default-prop": "off",
 	// [默认关闭] 允许 App、Layout 等约定俗成的单词组件名。
 	"vue/multi-word-component-names": "off",
-	// 优先从 vue 入口导入由 Vue 重新导出的 API，避免依赖内部包边界。
-	"vue/prefer-import-from-vue": "warn",
+	// 允许直接使用 Vue 子包入口，兼容编译器与运行时等明确子模块导入。
+	"vue/prefer-import-from-vue": "off",
+	// 自定义组件的模板属性统一使用 kebab-case；脚本中的 Props 声明仍使用 camelCase。
+	"vue/attribute-hyphenation": ["error", "always"],
 	// 防止 props、data、computed、methods 等组件命名空间出现冲突。
 	"vue/no-dupe-keys": "error",
 	// [高影响] 禁止组件直接修改 props，要求通过事件或本地状态维持单向数据流。
@@ -29,6 +31,8 @@ export const vueCommonRules = {
 	"vue/custom-event-name-casing": ["error", "camelCase"],
 	// [默认关闭] 允许在一个 SFC 中声明仅供当前文件使用的小型辅助组件。
 	"vue/one-component-per-file": "off",
+	// 多行标签的闭合括号独占一行，单行标签保持同行。
+	"vue/html-closing-bracket-newline": ["error", { multiline: "always", singleline: "never" }],
 	// [高影响][可自动修复] 统一模板属性分组；首次启用可能产生大量仅排序的模板差异。
 	"vue/attributes-order": [
 		"error",

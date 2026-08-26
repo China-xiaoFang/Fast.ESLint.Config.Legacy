@@ -58,6 +58,30 @@ test("Vue 2 and Vue 3 expose different version-specific contracts", async () => 
 	assert.equal(vue3Config.rules["vue/require-explicit-emits"][0], "error");
 });
 
+test("shared JavaScript, TypeScript, Vue, and RegExp rules match the modern config contract", async () => {
+	const rootLinter = createLinter(rootConfig);
+	const javaScriptConfig = await rootLinter.calculateConfigForFile("fixtures/example.js");
+	const typeScriptConfig = await rootLinter.calculateConfigForFile("fixtures/example.ts");
+	const vueConfig = await rootLinter.calculateConfigForFile("fixtures/App.vue");
+	const regexpConfig = await createLinter(directConfigs.regexp).calculateConfigForFile("fixtures/example.js");
+
+	assert.equal(javaScriptConfig.rules.camelcase[0], "error");
+	assert.equal(javaScriptConfig.rules.camelcase[1].properties, "never");
+	assert.deepEqual(javaScriptConfig.rules["no-restricted-syntax"], ["error", "LabeledStatement", "WithStatement"]);
+	assert.deepEqual(typeScriptConfig.rules["@typescript-eslint/explicit-module-boundary-types"], [
+		"error",
+		{ allowArgumentsExplicitlyTypedAsAny: false },
+	]);
+	assert.deepEqual(typeScriptConfig.rules["@typescript-eslint/no-empty-function"], ["error", { allow: ["constructors", "overrideMethods"] }]);
+	assert.equal(typeScriptConfig.rules["@typescript-eslint/no-non-null-assertion"][0], "error");
+	assert.equal(vueConfig.rules["vue/prefer-import-from-vue"][0], "off");
+	assert.deepEqual(vueConfig.rules["vue/attribute-hyphenation"], ["error", "always"]);
+	assert.deepEqual(vueConfig.rules["vue/html-closing-bracket-newline"], ["off", { multiline: "always", singleline: "never" }]);
+	assert.equal(regexpConfig.rules["regexp/no-super-linear-backtracking"][0], "error");
+	assert.equal(regexpConfig.rules["regexp/strict"][0], "error");
+	assert.equal(regexpConfig.rules["regexp/control-character-escape"], undefined);
+});
+
 test("React and Angular configs load their parsers, processors, and local rules", async () => {
 	const react = createLinter({ overrides: configs.createReactConfigs() });
 	const angular = createLinter({ overrides: configs.createAngularConfigs() });
@@ -81,6 +105,7 @@ test("type-aware overlay starts Project Service and enables typed rules", async 
 	assert.equal(result.fatalErrorCount, 0, result.messages.map((message) => message.message).join(", "));
 	const calculated = await linter.calculateConfigForFile("src/index.ts");
 	assert.ok(calculated.rules["@typescript-eslint/no-floating-promises"]);
+	assert.equal(calculated.rules["@typescript-eslint/return-await"][0], "error");
 	assert.equal(calculated.rules["@typescript-eslint/prefer-promise-reject-errors"][1].allowThrowingUnknown, true);
 });
 
@@ -89,6 +114,9 @@ test("package sorting preserves semantic exports condition order", async () => {
 	const source = '{"name":"fixture","version":"1.0.0","exports":{".":{"node":"./node.js","import":"./index.js","default":"./index.js"}}}\n';
 	const [result] = await linter.lintText(source, { filePath: "fixtures/package.json" });
 	const fixed = result.output ?? source;
+	const calculated = await linter.calculateConfigForFile("fixtures/package.json");
+	const rootOrder = calculated.rules["jsonc/sort-keys"][1].order;
 	assert.ok(fixed.indexOf('"node"') < fixed.indexOf('"import"'));
 	assert.ok(fixed.indexOf('"import"') < fixed.indexOf('"default"'));
+	assert.ok(!rootOrder.includes("allowScripts"));
 });

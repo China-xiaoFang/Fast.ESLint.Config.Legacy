@@ -13,13 +13,19 @@ export const preferLodashUnifiedRules = {
 		"error",
 		{
 			paths: [
-				{ name: "lodash", message: "Use lodash-unified instead." },
-				{ name: "lodash-es", message: "Use lodash-unified instead." },
+				{
+					name: "lodash",
+					message: 'Use "lodash-unified" consistently instead of "lodash".',
+				},
+				{
+					name: "lodash-es",
+					message: 'Use "lodash-unified" consistently instead of "lodash-es".',
+				},
 			],
 			patterns: [
 				{
 					group: ["lodash/*", "lodash-es/*"],
-					message: "Use lodash-unified instead.",
+					message: 'Use exports from "lodash-unified" instead of Lodash subpath imports.',
 				},
 			],
 		},
@@ -39,13 +45,19 @@ export const preferLodashRules = {
 		"error",
 		{
 			paths: [
-				{ name: "lodash-es", message: "Use lodash instead." },
-				{ name: "lodash-unified", message: "Use lodash instead." },
+				{
+					name: "lodash-es",
+					message: 'Use "lodash" consistently instead of "lodash-es".',
+				},
+				{
+					name: "lodash-unified",
+					message: 'Use "lodash" consistently instead of "lodash-unified".',
+				},
 			],
 			patterns: [
 				{
 					group: ["lodash-es/*", "lodash-unified/*"],
-					message: "Use lodash instead.",
+					message: 'Use "lodash" or a "lodash/*" subpath consistently.',
 				},
 			],
 		},

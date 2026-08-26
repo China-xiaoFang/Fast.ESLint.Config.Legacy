@@ -5,8 +5,8 @@ import type { Linter } from "eslint";
 /**
  * 正则表达式的 ESLint 8 Legacy Config 规则配置。
  *
- * 该配置对 JavaScript、JSX、TypeScript、TSX 与 Vue 启用 eslint-plugin-regexp 推荐规则，
- * 检查无效、冗余或容易产生错误匹配的正则表达式。
+ * 该配置对 JavaScript、JSX、TypeScript、TSX 与 Vue 启用显式维护的 eslint-plugin-regexp
+ * 正确性与安全规则，检查无效结构、潜在错误和灾难性回溯。
  *
  * @example
  * ```js

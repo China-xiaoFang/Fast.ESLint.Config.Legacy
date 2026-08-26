@@ -31,6 +31,7 @@ export * from "./import";
 export * from "./javascript";
 export * from "./lodash";
 export * from "./react";
+export * from "./regexp";
 export * from "./sort-package";
 export * from "./sort-tsconfig";
 export * from "./typescript";
