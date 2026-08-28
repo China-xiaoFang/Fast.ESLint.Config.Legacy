@@ -49,7 +49,8 @@ browser 预置只在窄范围工程文件中提供 Node globals。
 
 | 规则                                                        | 等级       | 自动修复   | 主要影响                                                                           | 采用建议                                                   |
 | ----------------------------------------------------------- | ---------- | ---------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------- |
-| `import-x/order`                                            | error      | 是         | 重排并分组 import。裸副作用 import 只会被报告，人工移动可能改变初始化顺序。        | 优先检查 polyfill、样式、注册器和入口 import。             |
+| `import-x/order`                                            | error      | 是         | 重排并分组非样式 import；普通裸副作用 import 只会被报告。                          | 优先检查 polyfill、注册器和入口 import。                   |
+| `import-x/style-imports-last`                               | error      | 否         | 样式必须形成最后一个连续 import 分组，组内顺序保持不变。                           | 按真实 CSS 层叠顺序手动排列样式。                          |
 | `@typescript-eslint/no-unused-vars`                         | error      | 是         | 现有代码可能产生大量未使用声明错误；修复可能删除未使用绑定或 import。              | 复核模块副作用、参数位置，再运行类型检查、构建和测试。     |
 | `@typescript-eslint/consistent-type-imports`                | error      | 是         | 将纯类型依赖改成内联 `type` import；若原 import 还承担副作用，编译后行为可能变化。 | 将副作用改成独立 `import "module"`，并复核构建产物。       |
 | `@typescript-eslint/no-require-imports`                     | error      | 否         | 阻断普通 `.ts` 中的 CommonJS、条件加载和部分工具链互操作写法。                     | `.cjs`/`.cts` 已自动豁免；确有需要的文件应按范围关闭。     |

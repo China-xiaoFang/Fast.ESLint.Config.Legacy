@@ -51,7 +51,7 @@ module.exports = {
 
 根入口默认启用 browser globals、JavaScript、TypeScript、Vue 3、import-x、Promise、RegExp、JSON 方言、YAML、Markdown、CommonJS/工程文件兼容与 Prettier 冲突处理。
 
-2.1.0 将 JavaScript、TypeScript、Vue、Lodash 与清单排序规则同步到现代配置基线；RegExp 改为显式维护正确性、安全性和灾难性回溯规则，不再继承包含样式偏好的完整 recommended 预置。Legacy 包仍保持 ESLint 8、可选类型感知检查和 Vue 2 支持。
+2.1.1 保留 import-x 对普通导入的分组和字母排序，同时要求样式导入形成最后一个稳定分组，且绝不自动调整样式组内顺序。Legacy 包仍保持 ESLint 8、可选类型感知检查和 Vue 2 支持。
 
 ## 细粒度 extends
 

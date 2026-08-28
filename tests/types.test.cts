@@ -31,6 +31,7 @@ const fragments: Linter.ConfigOverride[] = [
 ];
 const projectRules = defineRules({
 	"@typescript-eslint/no-unused-vars": ["error", { args: "after-used" }],
+	"import-x/style-imports-last": "error",
 	"no-console": ["warn", { allow: ["warn", "error"] }],
 	"vue/attributes-order": "error",
 });

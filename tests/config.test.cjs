@@ -82,6 +82,30 @@ test("shared JavaScript, TypeScript, Vue, and RegExp rules match the modern conf
 	assert.equal(regexpConfig.rules["regexp/control-character-escape"], undefined);
 });
 
+test("style imports form a final stable group while other imports retain import-x ordering", async () => {
+	const linter = createLinter({ overrides: configs.createImportConfigs(["**/*.js"]) });
+	const [validResult] = await linter.lintText(
+		'import vue from "vue";\nimport App from "./App.vue";\nimport "./z.scss";\nimport "vue-json-pretty/lib/styles.css";\nimport styles from "./a.module.scss?inline";\nvoid vue;\nvoid App;\nvoid styles;\n',
+		{ filePath: "fixtures/style-imports-valid.js" }
+	);
+	const [misplacedStyleResult] = await linter.lintText('import "./theme.scss";\nimport App from "./App.vue";\nvoid App;\n', {
+		filePath: "fixtures/style-imports-invalid.js",
+	});
+	const [sideEffectResult] = await linter.lintText('import App from "./App.vue";\nimport "reflect-metadata";\nvoid App;\n', {
+		filePath: "fixtures/side-effect-imports-invalid.js",
+	});
+	const [alphabetizeResult] = await linter.lintText('import z from "z";\nimport a from "a";\nvoid z;\nvoid a;\n', {
+		filePath: "fixtures/alphabetize-imports-invalid.js",
+	});
+
+	assert.equal(validResult.errorCount, 0, validResult.messages.map((message) => message.message).join(", "));
+	assert.equal(misplacedStyleResult.messages.filter((message) => message.ruleId === "import-x/style-imports-last").length, 1);
+	assert.ok(!misplacedStyleResult.messages.some((message) => message.ruleId === "import-x/order"));
+	assert.equal(misplacedStyleResult.messages.find((message) => message.ruleId === "import-x/style-imports-last")?.fix, undefined);
+	assert.ok(sideEffectResult.messages.some((message) => message.ruleId === "import-x/order"));
+	assert.ok(alphabetizeResult.messages.some((message) => message.ruleId === "import-x/order"));
+});
+
 test("React and Angular configs load their parsers, processors, and local rules", async () => {
 	const react = createLinter({ overrides: configs.createReactConfigs() });
 	const angular = createLinter({ overrides: configs.createAngularConfigs() });

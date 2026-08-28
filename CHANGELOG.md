@@ -4,6 +4,17 @@ All notable changes to this project are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and releases follow Semantic Versioning.
 
+## [2.1.1] - 2026-08-29
+
+### Added
+
+- Added `import-x/style-imports-last` to require one final, stable stylesheet import group without automatic reordering.
+
+### Changed
+
+- Excluded stylesheet imports from `import-x/order` while preserving its grouping, alphabetizing, and `warnOnUnassignedImports` checks for all other imports.
+- Synchronized the stylesheet import policy and supporting documentation with `@fast-china/eslint-config` 2.1.1 while preserving the ESLint 8 Legacy architecture.
+
 ## [2.1.0] - 2026-08-26
 
 ### Added

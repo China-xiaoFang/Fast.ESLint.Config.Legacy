@@ -1,5 +1,8 @@
+import { registerStyleAwareImportRules } from "../../plugins/import";
 import { importRules } from "../../rules";
 import type { Linter } from "eslint";
+
+registerStyleAwareImportRules();
 
 /**
  * 创建模块导入配置。
@@ -18,7 +21,11 @@ export const createImportConfigs = (files: readonly string[]): Linter.ConfigOver
 					files: [...files],
 					extends: ["plugin:import-x/recommended"],
 					parserOptions: { ecmaVersion: "latest", sourceType: "module" },
-					rules: importRules,
+					rules: {
+						...importRules,
+						// 样式导入必须形成最后一个连续分组；规则不提供修复，避免改变 CSS 层叠顺序。
+						"import-x/style-imports-last": "error",
+					},
 				},
 			]
 		: [];

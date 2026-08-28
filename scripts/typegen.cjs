@@ -22,6 +22,9 @@ const plugins = [
 
 const ruleNames = new Set(builtinRules.keys());
 
+// 本包在 import-x 插件实例上注册的 Legacy 本地规则。
+ruleNames.add("import-x/style-imports-last");
+
 for (const [prefix, plugin] of plugins) {
 	for (const ruleName of Object.keys(plugin.rules ?? {})) {
 		ruleNames.add(`${prefix}/${ruleName}`);

@@ -5,7 +5,7 @@ import type { RuleOptions } from "../typegen";
  *
  * 该记录由 import 配置创建器在 `plugin:import-x/recommended` 之后应用。共享配置无法知道
  * 消费项目的 alias、tsconfig paths 或 bundler resolver，因此依赖具体解析器的规则保持关闭。
- * 副作用 import 会参与顺序诊断，但不会被插件自动移动。
+ * 非样式副作用 import 会参与顺序诊断；样式 import 由配置创建器注册的本地规则处理。
  *
  * @public
  */
@@ -14,7 +14,7 @@ export const importRules = {
 	"import-x/first": "error",
 	// 合并同一模块的重复 import，避免绑定分散或副作用被误读。
 	"import-x/no-duplicates": "error",
-	// [高影响][可自动修复] 按来源分组并排序；带副作用的裸 import 只报告，移动前必须确认执行顺序。
+	// [高影响][可自动修复] 非样式 import 按来源分组并排序；副作用 import 只报告，移动前必须确认执行顺序。
 	"import-x/order": [
 		"error",
 		{
@@ -62,7 +62,7 @@ export const importRules = {
 				order: "asc",
 				caseInsensitive: true,
 			},
-			// 副作用导入参与顺序检查，但插件不会自动移动它们。
+			// 非样式副作用导入参与顺序检查；样式导入由 createImportConfigs 注册的本地规则独立处理。
 			warnOnUnassignedImports: true,
 		},
 	],

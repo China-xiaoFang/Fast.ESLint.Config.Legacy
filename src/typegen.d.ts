@@ -326,6 +326,7 @@ export type RuleName =
 	| "import-x/order"
 	| "import-x/prefer-default-export"
 	| "import-x/prefer-namespace-import"
+	| "import-x/style-imports-last"
 	| "import-x/unambiguous"
 	| "indent"
 	| "indent-legacy"

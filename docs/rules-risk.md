@@ -43,7 +43,8 @@ Each rule is a default only within its owning config. React rules do not enter t
 
 | Rule                                                        | Fixable    | Main concern                                                                                        |
 | ----------------------------------------------------------- | ---------- | --------------------------------------------------------------------------------------------------- |
-| `import-x/order`                                            | Yes        | Reorders imports; manually moving side-effect imports can change initialization order.              |
+| `import-x/order`                                            | Yes        | Reorders non-style imports; ordinary side-effect imports are reported but not automatically moved.  |
+| `import-x/style-imports-last`                               | No         | Styles must form the final contiguous import group, preserving their authored cascade order.        |
 | `@typescript-eslint/no-unused-vars`                         | Yes        | Fixes can remove unused bindings or imports; review module side effects and parameter positions.    |
 | `@typescript-eslint/consistent-type-imports`                | Yes        | Type-only imports can remove runtime module evaluation; preserve side effects explicitly.           |
 | `@typescript-eslint/no-require-imports`                     | No         | Blocks CommonJS in normal TS files; `.cjs` and `.cts` are exempt.                                   |
