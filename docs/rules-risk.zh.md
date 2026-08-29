@@ -52,7 +52,7 @@ browser 预置只在窄范围工程文件中提供 Node globals。
 | `import-x/order`                                            | error      | 是         | 重排并分组非样式 import；普通裸副作用 import 只会被报告。                          | 优先检查 polyfill、注册器和入口 import。                   |
 | `import-x/style-imports-last`                               | error      | 否         | 样式必须形成最后一个连续 import 分组，组内顺序保持不变。                           | 按真实 CSS 层叠顺序手动排列样式。                          |
 | `@typescript-eslint/no-unused-vars`                         | error      | 是         | 现有代码可能产生大量未使用声明错误；修复可能删除未使用绑定或 import。              | 复核模块副作用、参数位置，再运行类型检查、构建和测试。     |
-| `@typescript-eslint/consistent-type-imports`                | error      | 是         | 将纯类型依赖改成内联 `type` import；若原 import 还承担副作用，编译后行为可能变化。 | 将副作用改成独立 `import "module"`，并复核构建产物。       |
+| `@typescript-eslint/consistent-type-imports`                | error      | 是         | 将纯类型依赖改成独立 `import type`；若原 import 还承担副作用，编译后行为可能变化。 | 将副作用改成独立 `import "module"`，并复核构建产物。       |
 | `@typescript-eslint/no-require-imports`                     | error      | 否         | 阻断普通 `.ts` 中的 CommonJS、条件加载和部分工具链互操作写法。                     | `.cjs`/`.cts` 已自动豁免；确有需要的文件应按范围关闭。     |
 | `@typescript-eslint/explicit-module-boundary-types`         | error      | 否         | 要求导出函数和公共方法显式声明参数与返回类型，可能暴露尚未稳定的公共 API。         | 只为模块边界补充真实类型，不强制内部函数和回调写返回类型。 |
 | `@typescript-eslint/no-non-null-assertion`                  | error      | 否         | 禁止用 `!` 隐藏空值边界，可能要求补充收窄、默认值或明确的错误处理。                | 优先修复数据边界，不用类型断言绕过检查。                   |

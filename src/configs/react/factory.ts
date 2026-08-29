@@ -1,7 +1,8 @@
 import { GLOBS_JAVASCRIPT, GLOBS_TYPESCRIPT } from "../../constants";
 import { reactAutomaticRuntimeRules, reactRules, reactTypeScriptRules } from "../../rules";
 import { createJavaScriptConfig } from "../javascript/factory";
-import { type TypeScriptConfigOptions, createTypeScriptConfig } from "../typescript/factory";
+import { createTypeScriptConfig } from "../typescript/factory";
+import type { TypeScriptConfigOptions } from "../typescript/factory";
 import type { Linter } from "eslint";
 
 /**

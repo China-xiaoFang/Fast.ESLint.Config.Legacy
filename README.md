@@ -51,7 +51,7 @@ module.exports = {
 
 The root enables browser globals, JavaScript, TypeScript, Vue 3, import-x, Promise, RegExp, JSON dialects, YAML, Markdown, CommonJS/tooling compatibility, and the Prettier conflict-disable layer.
 
-Version 2.1.1 keeps ordinary imports under the existing import-x grouping and alphabetizing policy, while stylesheet imports form one final stable group whose internal order is never automatically changed. The Legacy package retains ESLint 8, opt-in type-aware linting, and Vue 2 support.
+Version 2.1.2 keeps ordinary imports under the existing import-x grouping and alphabetizing policy, places styles in one final stable group, and fixes type-only dependencies as separate `import type` declarations. The Legacy package retains ESLint 8, opt-in type-aware linting, and Vue 2 support.
 
 ## Direct granular extends
 
@@ -107,7 +107,8 @@ Use `createVueConfigs({ version: 3 })` for Vue 3. React, Angular, type-aware Typ
 ## Typed project rules
 
 ```ts
-import { type RuleOptions, defineRules } from "@fast-china/eslint-config-legacy/rules";
+import { defineRules } from "@fast-china/eslint-config-legacy/rules";
+import type { RuleOptions } from "@fast-china/eslint-config-legacy/rules";
 
 const rules = defineRules({
 	"@typescript-eslint/no-unused-vars": "error",

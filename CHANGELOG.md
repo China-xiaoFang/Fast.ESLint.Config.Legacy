@@ -4,6 +4,13 @@ All notable changes to this project are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and releases follow Semantic Versioning.
 
+## [2.1.2] - 2026-08-29
+
+### Changed
+
+- Changed `@typescript-eslint/consistent-type-imports` fixes from inline type specifiers to separate `import type` declarations.
+- Synchronized the type import policy and supporting documentation with `@fast-china/eslint-config` 2.1.2 while preserving the ESLint 8 Legacy architecture.
+
 ## [2.1.1] - 2026-08-29
 
 ### Added

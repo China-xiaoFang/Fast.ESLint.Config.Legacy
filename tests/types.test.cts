@@ -11,10 +11,11 @@ import {
 	createVueConfigs,
 } from "@fast-china/eslint-config-legacy/configs";
 import { GLOBS_CODE, GLOB_VUE } from "@fast-china/eslint-config-legacy/constants";
-import { type RuleOptions, defineRules, preferLodashRules, preferLodashUnifiedRules, regexpRules } from "@fast-china/eslint-config-legacy/rules";
+import { defineRules, preferLodashRules, preferLodashUnifiedRules, regexpRules } from "@fast-china/eslint-config-legacy/rules";
 import typeAwareConfig = require("@fast-china/eslint-config-legacy/type-aware");
 import vueConfig = require("@fast-china/eslint-config-legacy/vue");
 import vue2Config = require("@fast-china/eslint-config-legacy/vue2");
+import type { RuleOptions } from "@fast-china/eslint-config-legacy/rules";
 import type { Linter } from "eslint";
 
 const defaultConfig: Linter.Config = config;

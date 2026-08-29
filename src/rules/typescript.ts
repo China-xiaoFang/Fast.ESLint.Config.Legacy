@@ -88,12 +88,12 @@ export const typescriptRules = {
 	"@typescript-eslint/no-non-null-assertion": "error",
 	// 可选链之后再做非空断言逻辑矛盾，通常表示边界条件设计有误。
 	"@typescript-eslint/no-non-null-asserted-optional-chain": "error",
-	// [高影响][可自动修复] 纯类型依赖改用内联 type import；需复核仅靠 import 触发的模块副作用。
+	// [高影响][可自动修复] 纯类型依赖改用独立 import type；需复核仅靠 import 触发的模块副作用。
 	"@typescript-eslint/consistent-type-imports": [
 		"error",
 		{
 			disallowTypeAnnotations: false,
-			fixStyle: "inline-type-imports",
+			fixStyle: "separate-type-imports",
 			prefer: "type-imports",
 		},
 	],
