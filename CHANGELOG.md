@@ -4,6 +4,13 @@ All notable changes to this project are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and releases follow Semantic Versioning.
 
+## [2.1.3] - 2026-08-29
+
+### Changed
+
+- Enabled `import-x/order` `sortTypesGroup` so separate type imports retain the final type group while sorting by their original source category within it.
+- Synchronized the type-group ordering policy and supporting documentation with `@fast-china/eslint-config` 2.1.3 while preserving the ESLint 8 Legacy architecture.
+
 ## [2.1.2] - 2026-08-29
 
 ### Changed

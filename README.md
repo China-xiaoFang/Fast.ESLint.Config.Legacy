@@ -51,7 +51,7 @@ module.exports = {
 
 The root enables browser globals, JavaScript, TypeScript, Vue 3, import-x, Promise, RegExp, JSON dialects, YAML, Markdown, CommonJS/tooling compatibility, and the Prettier conflict-disable layer.
 
-Version 2.1.2 keeps ordinary imports under the existing import-x grouping and alphabetizing policy, places styles in one final stable group, and fixes type-only dependencies as separate `import type` declarations. The Legacy package retains ESLint 8, opt-in type-aware linting, and Vue 2 support.
+Version 2.1.3 keeps ordinary imports under the existing import-x grouping and alphabetizing policy, source-sorts separate `import type` declarations inside the final type group, and places styles in one final stable group. The Legacy package retains ESLint 8, opt-in type-aware linting, and Vue 2 support.
 
 ## Direct granular extends
 

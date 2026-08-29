@@ -1,8 +1,8 @@
 import { GLOB_ANGULAR_TEMPLATE, GLOB_ANGULAR_TYPESCRIPT } from "../../constants";
 import { angularRules } from "../../rules";
 import { createTypeScriptConfig } from "../typescript/factory";
-import type { TypeScriptConfigOptions } from "../typescript/factory";
 import type { Linter } from "eslint";
+import type { TypeScriptConfigOptions } from "../typescript/factory";
 
 /**
  * Angular TypeScript 源码、外部模板和内联模板的内部配置选项。

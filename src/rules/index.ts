@@ -7,8 +7,8 @@
  *
  * @packageDocumentation
  */
-import type { RuleName, RuleOptions } from "../typegen";
 import type { Linter } from "eslint";
+import type { RuleName, RuleOptions } from "../typegen";
 
 type RejectUnknownRuleNames<Rules extends RuleOptions> = Rules & Record<Exclude<keyof Rules, RuleName>, never>;
 

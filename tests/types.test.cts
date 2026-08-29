@@ -15,8 +15,8 @@ import { defineRules, preferLodashRules, preferLodashUnifiedRules, regexpRules }
 import typeAwareConfig = require("@fast-china/eslint-config-legacy/type-aware");
 import vueConfig = require("@fast-china/eslint-config-legacy/vue");
 import vue2Config = require("@fast-china/eslint-config-legacy/vue2");
-import type { RuleOptions } from "@fast-china/eslint-config-legacy/rules";
 import type { Linter } from "eslint";
+import type { RuleOptions } from "@fast-china/eslint-config-legacy/rules";
 
 const defaultConfig: Linter.Config = config;
 const directConfigs: Linter.Config[] = [commonConfig, typeAwareConfig, vueConfig, vue2Config];

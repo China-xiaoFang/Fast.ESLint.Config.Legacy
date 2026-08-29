@@ -2,8 +2,8 @@ import { GLOBS_JAVASCRIPT, GLOBS_TYPESCRIPT } from "../../constants";
 import { reactAutomaticRuntimeRules, reactRules, reactTypeScriptRules } from "../../rules";
 import { createJavaScriptConfig } from "../javascript/factory";
 import { createTypeScriptConfig } from "../typescript/factory";
-import type { TypeScriptConfigOptions } from "../typescript/factory";
 import type { Linter } from "eslint";
+import type { TypeScriptConfigOptions } from "../typescript/factory";
 
 /**
  * React、Hooks 与 JSX accessibility 的内部配置选项。

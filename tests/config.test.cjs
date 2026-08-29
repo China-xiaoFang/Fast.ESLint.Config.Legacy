@@ -75,6 +75,7 @@ test("shared JavaScript, TypeScript, Vue, and RegExp rules match the modern conf
 	assert.deepEqual(typeScriptConfig.rules["@typescript-eslint/no-empty-function"], ["error", { allow: ["constructors", "overrideMethods"] }]);
 	assert.equal(typeScriptConfig.rules["@typescript-eslint/no-non-null-assertion"][0], "error");
 	assert.equal(typeScriptConfig.rules["@typescript-eslint/consistent-type-imports"][1].fixStyle, "separate-type-imports");
+	assert.equal(typeScriptConfig.rules["import-x/order"][1].sortTypesGroup, true);
 	assert.equal(vueConfig.rules["vue/prefer-import-from-vue"][0], "off");
 	assert.deepEqual(vueConfig.rules["vue/attribute-hyphenation"], ["error", "always"]);
 	assert.deepEqual(vueConfig.rules["vue/html-closing-bracket-newline"], ["off", { multiline: "always", singleline: "never" }]);

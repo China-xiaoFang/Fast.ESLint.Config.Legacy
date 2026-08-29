@@ -1,8 +1,8 @@
 import { GLOB_VUE } from "../../constants";
 import { javascriptRules, typescriptRules, typescriptTypeCheckedRules, vue2Rules, vue3Rules, vueCommonRules } from "../../rules";
 import { createTypeScriptExtends, createTypeScriptParserOptions } from "../typescript/factory";
-import type { TypeAwareOptions } from "../typescript/factory";
 import type { Linter } from "eslint";
+import type { TypeAwareOptions } from "../typescript/factory";
 
 /**
  * Vue 2/3 单文件组件的内部配置选项。
