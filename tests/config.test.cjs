@@ -76,6 +76,11 @@ test("shared JavaScript, TypeScript, Vue, and RegExp rules match the modern conf
 	assert.equal(typeScriptConfig.rules["@typescript-eslint/no-non-null-assertion"][0], "error");
 	assert.equal(typeScriptConfig.rules["@typescript-eslint/consistent-type-imports"][1].fixStyle, "separate-type-imports");
 	assert.equal(typeScriptConfig.rules["import-x/order"][1].sortTypesGroup, true);
+	assert.equal(typeScriptConfig.rules["import-x/order"][1].groups.at(-1), "type");
+	assert.deepEqual(
+		typeScriptConfig.rules["import-x/order"][1].pathGroups.find((group) => group.pattern === "@/**"),
+		{ pattern: "@/**", group: "internal", position: "before" }
+	);
 	assert.equal(vueConfig.rules["vue/prefer-import-from-vue"][0], "off");
 	assert.deepEqual(vueConfig.rules["vue/attribute-hyphenation"], ["error", "always"]);
 	assert.deepEqual(vueConfig.rules["vue/html-closing-bracket-newline"], ["off", { multiline: "always", singleline: "never" }]);
@@ -106,6 +111,24 @@ test("style imports form a final stable group while other imports retain import-
 	assert.equal(misplacedStyleResult.messages.find((message) => message.ruleId === "import-x/style-imports-last")?.fix, undefined);
 	assert.ok(sideEffectResult.messages.some((message) => message.ruleId === "import-x/order"));
 	assert.ok(alphabetizeResult.messages.some((message) => message.ruleId === "import-x/order"));
+});
+
+test("root aliases precede the final type group and stylesheet group", async () => {
+	const linter = createLinter(
+		{
+			parser: require.resolve("@typescript-eslint/parser"),
+			overrides: configs.createImportConfigs(["**/*.ts"]),
+		},
+		{ fix: true }
+	);
+	const source =
+		'import type { Config } from "eslint";\nimport app from "@/app";\nimport "./app.css";\nconst config = {} as Config;\nvoid app;\nvoid config;\n';
+	const [result] = await linter.lintText(source, { filePath: "fixtures/alias-import-order.ts" });
+
+	assert.equal(
+		result.output,
+		'import app from "@/app";\nimport type { Config } from "eslint";\nimport "./app.css";\nconst config = {} as Config;\nvoid app;\nvoid config;\n'
+	);
 });
 
 test("React and Angular configs load their parsers, processors, and local rules", async () => {

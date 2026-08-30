@@ -43,7 +43,7 @@ Each rule is a default only within its owning config. React rules do not enter t
 
 | Rule                                                        | Fixable    | Main concern                                                                                        |
 | ----------------------------------------------------------- | ---------- | --------------------------------------------------------------------------------------------------- |
-| `import-x/order`                                            | Yes        | Reorders non-style imports; type imports are source-sorted and side effects are only reported.      |
+| `import-x/order`                                            | Yes        | Treats `@/**` as internal and places source-sorted type imports after other non-style imports.      |
 | `import-x/style-imports-last`                               | No         | Styles must form the final contiguous import group, preserving their authored cascade order.        |
 | `@typescript-eslint/no-unused-vars`                         | Yes        | Fixes can remove unused bindings or imports; review module side effects and parameter positions.    |
 | `@typescript-eslint/consistent-type-imports`                | Yes        | Creates separate `import type` declarations; preserve runtime side effects explicitly.              |

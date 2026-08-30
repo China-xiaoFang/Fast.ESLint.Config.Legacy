@@ -4,6 +4,13 @@ All notable changes to this project are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and releases follow Semantic Versioning.
 
+## [2.1.4] - 2026-08-30
+
+### Changed
+
+- Classified `@/**` root aliases as leading internal imports and moved the `type` group after every other non-style import group, while styles remain in their final stable group.
+- Synchronized the alias and terminal type-group policy with `@fast-china/eslint-config` 2.1.4 while preserving the ESLint 8 Legacy architecture.
+
 ## [2.1.3] - 2026-08-29
 
 ### Changed
