@@ -58,7 +58,6 @@ export const createVueConfigs = ({
 			parserOptions: {
 				...(typescript ? createTypeScriptParserOptions(typeScriptOptions) : { ecmaVersion: "latest", sourceType: "module" }),
 				...(typescript ? { parser: "@typescript-eslint/parser" } : {}),
-				extraFileExtensions: [".vue"],
 				ecmaFeatures: { jsx: true },
 			},
 			rules: {

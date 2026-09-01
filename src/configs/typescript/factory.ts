@@ -39,7 +39,9 @@ export interface TypeScriptConfigOptions extends TypeAwareOptions {
  * 创建 TypeScript 与 Vue TypeScript 共用的 parserOptions。
  *
  * 非类型感知模式只声明现代 ECMAScript module 语义；类型感知模式另外启动 Project
- * Service，并只在调用方明确提供时写入 `tsconfigRootDir`。
+ * Service，统一声明 Vue 与 NVue 扩展名，并只在调用方明确提供时写入 `tsconfigRootDir`。
+ * 所有类型感知文件必须保持相同的 `extraFileExtensions`，避免 TypeScript Server 在混合
+ * 检查 TypeScript 与 Vue 文件时反复重载项目。
  *
  * @param options - 类型感知开关及可选 tsconfig 根目录。
  * @returns 可用于 `@typescript-eslint/parser` 或 Vue 子 parser 的新 parserOptions 对象。
@@ -51,6 +53,7 @@ export const createTypeScriptParserOptions = (options: TypeAwareOptions = {}): L
 	...(options.typeChecked
 		? {
 				projectService: true,
+				extraFileExtensions: [".vue", ".nvue"],
 				...(options.tsconfigRootDir ? { tsconfigRootDir: options.tsconfigRootDir } : {}),
 			}
 		: {}),
@@ -156,7 +159,6 @@ export const createTypeAwareConfigs = (): Linter.ConfigOverride[] => {
 			parserOptions: {
 				...createTypeScriptParserOptions(typeAwareOptions),
 				parser: "@typescript-eslint/parser",
-				extraFileExtensions: [".vue"],
 				ecmaFeatures: { jsx: true },
 			},
 			rules: typescriptTypeCheckedRules,

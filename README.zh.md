@@ -51,7 +51,7 @@ module.exports = {
 
 根入口默认启用 browser globals、JavaScript、TypeScript、Vue 3、import-x、Promise、RegExp、JSON 方言、YAML、Markdown、CommonJS/工程文件兼容与 Prettier 冲突处理。
 
-2.1.4 将 `@/**` 别名归入 internal，要求独立的 `import type` 声明位于所有其他非样式导入之后，并让样式形成最后一个稳定分组。Legacy 包仍保持 ESLint 8、可选类型感知检查和 Vue 2 支持。
+2.1.5 让类型感知的 TypeScript、TSX、Vue 与 NVue 统一使用 `extraFileExtensions: [".vue", ".nvue"]`，避免混合检查时 Project Service 重载项目。Legacy 包仍保持 ESLint 8、可选类型感知检查和 Vue 2 支持。
 
 ## 细粒度 extends
 

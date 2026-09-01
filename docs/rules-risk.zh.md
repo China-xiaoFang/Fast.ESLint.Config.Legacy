@@ -82,7 +82,7 @@ browser 预置只在窄范围工程文件中提供 Node globals。
 
 ## 明确不默认启用的高影响能力
 
-- TypeScript 和 Vue 的类型感知规则只在叠加 `/type-aware` 或组合 `createTypeAwareConfigs()` 时启用；它会启动 Project Service、增加项目服务开销，并启用 `no-floating-promises` 与 `return-await` 等需要类型信息的规则。`prefer-promise-reject-errors` 允许透明转发 `unknown` 拒绝原因，但静态可知的 string、number 等非 `Error` 值仍会被报告。
+- TypeScript 和 Vue 的类型感知规则只在叠加 `/type-aware` 或组合 `createTypeAwareConfigs()` 时启用；它会启动 Project Service、增加项目服务开销，并启用 `no-floating-promises` 与 `return-await` 等需要类型信息的规则。TypeScript、TSX、Vue 与 NVue 统一使用 `extraFileExtensions: [".vue", ".nvue"]`，避免混合检查时重载项目。`prefer-promise-reject-errors` 允许透明转发 `unknown` 拒绝原因，但静态可知的 string、number 等非 `Error` 值仍会被报告。
 - React 和 Angular 规则通过 `/react`、`/angular` 或对应创建器启用；Vue 2 使用 `/vue2` 或 `createVueConfigs({ version: 2 })`，`/vue` 默认为 Vue 3。
 - `preferLodashRules` 与 `preferLodashUnifiedRules` 是组织级导入来源策略，可从 `/rules` 导入；`createLodashConfigs()` 可应用对应策略。
 - `import-x/no-unresolved`、`import-x/named` 等依赖具体 resolver 或别名配置的检查默认关闭。

@@ -51,7 +51,7 @@ module.exports = {
 
 The root enables browser globals, JavaScript, TypeScript, Vue 3, import-x, Promise, RegExp, JSON dialects, YAML, Markdown, CommonJS/tooling compatibility, and the Prettier conflict-disable layer.
 
-Version 2.1.4 classifies `@/**` aliases as internal imports, keeps separate `import type` declarations after every other non-style import, and places styles in one final stable group. The Legacy package retains ESLint 8, opt-in type-aware linting, and Vue 2 support.
+Version 2.1.5 keeps `extraFileExtensions: [".vue", ".nvue"]` identical across type-aware TypeScript, TSX, Vue, and NVue parsing so Project Service does not reload the project during mixed-file linting. The Legacy package retains ESLint 8, opt-in type-aware linting, and Vue 2 support.
 
 ## Direct granular extends
 

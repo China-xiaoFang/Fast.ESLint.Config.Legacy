@@ -152,10 +152,14 @@ test("type-aware overlay starts Project Service and enables typed rules", async 
 	const linter = createLinter(composeWithRoot(configs.createTypeAwareConfigs()));
 	const [result] = await linter.lintFiles(["src/index.ts"]);
 	assert.equal(result.fatalErrorCount, 0, result.messages.map((message) => message.message).join(", "));
-	const calculated = await linter.calculateConfigForFile("src/index.ts");
-	assert.ok(calculated.rules["@typescript-eslint/no-floating-promises"]);
-	assert.equal(calculated.rules["@typescript-eslint/return-await"][0], "error");
-	assert.equal(calculated.rules["@typescript-eslint/prefer-promise-reject-errors"][1].allowThrowingUnknown, true);
+	const typeScriptConfig = await linter.calculateConfigForFile("src/index.ts");
+	const vueConfig = await linter.calculateConfigForFile("tests/fixtures/type-aware.vue");
+	assert.ok(typeScriptConfig.rules["@typescript-eslint/no-floating-promises"]);
+	assert.equal(typeScriptConfig.rules["@typescript-eslint/return-await"][0], "error");
+	assert.equal(typeScriptConfig.rules["@typescript-eslint/prefer-promise-reject-errors"][1].allowThrowingUnknown, true);
+	assert.deepEqual(typeScriptConfig.parserOptions.extraFileExtensions, [".vue", ".nvue"]);
+	assert.deepEqual(vueConfig.parserOptions.extraFileExtensions, [".vue", ".nvue"]);
+	assert.deepEqual(typeScriptConfig.parserOptions.extraFileExtensions, vueConfig.parserOptions.extraFileExtensions);
 });
 
 test("package sorting preserves semantic exports condition order", async () => {

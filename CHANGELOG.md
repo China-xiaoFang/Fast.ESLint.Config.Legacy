@@ -4,6 +4,13 @@ All notable changes to this project are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and releases follow Semantic Versioning.
 
+## [2.1.5] - 2026-09-01
+
+### Changed
+
+- Unified `extraFileExtensions: [".vue", ".nvue"]` across type-aware TypeScript, TSX, Vue, and NVue parsing so Project Service does not reload the project while linting mixed file types.
+- Synchronized the Project Service extension policy with `@fast-china/eslint-config` 2.1.5 while preserving the ESLint 8 Legacy architecture.
+
 ## [2.1.4] - 2026-08-30
 
 ### Changed
