@@ -85,14 +85,14 @@ importers:
         specifier: ^3.9.6
         version: 3.9.6
       publint:
-        specifier: ^0.3.22
-        version: 0.3.22
+        specifier: ^0.3.24
+        version: 0.3.24
       react:
-        specifier: ^19.2.8
-        version: 19.2.8
+        specifier: ^19.3.0
+        version: 19.3.0
       tsdown:
         specifier: ^0.23.0
-        version: 0.23.0(@arethetypeswrong/core@0.18.5)(publint@0.3.22)(typescript@6.0.3)
+        version: 0.23.0(@arethetypeswrong/core@0.18.5)(publint@0.3.24)(typescript@6.0.3)
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
@@ -307,8 +307,8 @@ packages:
     resolution: {integrity: sha512-SEeaJLb3qBNF/OaXnaR1NmmBbFYk1zC0ZH/52fATcRPLFg/p791YrcyFFy44Bo9sLaGuSuLp5Q6axbb/O+v/RA==}
     engines: {node: ^14.18.0 || >=16.0.0}
 
-  '@publint/pack@0.1.6':
-    resolution: {integrity: sha512-3uVNyGcVplhPZSLVyeIpL7+cIRn1YCSNHLG/rUIlBQMVH8YuN9++YF+5+UDIIO9RW98dujiUoTltO7RDB5bFJA==}
+  '@publint/pack@0.1.7':
+    resolution: {integrity: sha512-4EDEmvxWtgsCnnVeBvtFIFZtUhPPt1+bA9JrSwU4Sa//6oKtzCSlGGXYJr44OD9aGISymbieJ4mCKHUygUDU+g==}
     engines: {node: '>=18'}
 
   '@quansync/fs@1.0.0':
@@ -1734,8 +1734,8 @@ packages:
   prop-types@15.8.1:
     resolution: {integrity: sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==}
 
-  publint@0.3.22:
-    resolution: {integrity: sha512-6Z/scsr5CA7APdwyF35EY88CqgDj1textWuY788DVTJYPCWVv/Wn9G6KmLnrVRnStgYcahqN4wCDLZGSbQJ69w==}
+  publint@0.3.24:
+    resolution: {integrity: sha512-9zS56KrKBoqi5Qt8h92uMP8TTM9AYZSgnmCo4u2priMqkOZvQnTsziZ2p5LJ2ywbYkAjoCDp2jda9u4cgFefIw==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -1752,8 +1752,8 @@ packages:
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
-  react@19.2.8:
-    resolution: {integrity: sha512-PWaYA1L/q9u2u7xYQi+Y3L3Yfnie7XyLeaJICV1MGD6LprsBxcAqGjYyr0eY3p+QdsA+x/Irkt4Qif8D63+Sbw==}
+  react@19.3.0:
+    resolution: {integrity: sha512-E8LUcbtBWt20bbl2YoHfx4ZDBdxVTfOKtCZn9cDSJ4l6/nuoApcpIBcj47t2wZoVX8g2ZHuMHbiShgCR1T5Sog==}
     engines: {node: '>=0.10.0'}
 
   refa@0.12.1:
@@ -1938,10 +1938,6 @@ packages:
 
   text-table@0.2.0:
     resolution: {integrity: sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==}
-
-  tinyexec@1.3.0:
-    resolution: {integrity: sha512-QKAl9m8gWWGHV8jZcPeym6j+XULi6tOf1mT83WYJ4Lk2ytW/uwAWkrP0uFsdoYMdueVJ0qs26wZ+23xeB4ibNQ==}
-    engines: {node: '>=18'}
 
   tinyexec@1.3.1:
     resolution: {integrity: sha512-GCvB3aoys96IuDFBMcTB46JOR6mdMtAToqwiW8JlWhsoh1mhHi/xn9ss/Dg7N555GiJyEt2qzoG/NHCwM6h1EA==}
@@ -2399,9 +2395,9 @@ snapshots:
 
   '@pkgr/core@0.3.6': {}
 
-  '@publint/pack@0.1.6':
+  '@publint/pack@0.1.7':
     dependencies:
-      tinyexec: 1.3.0
+      tinyexec: 1.3.1
 
   '@quansync/fs@1.0.0':
     dependencies:
@@ -3855,9 +3851,9 @@ snapshots:
       object-assign: 4.1.1
       react-is: 16.13.1
 
-  publint@0.3.22:
+  publint@0.3.24:
     dependencies:
-      '@publint/pack': 0.1.6
+      '@publint/pack': 0.1.7
       package-manager-detector: 1.8.0
       picocolors: 1.1.1
       sade: 1.8.1
@@ -3870,7 +3866,7 @@ snapshots:
 
   react-is@16.13.1: {}
 
-  react@19.2.8: {}
+  react@19.3.0: {}
 
   refa@0.12.1:
     dependencies:
@@ -4124,8 +4120,6 @@ snapshots:
 
   text-table@0.2.0: {}
 
-  tinyexec@1.3.0: {}
-
   tinyexec@1.3.1: {}
 
   tinyglobby@0.2.17:
@@ -4139,7 +4133,7 @@ snapshots:
     dependencies:
       typescript: 6.0.3
 
-  tsdown@0.23.0(@arethetypeswrong/core@0.18.5)(publint@0.3.22)(typescript@6.0.3):
+  tsdown@0.23.0(@arethetypeswrong/core@0.18.5)(publint@0.3.24)(typescript@6.0.3):
     dependencies:
       cac: 7.0.0
       defu: 6.1.7
@@ -4157,7 +4151,7 @@ snapshots:
       verkit: 0.4.0
     optionalDependencies:
       '@arethetypeswrong/core': 0.18.5
-      publint: 0.3.22
+      publint: 0.3.24
       typescript: 6.0.3
     transitivePeerDependencies:
       - '@typescript/native-preview'
