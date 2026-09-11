@@ -47,29 +47,30 @@ browser 预置只在窄范围工程文件中提供 Node globals。
 
 “默认”指规则在它所属的配置中默认启用：Vue 3 规则属于包根和 `/vue`，Vue 2、React 与 Angular 规则分别通过 `/vue2`、`/react`、`/angular` 或对应创建器启用。
 
-| 规则                                                        | 等级       | 自动修复   | 主要影响                                                                           | 采用建议                                                 |
-| ----------------------------------------------------------- | ---------- | ---------- | ---------------------------------------------------------------------------------- | -------------------------------------------------------- |
-| `import-x/order`                                            | error      | 是         | `@/**` 归入 internal；type 位于非样式导入末尾，裸副作用 import 只报告。            | 优先检查别名、polyfill、注册器和入口 import。            |
-| `import-x/style-imports-last`                               | error      | 否         | 样式必须形成最后一个连续 import 分组，组内顺序保持不变。                           | 按真实 CSS 层叠顺序手动排列样式。                        |
-| `@typescript-eslint/no-unused-vars`                         | error      | 是         | 现有代码可能产生大量未使用声明错误；修复可能删除未使用绑定或 import。              | 复核模块副作用、参数位置，再运行类型检查、构建和测试。   |
-| `@typescript-eslint/consistent-type-imports`                | error      | 是         | 将纯类型依赖改成独立 `import type`；若原 import 还承担副作用，编译后行为可能变化。 | 将副作用改成独立 `import "module"`，并复核构建产物。     |
-| `@typescript-eslint/no-require-imports`                     | error      | 否         | 阻断普通 `.ts` 中的 CommonJS、条件加载和部分工具链互操作写法。                     | `.cjs`/`.cts` 已自动豁免；确有需要的文件应按范围关闭。   |
-| `@typescript-eslint/explicit-function-return-type`          | error      | 否         | 普通 TS/TSX 命名函数要求显式返回类型，可能形成较多类型标注改动。                   | 保留内联回调的上下文推断；Vue SFC 不启用此约束。         |
-| `@typescript-eslint/explicit-module-boundary-types`         | error      | 否         | 要求导出函数和公共方法显式声明参数与返回类型，可能暴露尚未稳定的公共 API。         | 只为真实模块边界补充类型；Vue SFC 不启用此约束。         |
-| `no-eval`、`no-void`                                        | error      | 否         | 禁止动态代码执行和 `void promise` 规避写法。                                       | 按真实业务顺序决定等待、返回或显式处理 Promise。         |
-| `curly`、`default-case-last`                                | error      | 部分规则是 | 多行分支要求花括号，已有 default 必须位于 switch 最后。                            | 自动修复后复核控制流，尤其是相邻 else-if 分支。          |
-| `@typescript-eslint/no-non-null-assertion`                  | error      | 否         | 禁止用 `!` 隐藏空值边界，可能要求补充收窄、默认值或明确的错误处理。                | 优先修复数据边界，不用类型断言绕过检查。                 |
-| `no-var`                                                    | error      | 是         | 把 `var` 改为块级声明；声明提升和循环闭包行为需要关注。                            | 先保留测试基线，重点复核循环内回调。                     |
-| `prefer-arrow-callback`                                     | error      | 是         | 改写回调形式；依赖 `this`、`arguments`、构造行为或函数名栈信息的代码需人工确认。   | 检查事件处理器、类库回调和栈追踪。                       |
-| `logical-assignment-operators`                              | error      | 是         | 改成 `\|\|=`、`&&=`、`??=`；getter、Proxy 或响应式对象的读取和写入次数需要确认。   | 对状态容器和 Vue 响应式对象运行行为测试。                |
-| `no-restricted-syntax`（`LabeledStatement`）                | error      | 否         | 禁止 labeled break/continue，可能要求重构多层循环控制流。                          | 必要时可以按文件降级，重构后再恢复。                     |
-| `vue/require-explicit-emits`                                | error      | 否         | 要求组件声明事件，相当于补全组件公共 API；未声明事件的组件可能大量报错。           | 根据真实 `$emit`/`emit` 调用补齐事件，不要盲目关闭。     |
-| `vue/no-mutating-props`                                     | error      | 否         | 强制单向数据流，可能要求引入本地状态、computed setter 或事件。                     | 将修复作为组件设计变更审查。                             |
-| `vue/attributes-order`                                      | error      | 是         | 首次运行会重排大量模板属性，通常不改变运行逻辑但会形成大 diff。                    | 独立提交模板排序，不与业务修改混合。                     |
-| `react/self-closing-comp`                                   | error      | 是         | 首次启用会批量改写无子节点的 JSX/TSX 标签，形成较大的模板差异。                    | 将机械格式变化与组件逻辑修改分开提交。                   |
-| `@angular-eslint/prefer-on-push-component-change-detection` | error      | 否         | Angular 预置要求组件使用 OnPush，可能改变异步状态触发视图更新的方式。              | 逐组件验证 signals、Observable、事件与手工变更检测。     |
-| `no-unused-vars`、`no-undef`（JS 上游预置）                 | error      | 否         | JavaScript 代码可能出现大量阻断；`no-undef` 还会暴露缺失的环境全局变量。           | 先正确选择 `environment`，再清理无用代码或声明项目全局。 |
-| RegExp 正确性与安全规则                                     | error/warn | 部分规则是 | 检查无效结构、潜在错误和灾难性回溯；自动修复仍可能改变真实匹配集合。               | 修复后运行覆盖真实输入和边界值的正则测试。               |
+| 规则                                                                        | 等级       | 自动修复   | 主要影响                                                                           | 采用建议                                                 |
+| --------------------------------------------------------------------------- | ---------- | ---------- | ---------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| `import-x/order`                                                            | error      | 是         | `@/**` 归入 internal；type 位于非样式导入末尾，裸副作用 import 只报告。            | 优先检查别名、polyfill、注册器和入口 import。            |
+| `import-x/style-imports-last`                                               | error      | 否         | 样式必须形成最后一个连续 import 分组，组内顺序保持不变。                           | 按真实 CSS 层叠顺序手动排列样式。                        |
+| `@typescript-eslint/no-unused-vars`                                         | error      | 是         | 现有代码可能产生大量未使用声明错误；修复可能删除未使用绑定或 import。              | 复核模块副作用、参数位置，再运行类型检查、构建和测试。   |
+| `@typescript-eslint/consistent-type-imports`、`no-import-type-side-effects` | error      | 是         | 将纯类型依赖改成独立 `import type`；若原 import 还承担副作用，编译后行为可能变化。 | 将副作用改成独立 `import "module"`，并复核构建产物。     |
+| `@typescript-eslint/no-require-imports`                                     | error      | 否         | 阻断普通 `.ts` 中的 CommonJS、条件加载和部分工具链互操作写法。                     | `.cjs`/`.cts` 已自动豁免；确有需要的文件应按范围关闭。   |
+| `@typescript-eslint/explicit-function-return-type`                          | error      | 否         | 普通 TS/TSX 命名函数要求显式返回类型，可能形成较多类型标注改动。                   | 保留内联回调的上下文推断；Vue SFC 不启用此约束。         |
+| `@typescript-eslint/explicit-module-boundary-types`                         | error      | 否         | 要求导出函数和公共方法显式声明参数与返回类型，可能暴露尚未稳定的公共 API。         | 只为真实模块边界补充类型；Vue SFC 不启用此约束。         |
+| `no-eval`、`no-implied-eval`、`no-new-func`、`no-void`                      | error      | 否         | 禁止直接或间接动态执行字符串，以及 `void promise` 规避写法。                       | 按真实业务顺序决定等待、返回或显式处理 Promise。         |
+| `curly`、`default-case-last`                                                | error      | 部分规则是 | 多行分支要求花括号，已有 default 必须位于 switch 最后。                            | 自动修复后复核控制流，尤其是相邻 else-if 分支。          |
+| `@typescript-eslint/no-non-null-assertion`                                  | error      | 否         | 禁止用 `!` 隐藏空值边界，可能要求补充收窄、默认值或明确的错误处理。                | 优先修复数据边界，不用类型断言绕过检查。                 |
+| `no-var`                                                                    | error      | 是         | 把 `var` 改为块级声明；声明提升和循环闭包行为需要关注。                            | 先保留测试基线，重点复核循环内回调。                     |
+| `prefer-arrow-callback`                                                     | error      | 是         | 改写回调形式；依赖 `this`、`arguments`、构造行为或函数名栈信息的代码需人工确认。   | 检查事件处理器、类库回调和栈追踪。                       |
+| `logical-assignment-operators`                                              | error      | 是         | 改成 `\|\|=`、`&&=`、`??=`；getter、Proxy 或响应式对象的读取和写入次数需要确认。   | 对状态容器和 Vue 响应式对象运行行为测试。                |
+| `no-restricted-syntax`（`LabeledStatement`）                                | error      | 否         | 禁止 labeled break/continue，可能要求重构多层循环控制流。                          | 必要时可以按文件降级，重构后再恢复。                     |
+| `vue/require-explicit-emits`                                                | error      | 否         | 要求组件声明事件，相当于补全组件公共 API；未声明事件的组件可能大量报错。           | 根据真实 `$emit`/`emit` 调用补齐事件，不要盲目关闭。     |
+| `vue/no-mutating-props`                                                     | error      | 否         | 强制单向数据流，可能要求引入本地状态、computed setter 或事件。                     | 将修复作为组件设计变更审查。                             |
+| Vue props/ref 响应性规则                                                    | error      | 否         | 禁止 setup 中以丢失响应性的方式使用 props 或 ref。                                 | 使用 props 引用、toRefs 或保持 ref 对象。                |
+| `vue/attributes-order`                                                      | error      | 是         | 首次运行会重排大量模板属性，通常不改变运行逻辑但会形成大 diff。                    | 独立提交模板排序，不与业务修改混合。                     |
+| `react/self-closing-comp`                                                   | error      | 是         | 首次启用会批量改写无子节点的 JSX/TSX 标签，形成较大的模板差异。                    | 将机械格式变化与组件逻辑修改分开提交。                   |
+| `@angular-eslint/prefer-on-push-component-change-detection`                 | error      | 否         | Angular 预置要求组件使用 OnPush，可能改变异步状态触发视图更新的方式。              | 逐组件验证 signals、Observable、事件与手工变更检测。     |
+| `no-unused-vars`、`no-undef`（JS 上游预置）                                 | error      | 否         | JavaScript 代码可能出现大量阻断；`no-undef` 还会暴露缺失的环境全局变量。           | 先正确选择 `environment`，再清理无用代码或声明项目全局。 |
+| RegExp 正确性与安全规则                                                     | error/warn | 部分规则是 | 检查无效结构、潜在错误和灾难性回溯；自动修复仍可能改变真实匹配集合。               | 修复后运行覆盖真实输入和边界值的正则测试。               |
 
 ## 上游推荐预置的高影响行为
 
@@ -86,7 +87,7 @@ browser 预置只在窄范围工程文件中提供 Node globals。
 ## 明确不默认启用的高影响能力
 
 - TypeScript 和 Vue 的类型感知规则只在叠加 `/type-aware` 或组合 `createTypeAwareConfigs()` 时启用；它会启动 Project Service，并使用上游 `strict-type-checked` 与 `stylistic-type-checked` 预置。TypeScript、TSX、Vue 与 NVue 统一使用 `extraFileExtensions: [".vue", ".nvue"]`，避免混合检查时重载项目。
-- Promise 是否等待由业务语义决定：`no-floating-promises` 与 `strict-void-return` 关闭，`no-misused-promises`、`await-thenable`、`require-await`、仅保证异常处理正确性的 `return-await`、unsafe 类型规则及 `prefer-promise-reject-errors` 保持启用。
+- Promise 是否等待由业务语义决定：`no-floating-promises` 与 `strict-void-return` 关闭，`no-misused-promises`、`await-thenable`、`require-await`、仅保证异常处理正确性的 `return-await`、unsafe 类型规则及 `prefer-promise-reject-errors` 保持启用；Vue 模板与 TSX 属性允许 Promise 返回的事件处理函数。
 - 纯类型导出、构造后不变的私有字段和 switch 穷尽性会被检查；interface/type、索引对象、字面量类属性、RegExp API、动态对象删除和纯静态工具类等语法偏好不强制，弃用 API 与疑似多余运行时保护只警告。
 - React 和 Angular 规则通过 `/react`、`/angular` 或对应创建器启用；Vue 2 使用 `/vue2` 或 `createVueConfigs({ version: 2 })`，`/vue` 默认为 Vue 3。
 - `preferLodashRules` 与 `preferLodashUnifiedRules` 是组织级导入来源策略，可从 `/rules` 导入；`createLodashConfigs()` 可应用对应策略。

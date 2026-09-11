@@ -23,6 +23,10 @@ export const vueCommonRules = {
 	"vue/no-dupe-keys": "error",
 	// [高影响] 禁止组件直接修改 props，要求通过事件或本地状态维持单向数据流。
 	"vue/no-mutating-props": "error",
+	// setup 中直接解构 props 会丢失响应性，要求保留 props 引用或使用 toRefs 等响应式转换。
+	"vue/no-setup-props-reactivity-loss": "error",
+	// 禁止以会丢失响应性的方式解构或传递 ref 对象，确保后续更新仍能被 Vue 追踪。
+	"vue/no-ref-object-reactivity-loss": "error",
 	// 避免自定义组件名与 Vue 内置组件冲突。
 	"vue/no-reserved-component-names": "error",
 	// [安全关注] 禁止在组件节点上使用 v-text/v-html，避免覆盖组件内容和模糊数据边界。

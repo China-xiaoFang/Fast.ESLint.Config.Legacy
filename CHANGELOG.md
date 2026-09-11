@@ -4,6 +4,16 @@ All notable changes to this project are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and releases follow Semantic Versioning.
 
+## [2.1.7] - 2026-09-11
+
+### Added
+
+- Rejected direct and indirect dynamic string execution, returned values from Promise executors, type-only inline imports with runtime side effects, and Vue props/ref usage that loses reactivity.
+
+### Changed
+
+- Allowed Promise-returning event handlers in Vue templates and TSX attributes when type-aware linting is enabled, while retaining all other `no-misused-promises` checks.
+
 ## [2.1.6] - 2026-09-11
 
 ### Added

@@ -69,6 +69,9 @@ test("shared JavaScript, TypeScript, Vue, and RegExp rules match the modern conf
 	assert.equal(javaScriptConfig.rules.camelcase[1].properties, "never");
 	assert.deepEqual(javaScriptConfig.rules["no-restricted-syntax"], ["error", "LabeledStatement", "WithStatement"]);
 	assert.equal(javaScriptConfig.rules["no-eval"][0], "error");
+	assert.equal(javaScriptConfig.rules["no-implied-eval"][0], "error");
+	assert.equal(javaScriptConfig.rules["no-new-func"][0], "error");
+	assert.equal(javaScriptConfig.rules["no-promise-executor-return"][0], "error");
 	assert.deepEqual(javaScriptConfig.rules.curly, ["error", "multi-line", "consistent"]);
 	assert.equal(javaScriptConfig.rules["default-case-last"][0], "error");
 	assert.equal(javaScriptConfig.rules["no-void"][0], "error");
@@ -80,6 +83,7 @@ test("shared JavaScript, TypeScript, Vue, and RegExp rules match the modern conf
 	assert.deepEqual(typeScriptConfig.rules["@typescript-eslint/no-empty-function"], ["error", { allow: ["constructors", "overrideMethods"] }]);
 	assert.equal(typeScriptConfig.rules["@typescript-eslint/no-non-null-assertion"][0], "error");
 	assert.equal(typeScriptConfig.rules["@typescript-eslint/consistent-type-imports"][1].fixStyle, "separate-type-imports");
+	assert.equal(typeScriptConfig.rules["@typescript-eslint/no-import-type-side-effects"][0], "error");
 	assert.equal(typeScriptConfig.rules["@typescript-eslint/no-unused-vars"][1].varsIgnorePattern, undefined);
 	assert.equal(typeScriptConfig.rules["import-x/order"][1].sortTypesGroup, true);
 	assert.equal(typeScriptConfig.rules["import-x/order"][1].groups.at(-1), "type");
@@ -88,6 +92,8 @@ test("shared JavaScript, TypeScript, Vue, and RegExp rules match the modern conf
 		{ pattern: "@/**", group: "internal", position: "before" }
 	);
 	assert.equal(vueConfig.rules["vue/prefer-import-from-vue"][0], "off");
+	assert.equal(vueConfig.rules["vue/no-setup-props-reactivity-loss"][0], "error");
+	assert.equal(vueConfig.rules["vue/no-ref-object-reactivity-loss"][0], "error");
 	assert.deepEqual(vueConfig.rules["vue/attribute-hyphenation"], ["error", "always"]);
 	assert.deepEqual(vueConfig.rules["vue/html-closing-bracket-newline"], ["off", { multiline: "always", singleline: "never" }]);
 	assert.equal(vueConfig.rules["@typescript-eslint/explicit-function-return-type"][0], "off");
@@ -170,6 +176,7 @@ test("type-aware overlay starts Project Service and enables strict typed rules",
 	assert.equal(typeScriptConfig.rules["@typescript-eslint/no-floating-promises"][0], "off");
 	assert.equal(typeScriptConfig.rules["@typescript-eslint/strict-void-return"][0], "off");
 	assert.equal(typeScriptConfig.rules["@typescript-eslint/no-misused-promises"][0], "error");
+	assert.equal(typeScriptConfig.rules["@typescript-eslint/no-misused-promises"][1].checksVoidReturn.attributes, false);
 	assert.equal(typeScriptConfig.rules["@typescript-eslint/await-thenable"][0], "error");
 	assert.equal(typeScriptConfig.rules["@typescript-eslint/require-await"][0], "error");
 	assert.equal(typeScriptConfig.rules["@typescript-eslint/return-await"][0], "error");
@@ -184,6 +191,7 @@ test("type-aware overlay starts Project Service and enables strict typed rules",
 	assert.deepEqual(typeScriptConfig.parserOptions.extraFileExtensions, vueConfig.parserOptions.extraFileExtensions);
 	assert.equal(vueConfig.rules["@typescript-eslint/explicit-function-return-type"][0], "off");
 	assert.equal(vueConfig.rules["@typescript-eslint/explicit-module-boundary-types"][0], "off");
+	assert.equal(vueConfig.rules["@typescript-eslint/no-misused-promises"][1].checksVoidReturn.attributes, false);
 	assert.equal(vueConfig.rules["@typescript-eslint/no-unused-vars"][1].args, "none");
 });
 

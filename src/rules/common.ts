@@ -18,6 +18,12 @@ export const commonRules = {
 	"no-case-declarations": "error",
 	// 禁止动态执行字符串代码，避免代码注入和静态分析失效。
 	"no-eval": "error",
+	// 禁止 setTimeout、setInterval 等 API 通过字符串间接执行代码。
+	"no-implied-eval": "error",
+	// 禁止使用 Function 构造器动态编译字符串代码，避免绕过静态分析和安全策略。
+	"no-new-func": "error",
+	// Promise executor 的返回值会被忽略，禁止误把 return 当作 Promise 的解析结果。
+	"no-promise-executor-return": "error",
 	// 禁止反斜杠续行字符串，优先使用可读性更好的模板字符串。
 	"no-multi-str": "error",
 	// with 会让标识符解析不可预测，并且在严格模式和 ESM 中不可用。

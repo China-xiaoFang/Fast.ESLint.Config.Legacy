@@ -101,10 +101,14 @@ export const typescriptRules = {
 			prefer: "type-imports",
 		},
 	],
+	// 禁止 `import { type Foo }` 产生仅用于类型的运行时导入，统一提升为独立的 `import type`。
+	"@typescript-eslint/no-import-type-side-effects": "error",
 } satisfies RuleOptions;
 
 /** 仅在启用 Project Service 后应用的 TypeScript 类型感知规则覆写。 */
 export const typescriptTypeCheckedRules = {
+	// Vue 模板与 TSX 属性由框架接管异步结果，允许 Promise 返回的事件处理函数；其他 Promise 误用继续检查。
+	"@typescript-eslint/no-misused-promises": ["error", { checksVoidReturn: { attributes: false } }],
 	// 是否等待、返回或处理 Promise 由开发者根据业务顺序和异常语义决定。
 	"@typescript-eslint/no-floating-promises": "off",
 	// 不限制框架生命周期和事件回调的返回写法。
