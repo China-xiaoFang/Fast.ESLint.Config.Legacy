@@ -4,6 +4,20 @@ All notable changes to this project are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and releases follow Semantic Versioning.
 
+## [2.1.6] - 2026-09-11
+
+### Added
+
+- Added exhaustive switch checks, type-only export enforcement, readonly private-member detection, direct `eval` rejection, multiline brace consistency, and final-position `default` branches.
+
+### Changed
+
+- Replaced the opt-in `recommended-type-checked` preset with the official `strict-type-checked` and `stylistic-type-checked` baselines while preserving the ESLint 8 Legacy architecture.
+- Required return types for named TypeScript and TSX functions while preserving contextual inference for inline callbacks; Vue SFCs no longer require function-return or module-boundary annotations and may keep declarative callback parameters.
+- Made Promise waiting, ordering, and error handling an application decision by disabling `no-floating-promises` and `strict-void-return`, while retaining Promise misuse, invalid await, unsafe-type, and correctness-only `return-await` checks.
+- Rejected `void promise` workarounds, retained semantic choices for primitive `||`, and relaxed syntax-only checks that do not improve type safety.
+- Updated the TypeScript ESLint, Vue ESLint, Node type, and build dependencies to their latest compatible releases.
+
 ## [2.1.5] - 2026-09-01
 
 ### Changed

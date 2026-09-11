@@ -1,6 +1,6 @@
 {
 	"name": "@fast-china/eslint-config-legacy",
-	"version": "2.1.5",
+	"version": "2.1.6",
 	"description": "Production-ready ESLint 8 Legacy Config for Vue web administration projects with direct extends and reusable config creators.",
 	"type": "commonjs",
 	"keywords": [
@@ -202,8 +202,8 @@
 		"@angular-eslint/eslint-plugin": "^21.4.0",
 		"@angular-eslint/eslint-plugin-template": "^21.4.0",
 		"@angular-eslint/template-parser": "^21.4.0",
-		"@typescript-eslint/eslint-plugin": "^8.65.0",
-		"@typescript-eslint/parser": "^8.65.0",
+		"@typescript-eslint/eslint-plugin": "^8.70.0",
+		"@typescript-eslint/parser": "^8.70.0",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-import-x": "^4.17.1",
 		"eslint-plugin-jsonc": "^2.21.1",
@@ -213,7 +213,7 @@
 		"eslint-plugin-react": "^7.37.5",
 		"eslint-plugin-react-hooks": "^7.1.1",
 		"eslint-plugin-regexp": "^2.10.0",
-		"eslint-plugin-vue": "^10.10.0",
+		"eslint-plugin-vue": "^10.11.0",
 		"eslint-plugin-yml": "^1.19.1",
 		"jsonc-eslint-parser": "^2.4.2",
 		"vue-eslint-parser": "^10.4.1",
@@ -222,12 +222,12 @@
 	"devDependencies": {
 		"@arethetypeswrong/core": "^0.18.5",
 		"@types/eslint": "^8.56.12",
-		"@types/node": "^24.13.3",
+		"@types/node": "^24.13.4",
 		"eslint": "^8.57.1",
 		"prettier": "^3.9.6",
 		"publint": "^0.3.22",
 		"react": "^19.2.8",
-		"tsdown": "^0.22.14",
+		"tsdown": "^0.23.0",
 		"typescript": "^6.0.3"
 	},
 	"engines": {

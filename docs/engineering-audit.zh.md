@@ -1,10 +1,10 @@
 # 工程质量审查报告
 
-审查日期：2026-08-02
+审查日期：2026-09-11
 
-审查对象：`@fast-china/eslint-config-legacy` 2.0.3
+审查对象：`@fast-china/eslint-config-legacy` 2.1.6
 
-对照项目：同级 `Fast.ESLint.Config` 2.0.4（ESLint 10 Flat Config）
+对照项目：同级 `Fast.ESLint.Config` 2.1.6（ESLint 10 Flat Config）
 
 ## 结论
 
@@ -61,7 +61,7 @@ Vue 2 不进入根配置，但可通过 `/vue2` 或 `createVueConfigs({ version:
 | Angular    | TypeScript、外部模板和内联模板 processor               | 模板 accessibility 与 OnPush             |
 | Node.js    | 环境配置片段与 Node globals                            | browser globals 不泄漏、无额外 Node 插件 |
 | 数据文件   | JSON 方言、YAML 和 Markdown processor                  | tsconfig/VS Code JSONC、代码块虚拟文件   |
-| 类型感知   | Project Service 配置片段                               | 最近 tsconfig、TS 与 Vue 双 parser 链    |
+| 类型感知   | strict/stylistic type-checked 与 Project Service       | 最近 tsconfig、TS 与 Vue 双 parser 链    |
 | 排序       | package 与 tsconfig 按需配置片段                       | 条件导出键顺序保持不变                   |
 
 ## 构建与质量门禁

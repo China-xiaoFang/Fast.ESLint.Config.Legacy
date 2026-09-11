@@ -64,6 +64,15 @@ export const createVueConfigs = ({
 				...javascriptRules,
 				...(typescript ? typescriptRules : {}),
 				...(typescript && typeScriptOptions.typeChecked ? typescriptTypeCheckedRules : {}),
+				...(typescript
+					? {
+							// SFC 以模板上下文和快速迭代为主，不强制补写函数返回类型或模块边界类型。
+							"@typescript-eslint/explicit-function-return-type": "off",
+							"@typescript-eslint/explicit-module-boundary-types": "off",
+							// defineEmits 校验器和框架回调的形参可用于声明契约而不读取；普通未使用变量和导入仍然报错。
+							"@typescript-eslint/no-unused-vars": ["error", { args: "none", caughtErrors: "none", ignoreRestSiblings: true }],
+						}
+					: {}),
 				...vueCommonRules,
 				...(version === 3 ? vue3Rules : vue2Rules),
 			},

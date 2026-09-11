@@ -51,7 +51,11 @@ module.exports = {
 
 根入口默认启用 browser globals、JavaScript、TypeScript、Vue 3、import-x、Promise、RegExp、JSON 方言、YAML、Markdown、CommonJS/工程文件兼容与 Prettier 冲突处理。
 
-2.1.5 让类型感知的 TypeScript、TSX、Vue 与 NVue 统一使用 `extraFileExtensions: [".vue", ".nvue"]`，避免混合检查时 Project Service 重载项目。Legacy 包仍保持 ESLint 8、可选类型感知检查和 Vue 2 支持。
+2.1.6 在保持 ESLint 8、可选类型感知检查和 Vue 2 支持的同时，与 `@fast-china/eslint-config` 2.1.6 的严格规则策略对齐。类型感知的 TypeScript、TSX、Vue 与 NVue 统一使用 `extraFileExtensions: [".vue", ".nvue"]`，避免混合检查时 Project Service 重载项目。
+
+按需叠加的 `/type-aware` 使用 `strict-type-checked` 与 `stylistic-type-checked`。Promise 是否等待由业务语义决定，因此关闭 `no-floating-promises` 与 `strict-void-return`，但继续检查 Promise 误用、错误的 `await`、unsafe 类型以及异常处理正确性所需的 `return-await`。普通 TypeScript/TSX 的命名函数和模块边界要求显式类型；Vue SFC 的函数与声明型回调参数保留上下文推断。
+
+纯类型导出使用 `export type`，只在构造阶段赋值的私有成员使用 `readonly`。共享 JavaScript 规则禁止 `eval` 与 `void` 操作符，要求多行分支使用花括号，并将已有的 `default` 分支放在最后；Prettier 兼容层不会关闭这项 `curly` 约定。
 
 ## 细粒度 extends
 

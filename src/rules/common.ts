@@ -16,17 +16,18 @@ export const commonRules = {
 	"no-alert": "warn",
 	// switch 的 case 不创建词法作用域；要求用花括号包裹声明，避免跨 case 冲突。
 	"no-case-declarations": "error",
+	// 禁止动态执行字符串代码，避免代码注入和静态分析失效。
+	"no-eval": "error",
 	// 禁止反斜杠续行字符串，优先使用可读性更好的模板字符串。
 	"no-multi-str": "error",
 	// with 会让标识符解析不可预测，并且在严格模式和 ESM 中不可用。
 	"no-with": "error",
-	// 允许用 `void promise` 明确忽略 Promise，但禁止在普通表达式中滥用 void。
-	"no-void": [
-		"error",
-		{
-			allowAsStatement: true,
-		},
-	],
+	// Promise 是否等待由业务语义决定，不使用 `void promise` 作为 ESLint 规避语法。
+	"no-void": "error",
+	// 简单单行分支允许省略花括号；多行分支必须使用花括号，同一条件链保持一致。
+	curly: ["error", "multi-line", "consistent"],
+	// default 分支不是强制项，但存在时统一位于其他 case 之后。
+	"default-case-last": "error",
 	// 要求严格相等；保留 `value == null` 同时判断 null/undefined 的常用写法。
 	eqeqeq: ["error", "always", { null: "ignore" }],
 	// 幂运算统一使用 **，减少 Math.pow 嵌套并保持现代语法风格。

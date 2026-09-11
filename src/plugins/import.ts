@@ -7,10 +7,6 @@ const isStyleImport = (source: unknown): source is string => typeof source === "
 
 const importOrderRule = eslintPluginImportX.rules.order;
 
-if (importOrderRule === undefined) {
-	throw new Error("eslint-plugin-import-x does not provide the order rule.");
-}
-
 /**
  * 复用 import-x/order 的全部行为，但把样式导入交给 style-imports-last 独立处理。
  *

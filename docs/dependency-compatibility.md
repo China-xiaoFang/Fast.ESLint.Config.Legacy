@@ -6,13 +6,13 @@ This package selects the newest release that ESLint 8.57 Legacy Config can load 
 
 ## Compatibility boundary
 
-| Layer        | Range                                     | Reason                                               |
-| ------------ | ----------------------------------------- | ---------------------------------------------------- |
-| Runtime Node | `^22.18.0 \|\| ^24.18.0`                  | Matches the maintained Flat Config project matrix    |
-| CI Node      | 22.18.0 and 24.18.0                       | Shared quality matrix; Node 26 is not tested yet     |
-| ESLint       | `^8.57.0`                                 | The package's only lint-engine product boundary      |
-| TypeScript   | `^4.0.0 \|\| ^5.0.0 \|\| ^6.0.0`          | Published TypeScript compatibility range             |
-| Build tools  | TypeScript 6.0.3, tsdown 0.22.14, pnpm 11 | Output targets Node 22; lockfile pins exact packages |
+| Layer        | Range                                    | Reason                                               |
+| ------------ | ---------------------------------------- | ---------------------------------------------------- |
+| Runtime Node | `^22.18.0 \|\| ^24.18.0`                 | Matches the maintained Flat Config project matrix    |
+| CI Node      | 22.18.0 and 24.18.0                      | Shared quality matrix; Node 26 is not tested yet     |
+| ESLint       | `^8.57.0`                                | The package's only lint-engine product boundary      |
+| TypeScript   | `^4.0.0 \|\| ^5.0.0 \|\| ^6.0.0`         | Published TypeScript compatibility range             |
+| Build tools  | TypeScript 6.0.3, tsdown 0.23.0, pnpm 11 | Output targets Node 22; lockfile pins exact packages |
 
 The package intentionally uses the same maintained Node baseline as `@fast-china/eslint-config`. ESLint 8 compatibility describes the configuration format, not a promise to preserve end-of-life Node releases.
 
@@ -33,8 +33,8 @@ These direct dependencies are current as of the review date:
 
 | Dependency                         | Version | Purpose                                    |
 | ---------------------------------- | ------- | ------------------------------------------ |
-| `@typescript-eslint/eslint-plugin` | 8.65.0  | ESLint 8 and TypeScript 6 rules            |
-| `@typescript-eslint/parser`        | 8.65.0  | TypeScript and Vue script parsing          |
+| `@typescript-eslint/eslint-plugin` | 8.70.0  | ESLint 8 and TypeScript 6 rules            |
+| `@typescript-eslint/parser`        | 8.70.0  | TypeScript and Vue script parsing          |
 | `eslint-config-prettier`           | 10.1.8  | Formatting-conflict disable layer          |
 | `eslint-plugin-import-x`           | 4.17.1  | CommonJS Legacy import rules               |
 | `eslint-plugin-jsx-a11y`           | 6.10.2  | React JSX accessibility                    |
@@ -42,13 +42,13 @@ These direct dependencies are current as of the review date:
 | `eslint-plugin-promise`            | 7.3.0   | Promise recommendations                    |
 | `eslint-plugin-react`              | 7.37.5  | React Legacy recommendations               |
 | `eslint-plugin-react-hooks`        | 7.1.1   | Hooks and React Compiler diagnostics       |
-| `eslint-plugin-vue`                | 10.10.0 | Vue 2/3 Legacy Config                      |
+| `eslint-plugin-vue`                | 10.11.0 | Vue 2/3 Legacy Config                      |
 | `vue-eslint-parser`                | 10.4.1  | Vue SFC parser                             |
 | `@arethetypeswrong/core`           | 0.18.5  | Published type-resolution checks           |
 | `prettier`                         | 3.9.6   | Repository formatting                      |
 | `publint`                          | 0.3.22  | Package-structure checks                   |
 | `react`                            | 19.2.8  | React consumer tests                       |
-| `tsdown`                           | 0.22.14 | CommonJS multi-entry and declaration build |
+| `tsdown`                           | 0.23.0  | CommonJS multi-entry and declaration build |
 
 `@types/node` uses the Node 24 line, matching the active CI and development baseline. tsdown still targets Node 22 syntax.
 
@@ -64,8 +64,8 @@ These direct dependencies are current as of the review date:
 | `yaml-eslint-parser`                  | 1.3.2   | 2.1.0  | 2.x cannot be synchronously loaded as a Legacy parser     |
 | `eslint`                              | 8.57.1  | 10.8.0 | The package intentionally exposes ESLint 8.57 `.eslintrc` |
 | `@types/eslint`                       | 8.56.12 | 9.6.1  | Declarations must model the ESLint 8 API                  |
-| `@types/node`                         | 24.13.3 | 26.x   | Types follow the maintained development baseline          |
-| `typescript`                          | 6.0.3   | 7.0.2  | typescript-eslint 8.65 requires TypeScript below 6.1      |
+| `@types/node`                         | 24.13.4 | 26.x   | Types follow the maintained development baseline          |
+| `typescript`                          | 6.0.3   | 7.0.2  | typescript-eslint 8.70 requires TypeScript below 6.1      |
 
 `eslint-plugin-markdown` 5.1.0 is deprecated upstream, but its replacement targets the newer ESLint configuration model. This package retains the final `recommended-legacy` release while it supports ESLint 8 Legacy Config.
 

@@ -40,14 +40,7 @@ const typedRules = {
 	"logical-assignment-operators": ["error", "always", { enforceForIfStatements: true }],
 } satisfies RuleOptions;
 
-void defaultConfig;
-void directConfigs;
-void fragments;
-void projectRules;
-void typedRules;
-void preferLodashRules;
-void preferLodashUnifiedRules;
-void regexpRules;
+export { defaultConfig, directConfigs, fragments, preferLodashRules, preferLodashUnifiedRules, projectRules, regexpRules, typedRules };
 
 // @ts-expect-error Unknown rule names must be rejected.
 defineRules({ "vue/not-a-real-rule": "error" });

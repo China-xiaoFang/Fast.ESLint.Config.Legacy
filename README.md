@@ -51,7 +51,11 @@ module.exports = {
 
 The root enables browser globals, JavaScript, TypeScript, Vue 3, import-x, Promise, RegExp, JSON dialects, YAML, Markdown, CommonJS/tooling compatibility, and the Prettier conflict-disable layer.
 
-Version 2.1.5 keeps `extraFileExtensions: [".vue", ".nvue"]` identical across type-aware TypeScript, TSX, Vue, and NVue parsing so Project Service does not reload the project during mixed-file linting. The Legacy package retains ESLint 8, opt-in type-aware linting, and Vue 2 support.
+Version 2.1.6 keeps ESLint 8, opt-in type-aware linting, and Vue 2 support while aligning the strict rule policy with `@fast-china/eslint-config` 2.1.6. Type-aware TypeScript, TSX, Vue, and NVue parsing uses the same `extraFileExtensions: [".vue", ".nvue"]` so Project Service does not reload the project during mixed-file linting.
+
+The opt-in `/type-aware` config uses `strict-type-checked` plus `stylistic-type-checked`. Promise waiting remains an application decision: `no-floating-promises` and `strict-void-return` are disabled, while Promise misuse, invalid `await`, unsafe types, and correctness-only `return-await` remain checked. Named TypeScript/TSX functions and module boundaries require explicit types; Vue SFCs keep contextual inference for functions and declarative callback parameters.
+
+Type-only exports use `export type`, constructor-only private members use `readonly`, and the shared JavaScript policy rejects `eval` and the `void` operator, requires braces for multiline branches, and places an existing `default` branch last. The Prettier compatibility layer preserves the shared `curly` policy.
 
 ## Direct granular extends
 

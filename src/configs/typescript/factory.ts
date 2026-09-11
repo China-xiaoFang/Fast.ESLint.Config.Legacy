@@ -60,7 +60,7 @@ export const createTypeScriptParserOptions = (options: TypeAwareOptions = {}): L
 });
 
 /**
- * 返回与类型感知模式对应的 typescript-eslint Legacy 推荐预置链。
+ * 返回与类型感知模式对应的 typescript-eslint Legacy 推荐或严格预置链。
  *
  * @param options - 类型感知开关。
  * @returns recommended 与 stylistic 的有序 Legacy extends 名称。
@@ -68,7 +68,7 @@ export const createTypeScriptParserOptions = (options: TypeAwareOptions = {}): L
  */
 export const createTypeScriptExtends = (options: TypeAwareOptions = {}): string[] =>
 	options.typeChecked
-		? ["plugin:@typescript-eslint/recommended-type-checked", "plugin:@typescript-eslint/stylistic-type-checked"]
+		? ["plugin:@typescript-eslint/strict-type-checked", "plugin:@typescript-eslint/stylistic-type-checked"]
 		: ["plugin:@typescript-eslint/recommended", "plugin:@typescript-eslint/stylistic"];
 
 /**
@@ -161,7 +161,14 @@ export const createTypeAwareConfigs = (): Linter.ConfigOverride[] => {
 				parser: "@typescript-eslint/parser",
 				ecmaFeatures: { jsx: true },
 			},
-			rules: typescriptTypeCheckedRules,
+			rules: {
+				...typescriptTypeCheckedRules,
+				// SFC 以模板上下文和快速迭代为主，不强制补写函数返回类型或模块边界类型。
+				"@typescript-eslint/explicit-function-return-type": "off",
+				"@typescript-eslint/explicit-module-boundary-types": "off",
+				// 声明型框架回调可保留未使用形参；普通未使用变量和导入仍然报错。
+				"@typescript-eslint/no-unused-vars": ["error", { args: "none", caughtErrors: "none", ignoreRestSiblings: true }],
+			},
 		},
 	];
 };
