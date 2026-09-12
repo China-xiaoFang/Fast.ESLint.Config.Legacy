@@ -28,7 +28,7 @@ export interface ReactConfigOptions {
 	 * 传递给 `settings.react.version` 的 React 版本。
 	 * @default "detect"
 	 */
-	version?: "detect" | string;
+	version?: string;
 	/**
 	 * JSX runtime；automatic 会关闭显式 React 作用域规则。
 	 * @default "automatic"
@@ -86,6 +86,9 @@ export const createReactConfigs = (
 	const settings = { react: { version } };
 	const javaScriptConfig = createJavaScriptConfig(javascriptFiles);
 	const typeScriptConfig = createTypeScriptConfig(typescriptOptions, typescriptFiles);
+	const typeCheckedReactRules: Linter.RulesRecord = typescriptOptions.typeChecked
+		? { "@typescript-eslint/no-misused-promises": ["error", { checksVoidReturn: { attributes: false } }] }
+		: {};
 
 	return [
 		...(javascript && javascriptFiles.length > 0
@@ -108,6 +111,7 @@ export const createReactConfigs = (
 						settings,
 						rules: {
 							...typeScriptConfig.rules,
+							...typeCheckedReactRules,
 							...reactRules,
 							...runtimeRules,
 							...reactTypeScriptRules,

@@ -1,14 +1,14 @@
 import type { RuleOptions } from "../typegen";
 
 /**
- * 按需启用：要求项目统一使用 lodash-unified。
- * 该规则只限制静态 import/export，不检查动态 import() 或 CommonJS require()。
- * 可通过 `createLodashConfigs("lodash-unified")` 启用，或从 `/rules` 导入后用于自定义文件范围。
+ * 统一使用 `lodash-unified` 的可选导入策略。
  *
- * @public
+ * @remarks
+ * 该规则只约束静态 import/export 的模块来源，不会安装依赖，也不会检查动态
+ * `import()` 或 CommonJS `require()`。选择此策略的项目应自行安装 `lodash-unified`。
  */
 export const preferLodashUnifiedRules = {
-	// [高影响][按需启用] 阻止 lodash/lodash-es 及其子路径，启用前应先统一项目依赖。
+	/** [高影响][按需启用] 禁止混用 `lodash` 与 `lodash-es`，避免同一项目维护多套等价依赖入口。 */
 	"no-restricted-imports": [
 		"error",
 		{
@@ -33,14 +33,14 @@ export const preferLodashUnifiedRules = {
 } satisfies RuleOptions;
 
 /**
- * 按需启用：要求项目统一使用 lodash。
- * 根入口与 lodash/* 子路径均允许，但不能与 lodash-es 或 lodash-unified 混用。
- * 可通过 `createLodashConfigs("lodash")` 启用，或从 `/rules` 导入后用于自定义文件范围。
+ * 统一使用 `lodash` 的可选导入策略。
  *
- * @public
+ * @remarks
+ * 根入口和 `lodash/*` 子路径都允许使用；规则只负责避免与 `lodash-es` 或
+ * `lodash-unified` 混用，不替项目决定整包导入或按方法导入。
  */
 export const preferLodashRules = {
-	// [高影响][按需启用] 阻止 lodash-es/lodash-unified 及其子路径，启用前应统一项目依赖。
+	/** [高影响][按需启用] 禁止混用 `lodash-es` 与 `lodash-unified`，保持运行时和类型来源一致。 */
 	"no-restricted-imports": [
 		"error",
 		{

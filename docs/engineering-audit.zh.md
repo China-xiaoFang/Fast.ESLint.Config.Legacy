@@ -2,9 +2,9 @@
 
 审查日期：2026-09-11
 
-审查对象：`@fast-china/eslint-config-legacy` 2.1.7
+审查对象：`@fast-china/eslint-config-legacy` 2.1.8
 
-对照项目：同级 `Fast.ESLint.Config` 2.1.7（ESLint 10 Flat Config）
+对照项目：同级 `Fast.ESLint.Config` 2.1.8 当前工作区（ESLint 10 Flat Config）
 
 ## 结论
 

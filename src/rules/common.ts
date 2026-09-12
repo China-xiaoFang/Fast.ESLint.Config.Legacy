@@ -3,52 +3,39 @@ import type { RuleOptions } from "../typegen";
 /**
  * 跨 JavaScript、TypeScript 与 Vue 脚本生效的公共规则。
  *
- * 维护约定：每条本地覆写都要说明启用原因；可能造成大面积改动、采用阻力或
- * 行为变化的规则使用 `[高影响]` 标记，并同步维护规则风险文档。
- * 该记录不包含文件范围，直接消费时应由调用方把它放入适当的 Legacy override。
- *
- * @public
+ * @remarks
+ * 默认规则面向 SDK、OA、Admin 与客户端项目使用同一套质量标准。这里只保留
+ * 跨语言且误报较少的规则；纯格式和语法偏好交给 Prettier 或项目自行覆盖。
  */
 export const commonRules = {
-	// 数组回调必须在所有可到达分支返回值，避免 map/filter 等调用静默产生 undefined。
+	/** 要求数组回调在所有可到达分支返回值，避免 `map`、`filter` 等调用静默产生 `undefined`。 */
 	"array-callback-return": "error",
-	// 浏览器弹窗通常不适合生产代码；保留为警告以兼容原型开发和已有管理页面。
+	/** 浏览器弹窗通常不适合生产代码；使用警告允许原型调试，同时确保发布前能够被发现。 */
 	"no-alert": "warn",
-	// switch 的 case 不创建词法作用域；要求用花括号包裹声明，避免跨 case 冲突。
+	/** `switch` 的 `case` 不创建词法作用域；要求用花括号包裹声明，避免跨分支冲突。 */
 	"no-case-declarations": "error",
-	// 禁止动态执行字符串代码，避免代码注入和静态分析失效。
+	/** 禁止动态执行字符串代码，避免代码注入和静态分析失效。 */
 	"no-eval": "error",
-	// 禁止 setTimeout、setInterval 等 API 通过字符串间接执行代码。
+	/** 禁止 `setTimeout`、`setInterval` 等 API 通过字符串间接执行代码。 */
 	"no-implied-eval": "error",
-	// 禁止使用 Function 构造器动态编译字符串代码，避免绕过静态分析和安全策略。
+	/** 禁止使用 `Function` 构造器动态编译字符串代码，避免绕过静态分析和安全策略。 */
 	"no-new-func": "error",
-	// Promise executor 的返回值会被忽略，禁止误把 return 当作 Promise 的解析结果。
+	/** Promise executor 的返回值会被忽略，禁止误把 `return` 当作 Promise 的解析结果。 */
 	"no-promise-executor-return": "error",
-	// 禁止反斜杠续行字符串，优先使用可读性更好的模板字符串。
+	/** 禁止反斜杠续行字符串，优先使用可读性更好的模板字符串。 */
 	"no-multi-str": "error",
-	// with 会让标识符解析不可预测，并且在严格模式和 ESM 中不可用。
+	/** `with` 会让标识符解析不可预测，并且在严格模式和 ESM 中不可用。 */
 	"no-with": "error",
-	// Promise 是否等待由业务语义决定，不使用 `void promise` 作为 ESLint 规避语法。
+	/** Promise 是否等待由业务语义决定，不使用 `void promise` 作为 ESLint 规避语法。 */
 	"no-void": "error",
-	// 简单单行分支允许省略花括号；多行分支必须使用花括号，同一条件链保持一致。
+	/** 简单单行分支允许省略花括号；多行分支必须使用花括号，同一条件链保持一致。 */
 	curly: ["error", "multi-line", "consistent"],
-	// default 分支不是强制项，但存在时统一位于其他 case 之后。
+	/** `default` 分支不是强制项，但存在时统一位于其他 `case` 之后。 */
 	"default-case-last": "error",
-	// 要求严格相等；保留 `value == null` 同时判断 null/undefined 的常用写法。
+	/** 要求严格相等；保留 `value == null` 同时判断 `null` 与 `undefined` 的常用写法。 */
 	eqeqeq: ["error", "always", { null: "ignore" }],
-	// 幂运算统一使用 **，减少 Math.pow 嵌套并保持现代语法风格。
+	/** 使用幂运算符代替 `Math.pow`，使数学表达式更直接。 */
 	"prefer-exponentiation-operator": "error",
-	// 使用 Object.hasOwn，避免对象覆盖或缺少 hasOwnProperty 时产生异常。
-	"prefer-object-has-own": "error",
-	// [可自动修复] 声明间顺序交给 import 插件；这里只排序同一 import 的成员。
-	"sort-imports": [
-		"warn",
-		{
-			ignoreCase: false,
-			ignoreDeclarationSort: true,
-			ignoreMemberSort: false,
-			memberSyntaxSortOrder: ["none", "all", "multiple", "single"],
-			allowSeparatedGroups: false,
-		},
-	],
+	/** `import` 声明内部的成员按名称排序；声明之间的分组和顺序交给 `import-x/order`。 */
+	"sort-imports": ["error", { ignoreDeclarationSort: true }],
 } satisfies RuleOptions;

@@ -4,6 +4,19 @@ All notable changes to this project are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and releases follow Semantic Versioning.
 
+## [2.1.8] - 2026-09-12
+
+### Changed
+
+- Synchronized the JavaScript, TypeScript, Vue, Angular, import, RegExp, Lodash, package-order, and tsconfig-order rule sources with the Fast.ESLint.Config 2.1.8 workspace.
+- Replaced TypeScript stylistic and strict presets with the ESLint 8 equivalent of the modern `recommendedTypeChecked` baseline while keeping type-aware linting opt-in.
+- Applied explicit Angular source, template, and accessibility rule records so the Legacy result does not depend on version-specific recommended preset contents.
+- Preserved Vue 2, CommonJS, Promise, YAML, React, and all existing public preset and rule entry points; Vue 2 alone keeps the required emits compatibility exception.
+
+### Compatibility
+
+- React remains on the CommonJS-loadable ESLint 8 React, Hooks, and JSX accessibility plugins. The baseline `@eslint-react` plugin is ESM-only and cannot be loaded synchronously by ESLint 8 Legacy Config.
+
 ## [2.1.7] - 2026-09-11
 
 ### Added

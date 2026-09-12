@@ -1,5 +1,5 @@
 import { GLOB_ANGULAR_TEMPLATE, GLOB_ANGULAR_TYPESCRIPT } from "../../constants";
-import { angularRules } from "../../rules";
+import { angularRules, angularTemplateAccessibilityRules, angularTemplateRules } from "../../rules";
 import { createTypeScriptConfig } from "../typescript/factory";
 import type { Linter } from "eslint";
 import type { TypeScriptConfigOptions } from "../typescript/factory";
@@ -64,10 +64,10 @@ export const createAngularConfigs = (
 					{
 						...typeScriptConfig,
 						files: typescriptFiles,
-						extends: [...typeScriptConfig.extends, "plugin:@angular-eslint/recommended"],
+						extends: typeScriptConfig.extends,
+						plugins: ["@angular-eslint", ...(inlineTemplates ? ["@angular-eslint/template"] : [])],
 						...(inlineTemplates
 							? {
-									plugins: ["@angular-eslint/template"],
 									processor: "@angular-eslint/template/extract-inline-html",
 								}
 							: {}),
@@ -80,10 +80,11 @@ export const createAngularConfigs = (
 					{
 						files: templateFiles,
 						parser: "@angular-eslint/template-parser",
-						extends: [
-							"plugin:@angular-eslint/template/recommended",
-							...(templateAccessibility ? ["plugin:@angular-eslint/template/accessibility"] : []),
-						],
+						plugins: ["@angular-eslint/template"],
+						rules: {
+							...angularTemplateRules,
+							...(templateAccessibility ? angularTemplateAccessibilityRules : {}),
+						},
 					},
 				]
 			: []),

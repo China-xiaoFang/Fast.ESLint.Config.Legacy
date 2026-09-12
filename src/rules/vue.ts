@@ -1,71 +1,64 @@
 import type { RuleOptions } from "../typegen";
 
 /**
- * Vue SFC 本地覆写规则。
+ * Vue 组件脚本语义规则。
  *
- * 上游 recommended 预置负责基础正确性，这里只记录 Vue 2/3 共同的项目取舍与附加约束。
- * Vue 主版本差异由 `vue2Rules` 与 `vue3Rules` 追加，记录本身不配置 parser 或文件范围。
- *
- * @public
+ * @remarks
+ * 这些规则可以检查 SFC 脚本以及使用 `defineComponent()`、Options API 或 `setup()` 的
+ * 独立 JSX/TSX 组件。纯模板语法规则由 {@link vueTemplateRules} 单独维护。
  */
-export const vueCommonRules = {
-	// [安全关注] v-html 可能引入 XSS；保留 warn 以兼容经过可靠净化的富文本场景。
-	"vue/no-v-html": "warn",
-	// [默认关闭] TypeScript 类型 props 和 required 声明已能表达可选性，不强制提供默认值。
+export const vueScriptRules = {
+	/** [默认关闭] TypeScript 类型 props 和 `required` 声明已能表达可选性，不强制每个可选 prop 提供默认值。 */
 	"vue/require-default-prop": "off",
-	// [默认关闭] 允许 App、Layout 等约定俗成的单词组件名。
+	/** 组件事件必须显式声明，形成可检查的对外事件契约。 */
+	"vue/require-explicit-emits": "error",
+	/** [默认关闭] 允许 `App`、`Layout` 等约定俗成的单词组件名。 */
 	"vue/multi-word-component-names": "off",
-	// 允许直接使用 Vue 子包入口，兼容编译器与运行时等明确子模块导入。
+	/** [默认关闭] 允许直接使用 Vue 子包入口，兼容编译器与运行时等明确子模块导入。 */
 	"vue/prefer-import-from-vue": "off",
-	// 自定义组件的模板属性统一使用 kebab-case；脚本中的 Props 声明仍使用 camelCase。
-	"vue/attribute-hyphenation": ["error", "always"],
-	// 防止 props、data、computed、methods 等组件命名空间出现冲突。
+	/** `props`、`data`、`computed`、`methods` 等选项中禁止同名键，避免成员互相遮蔽。 */
 	"vue/no-dupe-keys": "error",
-	// [高影响] 禁止组件直接修改 props，要求通过事件或本地状态维持单向数据流。
+	/** Props 属于父组件只读输入，子组件应通过 emit 或本地状态更新。 */
 	"vue/no-mutating-props": "error",
-	// setup 中直接解构 props 会丢失响应性，要求保留 props 引用或使用 toRefs 等响应式转换。
+	/** `setup` 中直接解构 props 会丢失响应性，要求保留 props 引用或使用 `toRefs` 等响应式转换。 */
 	"vue/no-setup-props-reactivity-loss": "error",
-	// 禁止以会丢失响应性的方式解构或传递 ref 对象，确保后续更新仍能被 Vue 追踪。
+	/** 禁止以会丢失响应性的方式解构或传递 ref 对象，确保后续更新仍能被 Vue 追踪。 */
 	"vue/no-ref-object-reactivity-loss": "error",
-	// 避免自定义组件名与 Vue 内置组件冲突。
+	/** 组件名不能占用 Vue 内置组件或平台保留名称。 */
 	"vue/no-reserved-component-names": "error",
-	// [安全关注] 禁止在组件节点上使用 v-text/v-html，避免覆盖组件内容和模糊数据边界。
-	"vue/no-v-text-v-html-on-component": "error",
-	// 统一模板与脚本中的自定义事件名称为 camelCase。
+	/** `emit`、`emits` 和事件处理引用中的自定义事件名称统一使用 camelCase，原生 DOM 事件不受影响。 */
 	"vue/custom-event-name-casing": ["error", "camelCase"],
-	// [默认关闭] 允许在一个 SFC 中声明仅供当前文件使用的小型辅助组件。
+	/** [默认关闭] 允许在一个 SFC 中声明仅供当前文件使用的小型辅助组件。 */
 	"vue/one-component-per-file": "off",
-	// 多行标签的闭合括号独占一行，单行标签保持同行。
-	"vue/html-closing-bracket-newline": ["error", { multiline: "always", singleline: "never" }],
-	// [高影响][可自动修复] 统一模板属性分组；首次启用可能产生大量仅排序的模板差异。
+} satisfies RuleOptions;
+
+/**
+ * Vue 模板语法规则。
+ *
+ * @remarks
+ * 这些规则依赖 `vue-eslint-parser` 生成的模板节点，只应用于 `.vue` 与 `.nvue`。
+ * JSX 属性遵循 JavaScript 标识符和运行时约定，不能套用模板的 kebab-case 与属性排序。
+ */
+export const vueTemplateRules = {
+	/** `v-html` 可能引入 XSS；保留警告以兼容经过净化的富文本场景。 */
+	"vue/no-v-html": "warn",
+	/** 自定义组件的模板属性统一使用 kebab-case；脚本中的 Props 与 JSX 属性仍使用 camelCase。 */
+	"vue/attribute-hyphenation": ["error", "always"],
+	/** 禁止在组件节点使用 `v-text` 或 `v-html`，避免覆盖组件内容并模糊数据边界。 */
+	"vue/no-v-text-v-html-on-component": "error",
+	/** 模板属性按定义、循环、条件、修饰、唯一属性、全局属性、普通属性、事件和内容排序。 */
 	"vue/attributes-order": [
 		"error",
 		{
-			order: ["DEFINITION", "LIST_RENDERING", "CONDITIONALS", "RENDER_MODIFIERS", "GLOBAL", "UNIQUE", "OTHER_ATTR", "EVENTS", "CONTENT"],
+			order: ["DEFINITION", "LIST_RENDERING", "CONDITIONALS", "RENDER_MODIFIERS", "UNIQUE", "GLOBAL", "OTHER_ATTR", "EVENTS", "CONTENT"],
 		},
 	],
 } satisfies RuleOptions;
 
-/**
- * Vue 2 专属规则记录。
- *
- * 不强制使用 Vue 3 才完整支持的 emits 组件契约；只应与 Vue 2 upstream preset 组合。
- *
- * @public
- */
-export const vue2Rules = {
-	// Vue 2.6 及以下版本没有稳定的 emits 选项，不能把 Vue 3 公共事件契约用于 Vue 2 组件。
-	"vue/require-explicit-emits": "off",
-} satisfies RuleOptions;
-
-/**
- * Vue 3 专属规则记录。
- *
- * 要求组件显式声明对外事件，使 emits 成为可审查的组件公共 API。
- *
- * @public
- */
-export const vue3Rules = {
-	// [高影响] 组件必须声明对外事件；未声明 emits 的组件会暴露未建模的公共事件 API。
-	"vue/require-explicit-emits": "error",
+/** Vue SFC 同时使用组件脚本语义规则与模板语法规则。 */
+export const vueRules = {
+	/** 复用可在 SFC 与独立 JSX/TSX 中检查的 Vue 组件脚本语义规则。 */
+	...vueScriptRules,
+	/** 叠加仅对 Vue 模板节点有效的语法规则。 */
+	...vueTemplateRules,
 } satisfies RuleOptions;

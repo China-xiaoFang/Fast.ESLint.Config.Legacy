@@ -75,13 +75,13 @@ test("shared JavaScript, TypeScript, Vue, and RegExp rules match the modern conf
 	assert.deepEqual(javaScriptConfig.rules.curly, ["error", "multi-line", "consistent"]);
 	assert.equal(javaScriptConfig.rules["default-case-last"][0], "error");
 	assert.equal(javaScriptConfig.rules["no-void"][0], "error");
-	assert.equal(typeScriptConfig.rules["@typescript-eslint/explicit-function-return-type"][0], "error");
+	assert.equal(typeScriptConfig.rules["@typescript-eslint/explicit-function-return-type"][0], "off");
 	assert.deepEqual(typeScriptConfig.rules["@typescript-eslint/explicit-module-boundary-types"], [
 		"error",
 		{ allowArgumentsExplicitlyTypedAsAny: false },
 	]);
 	assert.deepEqual(typeScriptConfig.rules["@typescript-eslint/no-empty-function"], ["error", { allow: ["constructors", "overrideMethods"] }]);
-	assert.equal(typeScriptConfig.rules["@typescript-eslint/no-non-null-assertion"][0], "error");
+	assert.equal(typeScriptConfig.rules["@typescript-eslint/no-non-null-assertion"][0], "off");
 	assert.equal(typeScriptConfig.rules["@typescript-eslint/consistent-type-imports"][1].fixStyle, "separate-type-imports");
 	assert.equal(typeScriptConfig.rules["@typescript-eslint/no-import-type-side-effects"][0], "error");
 	assert.equal(typeScriptConfig.rules["@typescript-eslint/no-unused-vars"][1].varsIgnorePattern, undefined);
@@ -95,7 +95,7 @@ test("shared JavaScript, TypeScript, Vue, and RegExp rules match the modern conf
 	assert.equal(vueConfig.rules["vue/no-setup-props-reactivity-loss"][0], "error");
 	assert.equal(vueConfig.rules["vue/no-ref-object-reactivity-loss"][0], "error");
 	assert.deepEqual(vueConfig.rules["vue/attribute-hyphenation"], ["error", "always"]);
-	assert.deepEqual(vueConfig.rules["vue/html-closing-bracket-newline"], ["off", { multiline: "always", singleline: "never" }]);
+	assert.equal(vueConfig.rules["vue/html-closing-bracket-newline"][0], "off");
 	assert.equal(vueConfig.rules["@typescript-eslint/explicit-function-return-type"][0], "off");
 	assert.equal(vueConfig.rules["@typescript-eslint/explicit-module-boundary-types"][0], "off");
 	assert.equal(vueConfig.rules["@typescript-eslint/no-unused-vars"][1].args, "none");
@@ -163,20 +163,17 @@ test("React and Angular configs load their parsers, processors, and local rules"
 	assert.ok(angularResult.messages.some((message) => message.ruleId === "@angular-eslint/template/alt-text"));
 });
 
-test("type-aware overlay starts Project Service and enables strict typed rules", async () => {
+test("type-aware overlay starts Project Service and enables recommended typed rules", async () => {
 	const linter = createLinter(composeWithRoot(configs.createTypeAwareConfigs()));
 	const [result] = await linter.lintFiles(["src/index.ts"]);
 	assert.equal(result.fatalErrorCount, 0, result.messages.map((message) => message.message).join(", "));
 	const typeScriptConfig = await linter.calculateConfigForFile("src/index.ts");
 	const vueConfig = await linter.calculateConfigForFile("tests/fixtures/type-aware.vue");
-	assert.deepEqual(configs.createTypeScriptExtends({ typeChecked: true }), [
-		"plugin:@typescript-eslint/strict-type-checked",
-		"plugin:@typescript-eslint/stylistic-type-checked",
-	]);
+	assert.deepEqual(configs.createTypeScriptExtends({ typeChecked: true }), ["plugin:@typescript-eslint/recommended-type-checked"]);
 	assert.equal(typeScriptConfig.rules["@typescript-eslint/no-floating-promises"][0], "off");
 	assert.equal(typeScriptConfig.rules["@typescript-eslint/strict-void-return"][0], "off");
 	assert.equal(typeScriptConfig.rules["@typescript-eslint/no-misused-promises"][0], "error");
-	assert.equal(typeScriptConfig.rules["@typescript-eslint/no-misused-promises"][1].checksVoidReturn.attributes, false);
+	assert.equal(typeScriptConfig.rules["@typescript-eslint/no-misused-promises"][1], undefined);
 	assert.equal(typeScriptConfig.rules["@typescript-eslint/await-thenable"][0], "error");
 	assert.equal(typeScriptConfig.rules["@typescript-eslint/require-await"][0], "error");
 	assert.equal(typeScriptConfig.rules["@typescript-eslint/return-await"][0], "error");
@@ -184,7 +181,7 @@ test("type-aware overlay starts Project Service and enables strict typed rules",
 	assert.equal(typeScriptConfig.rules["@typescript-eslint/prefer-readonly"][0], "error");
 	assert.equal(typeScriptConfig.rules["@typescript-eslint/switch-exhaustiveness-check"][0], "error");
 	assert.equal(typeScriptConfig.rules["@typescript-eslint/no-deprecated"][0], "warn");
-	assert.equal(typeScriptConfig.rules["@typescript-eslint/no-unnecessary-condition"][0], "warn");
+	assert.equal(typeScriptConfig.rules["@typescript-eslint/no-unnecessary-condition"][0], "off");
 	assert.equal(typeScriptConfig.rules["@typescript-eslint/prefer-promise-reject-errors"][1].allowThrowingUnknown, true);
 	assert.deepEqual(typeScriptConfig.parserOptions.extraFileExtensions, [".vue", ".nvue"]);
 	assert.deepEqual(vueConfig.parserOptions.extraFileExtensions, [".vue", ".nvue"]);

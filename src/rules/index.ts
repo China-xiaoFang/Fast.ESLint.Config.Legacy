@@ -19,8 +19,7 @@ type RejectUnknownRuleNames<Rules extends RuleOptions> = Rules & Record<Exclude<
  * @returns 与传入值引用相同、同时兼容 `Linter.RulesRecord` 的规则记录。
  * @public
  */
-export const defineRules = <const Rules extends RuleOptions>(rules: RejectUnknownRuleNames<Rules>): Rules & Linter.RulesRecord =>
-	rules as Rules & Linter.RulesRecord;
+export const defineRules = <const Rules extends RuleOptions>(rules: RejectUnknownRuleNames<Rules>): Rules & Linter.RulesRecord => rules;
 
 /** 类型安全规则 API 使用的规则名与规则记录类型。 */
 export type { RuleName, RuleOptions } from "../typegen";
@@ -36,3 +35,4 @@ export * from "./sort-package";
 export * from "./sort-tsconfig";
 export * from "./typescript";
 export * from "./vue";
+export * from "./vue-legacy";

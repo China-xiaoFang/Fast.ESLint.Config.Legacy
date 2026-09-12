@@ -54,11 +54,9 @@ browser 预置只在窄范围工程文件中提供 Node globals。
 | `@typescript-eslint/no-unused-vars`                                         | error      | 是         | 现有代码可能产生大量未使用声明错误；修复可能删除未使用绑定或 import。              | 复核模块副作用、参数位置，再运行类型检查、构建和测试。   |
 | `@typescript-eslint/consistent-type-imports`、`no-import-type-side-effects` | error      | 是         | 将纯类型依赖改成独立 `import type`；若原 import 还承担副作用，编译后行为可能变化。 | 将副作用改成独立 `import "module"`，并复核构建产物。     |
 | `@typescript-eslint/no-require-imports`                                     | error      | 否         | 阻断普通 `.ts` 中的 CommonJS、条件加载和部分工具链互操作写法。                     | `.cjs`/`.cts` 已自动豁免；确有需要的文件应按范围关闭。   |
-| `@typescript-eslint/explicit-function-return-type`                          | error      | 否         | 普通 TS/TSX 命名函数要求显式返回类型，可能形成较多类型标注改动。                   | 保留内联回调的上下文推断；Vue SFC 不启用此约束。         |
 | `@typescript-eslint/explicit-module-boundary-types`                         | error      | 否         | 要求导出函数和公共方法显式声明参数与返回类型，可能暴露尚未稳定的公共 API。         | 只为真实模块边界补充类型；Vue SFC 不启用此约束。         |
 | `no-eval`、`no-implied-eval`、`no-new-func`、`no-void`                      | error      | 否         | 禁止直接或间接动态执行字符串，以及 `void promise` 规避写法。                       | 按真实业务顺序决定等待、返回或显式处理 Promise。         |
 | `curly`、`default-case-last`                                                | error      | 部分规则是 | 多行分支要求花括号，已有 default 必须位于 switch 最后。                            | 自动修复后复核控制流，尤其是相邻 else-if 分支。          |
-| `@typescript-eslint/no-non-null-assertion`                                  | error      | 否         | 禁止用 `!` 隐藏空值边界，可能要求补充收窄、默认值或明确的错误处理。                | 优先修复数据边界，不用类型断言绕过检查。                 |
 | `no-var`                                                                    | error      | 是         | 把 `var` 改为块级声明；声明提升和循环闭包行为需要关注。                            | 先保留测试基线，重点复核循环内回调。                     |
 | `prefer-arrow-callback`                                                     | error      | 是         | 改写回调形式；依赖 `this`、`arguments`、构造行为或函数名栈信息的代码需人工确认。   | 检查事件处理器、类库回调和栈追踪。                       |
 | `logical-assignment-operators`                                              | error      | 是         | 改成 `\|\|=`、`&&=`、`??=`；getter、Proxy 或响应式对象的读取和写入次数需要确认。   | 对状态容器和 Vue 响应式对象运行行为测试。                |
@@ -80,15 +78,15 @@ browser 预置只在窄范围工程文件中提供 Node globals。
 - `plugin:jsx-a11y/recommended` 与 Angular template accessibility 会暴露缺少替代文本、键盘交互、label、ARIA 属性或焦点支持的问题。这些通常是产品可用性缺陷，不应只为通过 CI 而禁用。
 - Angular recommended/template recommended 可能要求 standalone、现代控制流或更明确的生命周期用法。采用这些约束时可以按单条规则降级，并结合 Angular 自身版本计划处理。
 
-`sort-imports` 默认为 warning 且可以自动修复，只排序同一条 import 中的成员；如果项目使用 `--max-warnings 0`，warning 同样会阻断 CI。
+`sort-imports` 默认为 error，只排序同一条 import 中的成员；import 声明之间的分组和顺序继续由 `import-x/order` 处理。
 
 `vue/no-v-html` 默认为 warning，属于安全关注而不是自动重写规则。它要求调用方确认 HTML 来自可信来源或经过可靠净化。
 
 ## 明确不默认启用的高影响能力
 
-- TypeScript 和 Vue 的类型感知规则只在叠加 `/type-aware` 或组合 `createTypeAwareConfigs()` 时启用；它会启动 Project Service，并使用上游 `strict-type-checked` 与 `stylistic-type-checked` 预置。TypeScript、TSX、Vue 与 NVue 统一使用 `extraFileExtensions: [".vue", ".nvue"]`，避免混合检查时重载项目。
+- TypeScript 和 Vue 的类型感知规则只在叠加 `/type-aware` 或组合 `createTypeAwareConfigs()` 时启用；它会启动 Project Service，并使用上游 `recommended-type-checked` 预置。TypeScript、TSX、Vue 与 NVue 统一使用 `extraFileExtensions: [".vue", ".nvue"]`，避免混合检查时重载项目。
 - Promise 是否等待由业务语义决定：`no-floating-promises` 与 `strict-void-return` 关闭，`no-misused-promises`、`await-thenable`、`require-await`、仅保证异常处理正确性的 `return-await`、unsafe 类型规则及 `prefer-promise-reject-errors` 保持启用；Vue 模板与 TSX 属性允许 Promise 返回的事件处理函数。
-- 纯类型导出、构造后不变的私有字段和 switch 穷尽性会被检查；interface/type、索引对象、字面量类属性、RegExp API、动态对象删除和纯静态工具类等语法偏好不强制，弃用 API 与疑似多余运行时保护只警告。
+- 纯类型导出、构造后不变的私有字段、switch 穷尽性、可选链安全与冗余转换会被检查；interface/type、索引对象、字面量类属性、RegExp API、动态对象删除、纯静态工具类、防御性运行时判断及标准非空断言不强制禁止，弃用 API 保留警告。
 - React 和 Angular 规则通过 `/react`、`/angular` 或对应创建器启用；Vue 2 使用 `/vue2` 或 `createVueConfigs({ version: 2 })`，`/vue` 默认为 Vue 3。
 - `preferLodashRules` 与 `preferLodashUnifiedRules` 是组织级导入来源策略，可从 `/rules` 导入；`createLodashConfigs()` 可应用对应策略。
 - `import-x/no-unresolved`、`import-x/named` 等依赖具体 resolver 或别名配置的检查默认关闭。

@@ -1,55 +1,42 @@
 import type { RuleOptions } from "../typegen";
 
 /**
- * JavaScript、JSX 以及框架脚本共同使用的 ESLint 核心规则记录。
+ * JavaScript 本地覆写规则。
  *
- * TypeScript 和 Vue 配置会在该记录之后关闭不理解扩展语法的核心规则。记录本身不包含
- * parserOptions 或文件范围；高影响规则的行为与项目级覆盖方式见规则风险文档。
- *
- * @public
+ * @remarks
+ * `@eslint/js` 推荐预置负责基础正确性。本记录补充命名、声明顺序和现代语法约定，
+ * 供 SDK、管理端和客户端共同使用。
  */
 export const javascriptRules = {
-	// 变量和类型使用 camelCase；对象属性允许沿用外部协议字段名。
+	/** 变量和类型使用 camelCase；对象属性允许沿用外部协议字段名。 */
 	camelcase: ["error", { properties: "never" }],
-	// 控制台调用在应用源码中需要人工确认；warn/error 仍可用于必要的诊断输出。
+	/** 控制台调用在应用源码中需要人工确认；`warn` 和 `error` 仍可用于必要的诊断输出。 */
 	"no-console": [
 		"warn",
 		{
 			allow: ["warn", "error"],
 		},
 	],
-	// 防止调试断点进入发布代码并中断运行。
+	/** 防止调试断点进入发布代码并中断运行。 */
 	"no-debugger": "error",
-	// 禁止意外的恒定条件，但允许 while (true) 等有明确退出逻辑的循环。
+	/** 禁止意外的恒定条件，但允许 `while (true)` 等有明确退出逻辑的循环。 */
 	"no-constant-condition": [
 		"error",
 		{
 			checkLoops: false,
 		},
 	],
-	// [高影响] 禁止标签语句和 with；包含多层循环 labeled break/continue 的代码需先重构控制流。
+	/** 禁止标签语句和 `with`，避免难以追踪的跳转与动态标识符解析。 */
 	"no-restricted-syntax": ["error", "LabeledStatement", "WithStatement"],
-	// [高影响][可自动修复] 使用 let/const 替代 var；修复后需复核循环闭包和声明提升行为。
+	/** 现代项目使用 `let` 或 `const` 替代 `var`，避免函数作用域和循环闭包陷阱。 */
 	"no-var": "error",
-	// 禁止无说明的空代码块；允许用于“忽略失败”语义的空 catch。
-	"no-empty": [
-		"error",
-		{
-			allowEmptyCatch: true,
-		},
-	],
-	// 拒绝肉眼难以识别、可能导致解析差异的非常规空白字符。
+	/** 允许明确表示忽略失败的空 `catch`，其他空代码块视为遗漏。 */
+	"no-empty": ["error", { allowEmptyCatch: true }],
+	/** 禁止肉眼难以识别、可能导致解析差异的非常规空白字符。 */
 	"no-irregular-whitespace": "error",
-	// 变量和类先声明后使用；函数声明允许提升。使用 warn 避免首次启用时产生过多阻断。
-	"no-use-before-define": [
-		"warn",
-		{
-			classes: true,
-			functions: false,
-			variables: true,
-		},
-	],
-	// [可自动修复] 能保持引用不变的变量优先使用 const；读取先于赋值时不做不可靠判断。
+	/** 变量和类先声明后使用；函数声明允许使用 JavaScript 提升语义。 */
+	"no-use-before-define": ["warn", { classes: true, functions: false, variables: true }],
+	/** 能保持引用不变的变量优先使用 `const`；读取发生在赋值前时不做不可靠判断。 */
 	"prefer-const": [
 		"warn",
 		{
@@ -57,15 +44,7 @@ export const javascriptRules = {
 			ignoreReadBeforeAssign: true,
 		},
 	],
-	// [高影响][可自动修复] 优先箭头回调；批量修复后应复核 this、arguments 与函数名栈信息。
-	"prefer-arrow-callback": [
-		"error",
-		{
-			allowNamedFunctions: false,
-			allowUnboundThis: true,
-		},
-	],
-	// [可自动修复] 属性和值同名时使用对象简写，带引号键名不强制改写。
+	/** 属性和值同名时强制使用对象简写，带引号键名不强制改写。 */
 	"object-shorthand": [
 		"error",
 		"always",
@@ -74,16 +53,18 @@ export const javascriptRules = {
 			avoidQuotes: true,
 		},
 	],
-	// [高影响][可自动修复] 使用 ||=、&&=、??=；涉及 getter/Proxy 时应复核求值次数。
+	/** 不依赖动态 `this` 的回调使用箭头函数；允许确实需要调用方绑定 `this` 的普通函数。 */
+	"prefer-arrow-callback": ["error", { allowNamedFunctions: false, allowUnboundThis: true }],
+	/** 将可等价改写的逻辑赋值统一为 `||=`、`&&=`、`??=`，并覆盖对应的 `if` 赋值写法。 */
 	"logical-assignment-operators": ["error", "always", { enforceForIfStatements: true }],
-	// [可自动修复] 合并对象时优先展开语法，避免 Object.assign 的额外目标对象样板。
+	/** 创建新对象时用对象展开代替 `Object.assign({}, source)`，不改写会修改既有目标对象的调用。 */
 	"prefer-object-spread": "error",
-	// 可变参数函数优先 rest 参数，避免依赖类数组 arguments；该规则只报告，不自动改写签名。
+	/** 使用具名 rest 参数代替 `arguments`，使参数范围明确并获得真实数组和类型推断能力。 */
 	"prefer-rest-params": "error",
-	// 调用可迭代对象时优先 spread；该规则只报告，避免自动改变 apply 的 this 语义。
+	/** 参数数组展开调用时使用 `fn(...args)` 代替 `fn.apply(thisArg, args)`，使调用目标和参数更直观。 */
 	"prefer-spread": "error",
-	// [可自动修复] 字符串拼接优先模板字符串，便于阅读和多段插值。
+	/** 字符串中包含变量时使用模板字符串，减少多段 `+` 拼接和隐式类型转换造成的歧义。 */
 	"prefer-template": "error",
-	// 同一作用域禁止重复声明，避免后声明遮盖前声明。
+	/** 同一作用域禁止重复声明变量、函数或类，避免前一声明被覆盖；TS 文件由对应扩展规则处理。 */
 	"no-redeclare": "error",
 } satisfies RuleOptions;

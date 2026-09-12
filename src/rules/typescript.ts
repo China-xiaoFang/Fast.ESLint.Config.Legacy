@@ -3,63 +3,22 @@ import type { RuleOptions } from "../typegen";
 /**
  * TypeScript 本地覆写规则。
  *
- * 先关闭会误判 TypeScript 语法的核心规则，再启用 typescript-eslint 对应实现。
- * 普通 TS/TSX 的命名函数与公共模块边界要求显式类型，内联回调保留上下文推断；
- * 需要类型信息的严格规则由 `createTypeAwareConfigs()` 提供。
- *
- * @public
+ * @remarks
+ * `.ts`、`.mts` 与 `.cts` 导出成员视为模块公共 API，参数与返回类型必须显式声明；
+ * 内部实现和内联回调保留类型推断。TSX 由配置末尾覆写保留组件返回类型推断。
  */
 export const typescriptRules = {
-	// TypeScript 编译器负责派生类构造器校验，核心规则无法完整理解 TS 扩展语法。
-	"constructor-super": "off",
-	// TypeScript 的 getter 签名和抽象成员由编译器校验，避免核心规则误判。
-	"getter-return": "off",
-	// TypeScript 类型系统负责只读类绑定校验，核心规则不处理声明合并。
-	"no-class-assign": "off",
-	// TypeScript 编译器负责 const 赋值诊断，避免扩展语法节点被核心规则误判。
-	"no-const-assign": "off",
-	// TypeScript 函数重载由编译器校验，核心规则无法区分重载签名。
-	"no-dupe-args": "off",
-	// TypeScript 允许连续方法重载签名，核心规则会把它们当成重复成员。
-	"no-dupe-class-members": "off",
-	// TypeScript 的类型和值命名空间可能合法同名，交给编译器和 TS 插件处理。
-	"no-dupe-keys": "off",
-	// TypeScript 编译器负责函数绑定可写性，避免声明语法产生核心规则误报。
-	"no-func-assign": "off",
-	// TypeScript 编译器负责 import 绑定写入检查，并理解 import equals 等扩展语法。
-	"no-import-assign": "off",
-	// TypeScript 编译器负责原生构造器调用合法性，核心规则的语法模型不完整。
-	"no-new-native-nonconstructor": "off",
-	// TypeScript 编译器负责 Symbol 构造调用诊断，避免重复报告。
-	"no-new-symbol": "off",
-	// TypeScript 编译器负责内建对象调用诊断，避免重复报告。
-	"no-obj-calls": "off",
-	// TypeScript 编译器负责 setter 返回值约束，并能理解抽象或声明成员。
-	"no-setter-return": "off",
-	// TypeScript 编译器负责 super() 前 this 的使用诊断，避免扩展字段语法误报。
-	"no-this-before-super": "off",
-	// TypeScript 控制流分析负责不可达代码诊断，能处理 never 和类型收窄。
-	"no-unreachable": "off",
-	// TypeScript 编译器负责扩展运算符类型校验，避免核心规则处理 TS 节点时误判。
-	"no-unsafe-negation": "off",
-	// TypeScript 自己负责符号声明，核心 no-undef 无法识别类型、接口和声明合并。
-	"no-undef": "off",
-	// 由 TypeScript 版本接管，避免同一问题重复报告或误判声明合并。
-	"no-redeclare": "off",
-	// 由 TypeScript 版本接管，正确区分只存在于类型空间的符号。
-	"no-unused-vars": "off",
-	// 由 TypeScript 版本接管，以识别断言、非空表达式等扩展语法。
-	"no-unused-expressions": "off",
-
-	// 单独组合 TypeScript 配置时也禁止用 void 操作符标记被忽略的 Promise。
+	/** 单独组合 `createTypeScriptConfigs()` 时也禁止用 `void` 操作符标记被忽略的 Promise。 */
 	"no-void": "error",
-	// 普通 TS/TSX 函数要求显式返回类型；内联回调和已有函数类型约束的表达式继续依赖上下文推断。
-	"@typescript-eslint/explicit-function-return-type": ["error", { allowExpressions: true, allowTypedFunctionExpressions: true }],
-	// 导出函数和类的公共方法必须显式声明参数与返回类型，使公共 API 不依赖实现细节推断；参数不允许显式 any。
+	/** TypeScript 重载与声明合并由扩展规则识别，关闭会把合法重载误判为重复声明的核心规则。 */
+	"no-redeclare": "off",
+	/** [默认关闭] 内部函数依赖 TypeScript 推断；公共导出边界由模块边界规则单独检查。 */
+	"@typescript-eslint/explicit-function-return-type": "off",
+	/** 导出函数和类的公共方法必须显式声明参数与返回类型，使公共 API 不依赖实现细节推断；参数不允许显式 `any`。 */
 	"@typescript-eslint/explicit-module-boundary-types": ["error", { allowArgumentsExplicitlyTypedAsAny: false }],
-	// 使用 TypeScript 版本避免误判声明合并、类型和值的同名声明。
+	/** 使用 TypeScript 版本避免核心规则误判声明合并、类型和值的同名声明。 */
 	"@typescript-eslint/no-redeclare": "error",
-	// [高影响][可自动修复] 未使用符号视为错误；自动删除前需确认 import 副作用，仅参数和异常可用下划线表示有意忽略。
+	/** 未使用符号视为错误；仅参数和异常可用下划线明确表示有意忽略。 */
 	"@typescript-eslint/no-unused-vars": [
 		"error",
 		{
@@ -70,15 +29,15 @@ export const typescriptRules = {
 			ignoreRestSiblings: true,
 		},
 	],
-	// [默认关闭] 声明文件、全局扩展和部分 SDK 仍需要 namespace。
+	/** [默认关闭] 声明文件、全局扩展和部分 SDK 仍需要 `namespace`。 */
 	"@typescript-eslint/no-namespace": "off",
-	// any 会绕过类型检查，但在渐进类型化和第三方边界中有合理用途，因此只警告。
+	/** `any` 会绕过类型检查，但第三方边界和渐进迁移仍可能需要，因此只警告。 */
 	"@typescript-eslint/no-explicit-any": "warn",
-	// [高影响] 默认要求 ESM import；CommonJS 扩展名会在专用 override 中关闭此规则。
+	/** TypeScript 源码统一使用 ESM `import`；Node.js 工具文件由末尾覆写单独放开。 */
 	"@typescript-eslint/no-require-imports": "error",
-	// 禁止普通空函数，避免遗漏实现；仅允许无函数体逻辑的构造器和有意留空的重写方法。
+	/** 禁止普通空函数，避免遗漏实现；仅允许无函数体逻辑的构造器和有意留空的重写方法。 */
 	"@typescript-eslint/no-empty-function": ["error", { allow: ["constructors", "overrideMethods"] }],
-	// 使用 TS 版本识别类型断言等语法；允许常见的短路和三元表达式调用模式。
+	/** 使用 TypeScript 版本识别类型断言等语法；允许常见的短路和三元表达式调用模式。 */
 	"@typescript-eslint/no-unused-expressions": [
 		"error",
 		{
@@ -86,13 +45,13 @@ export const typescriptRules = {
 			allowTernary: true,
 		},
 	],
-	// [可自动修复] 删除可由 TypeScript 明确推断的原始值类型标注，减少重复信息。
-	"@typescript-eslint/no-inferrable-types": "error",
-	// 禁止非空断言，要求显式处理空值边界。
-	"@typescript-eslint/no-non-null-assertion": "error",
-	// 可选链之后再做非空断言逻辑矛盾，通常表示边界条件设计有误。
+	/** 删除局部变量中可直接推断的原始类型；参数和属性允许保留公共契约与文档信息。 */
+	"@typescript-eslint/no-inferrable-types": ["error", { ignoreParameters: true, ignoreProperties: true }],
+	/** [默认关闭] 已知运行时不变量可使用标准非空断言；矛盾、重复和无效断言仍由专项规则检查。 */
+	"@typescript-eslint/no-non-null-assertion": "off",
+	/** 可选链之后再做非空断言逻辑矛盾，通常表示边界条件设计有误。 */
 	"@typescript-eslint/no-non-null-asserted-optional-chain": "error",
-	// [高影响][可自动修复] 纯类型依赖改用独立 import type；需复核仅靠 import 触发的模块副作用。
+	/** 纯类型依赖必须使用独立的 `import type`，避免生成无用运行时导入并统一导入声明结构。 */
 	"@typescript-eslint/consistent-type-imports": [
 		"error",
 		{
@@ -101,55 +60,80 @@ export const typescriptRules = {
 			prefer: "type-imports",
 		},
 	],
-	// 禁止 `import { type Foo }` 产生仅用于类型的运行时导入，统一提升为独立的 `import type`。
+	/** 禁止 `import { type Foo }` 产生仅用于类型的运行时导入，统一提升为独立的 `import type`。 */
 	"@typescript-eslint/no-import-type-side-effects": "error",
 } satisfies RuleOptions;
 
-/** 仅在启用 Project Service 后应用的 TypeScript 类型感知规则覆写。 */
+/**
+ * TypeScript 类型感知规则覆写。
+ *
+ * @remarks
+ * 这些规则只在 Project Service 提供完整类型信息后应用。覆写优先保留真实 Bug 与类型安全检查，
+ * 同时关闭会改变业务语义、强制单一语法形式或给通用 SDK 代码带来明显噪声的规则。
+ */
 export const typescriptTypeCheckedRules = {
-	// Vue 模板与 TSX 属性由框架接管异步结果，允许 Promise 返回的事件处理函数；其他 Promise 误用继续检查。
-	"@typescript-eslint/no-misused-promises": ["error", { checksVoidReturn: { attributes: false } }],
-	// 是否等待、返回或处理 Promise 由开发者根据业务顺序和异常语义决定。
+	/** [默认关闭] 是否等待、返回或处理 Promise 由开发者根据业务顺序和异常语义决定。 */
 	"@typescript-eslint/no-floating-promises": "off",
-	// 不限制框架生命周期和事件回调的返回写法。
+	/** [默认关闭] 不限制框架生命周期和事件回调的返回写法。 */
 	"@typescript-eslint/strict-void-return": "off",
-	// 核心 no-void 已禁止全部 void 操作符，关闭类型感知的重复诊断。
+	/** [默认关闭] 核心 `no-void` 已禁止全部 `void` 操作符，关闭类型感知的重复诊断。 */
 	"@typescript-eslint/no-meaningless-void-operator": "off",
-	// 保留简洁的 `() => notify()` 回调，其他容易混淆 void 值与返回值的用法继续检查。
+	/** 保留简洁的 `() => notify()` 回调，其他容易混淆 `void` 值与返回值的用法继续检查。 */
 	"@typescript-eslint/no-confusing-void-expression": ["error", { ignoreArrowShorthand: true }],
-	// 数字是模板字符串的常见安全插值；对象、any 和空值仍需显式处理。
-	"@typescript-eslint/restrict-template-expressions": ["error", { allowNumber: true }],
-	// 动态删除对象字段是表单和字典的正常操作；数组 delete 仍由 no-array-delete 禁止。
+	/** 数字和布尔值是模板字符串的常见安全插值；对象、`any` 和空值仍需显式处理。 */
+	"@typescript-eslint/restrict-template-expressions": ["error", { allowBoolean: true, allowNumber: true }],
+	/** [默认关闭] 动态删除对象字段是表单和字典的正常操作；数组 `delete` 仍由专项规则禁止。 */
 	"@typescript-eslint/no-dynamic-delete": "off",
-	// 纯静态工具类可能是 SDK 的有意 API 设计，不强制改写为函数或对象。
+	/** [默认关闭] 纯静态工具类可能是 SDK 的有意 API 设计，不强制改写为函数或对象。 */
 	"@typescript-eslint/no-extraneous-class": "off",
-	// 弃用 API 需要可见，但兼容多个依赖版本时不应直接阻断构建。
+	/** 弃用 API 需要可见，但兼容多个依赖版本时不应直接阻断构建。 */
 	"@typescript-eslint/no-deprecated": "warn",
-	// TypeScript 类型不一定覆盖外部输入的真实运行时，防御性条件仅提醒审查。
-	"@typescript-eslint/no-unnecessary-condition": "warn",
-	// 语法形式不影响类型安全，不强制 interface/type、索引类型、字面量属性和 RegExp API 的单一写法。
+	/** [默认关闭] TypeScript 类型不一定覆盖外部输入的真实运行时，允许保留防御性条件。 */
+	"@typescript-eslint/no-unnecessary-condition": "off",
+	/** [默认关闭] 不强制使用 `interface` 或 `type` 的单一类型定义形式。 */
 	"@typescript-eslint/consistent-type-definitions": "off",
+	/** [默认关闭] 不强制使用索引签名、`Record` 或映射类型中的某一种固定写法。 */
 	"@typescript-eslint/consistent-indexed-object-style": "off",
+	/** [默认关闭] 不强制类的只读字面量属性改写为 getter 或字段中的某一种固定形式。 */
 	"@typescript-eslint/class-literal-property-style": "off",
+	/** [默认关闭] 不强制使用 `RegExp#exec` 取代字符串匹配 API。 */
 	"@typescript-eslint/prefer-regexp-exec": "off",
-	// 纯类型导出必须使用 export type，避免生成或暗示不存在的运行时导出。
+	/** 纯类型导出必须使用 `export type`，避免生成或暗示不存在的运行时导出。 */
 	"@typescript-eslint/consistent-type-exports": "error",
-	// 只在构造阶段赋值且之后保持不变的私有成员应声明为 readonly。
+	/** 只在构造阶段赋值且之后保持不变的私有成员应声明为 `readonly`。 */
 	"@typescript-eslint/prefer-readonly": "error",
-	// 原始类型的 || 与 ?? 可能承载不同业务语义，不为了风格强制互换。
+	/** 原始类型的 `||` 与 `??` 可能承载不同业务语义，不为了风格强制互换。 */
 	"@typescript-eslint/prefer-nullish-coalescing": ["error", { ignorePrimitives: true }],
-	// 参数名称或独立 JSDoc 属于公共重载契约；仅合并真正重复的签名。
-	"@typescript-eslint/unified-signatures": [
-		"error",
-		{
-			ignoreDifferentlyNamedParameters: true,
-			ignoreOverloadsWithDifferentJSDoc: true,
-		},
-	],
-	// 联合类型和枚举新增成员时，switch 必须覆盖全部分支或显式提供 default。
+	/** 仅在类型明确包含 `null` 或 `undefined` 时要求使用可选链，避免改变其他假值的业务语义。 */
+	"@typescript-eslint/prefer-optional-chain": ["error", { requireNullish: true }],
+	/** [默认关闭] 公共重载会影响类型查询与调用契约，不为减少声明行数强制合并。 */
+	"@typescript-eslint/unified-signatures": "off",
+	/** 联合类型和枚举新增成员时，`switch` 必须覆盖全部分支或显式提供 `default`。 */
 	"@typescript-eslint/switch-exhaustiveness-check": "error",
-	// 保持严格预置的 error-handling-correctness-only 模式，只在异常处理语义需要时要求 return await。
-	"@typescript-eslint/return-await": "error",
-	// 允许透明转发外部 Promise 的未知拒绝原因；静态可知的 string、number 等仍会被报告。
+	/** 禁止展开静态可知不可迭代或语义不匹配的值。 */
+	"@typescript-eslint/no-misused-spread": "error",
+	/** 禁止把不同类别的值混入同一枚举，避免比较和序列化语义不稳定。 */
+	"@typescript-eslint/no-mixed-enums": "error",
+	/** 非空断言与空值合并同时出现时逻辑矛盾。 */
+	"@typescript-eslint/no-non-null-asserted-nullish-coalescing": "error",
+	/** 删除不会改变条件结果的布尔字面量比较。 */
+	"@typescript-eslint/no-unnecessary-boolean-literal-compare": "error",
+	/** 删除模板字符串中没有插值语义的冗余表达式。 */
+	"@typescript-eslint/no-unnecessary-template-expression": "error",
+	/** 删除可由调用参数直接推断的显式泛型实参。 */
+	"@typescript-eslint/no-unnecessary-type-arguments": "error",
+	/** 禁止不会改变运行时值或静态类型的冗余转换。 */
+	"@typescript-eslint/no-unnecessary-type-conversion": "error",
+	/** 默认参数已经表达回退值，不再重复传入 `undefined`。 */
+	"@typescript-eslint/no-useless-default-assignment": "error",
+	/** getter 与 setter 必须使用相互兼容的类型。 */
+	"@typescript-eslint/related-getter-setter-pairs": "error",
+	/** 只在错误处理语义需要时要求 `return await`，不增加纯风格 `await`。 */
+	"@typescript-eslint/return-await": ["error", "error-handling-correctness-only"],
+	/** Promise `catch` 回调接收未知拒绝原因，使用 `unknown` 后再显式收窄。 */
+	"@typescript-eslint/use-unknown-in-catch-callback-variable": "error",
+	/** 无 `await` 的 `async` 会改变返回值和异常语义，应删除 `async` 或返回真实 Promise。 */
+	"@typescript-eslint/require-await": "error",
+	/** 允许透明转发外部 Promise 的未知拒绝原因；静态可知的 `string`、`number` 等仍会被报告。 */
 	"@typescript-eslint/prefer-promise-reject-errors": ["error", { allowThrowingUnknown: true }],
 } satisfies RuleOptions;
