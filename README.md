@@ -46,6 +46,9 @@ Plugins and parsers are direct package dependencies.
 module.exports = {
 	root: true,
 	extends: ["@fast-china/eslint-config-legacy"],
+	rules: {
+		"no-console": "warn",
+	},
 };
 ```
 
@@ -100,6 +103,12 @@ module.exports = {
 		...createJavaScriptConfigs(),
 		...createTypeScriptConfigs(),
 		...createVueConfigs({ version: 2 }),
+		{
+			files: ["src/**/*.{js,ts,vue}"],
+			rules: {
+				"no-console": "warn",
+			},
+		},
 	],
 };
 ```
