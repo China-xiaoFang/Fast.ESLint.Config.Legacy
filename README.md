@@ -54,7 +54,7 @@ module.exports = {
 
 The root enables browser globals, JavaScript, TypeScript, Vue 3, import-x, Promise, RegExp, JSON dialects, YAML, Markdown, CommonJS/tooling compatibility, and the Prettier conflict-disable layer.
 
-Version 2.1.8 keeps ESLint 8, opt-in type-aware linting, Vue 2, and all public Legacy presets while synchronizing compatible rule sources with the Fast.ESLint.Config 2.1.8 workspace. Type-aware TypeScript now uses the Legacy equivalent of `recommendedTypeChecked`; Vue 2 alone disables the Vue 3 emits contract. React continues to use CommonJS-loadable ESLint 8 plugins because the modern baseline plugin is ESM-only.
+Version 2.1.9 keeps ESLint 8, opt-in type-aware linting, Vue 2, and all public Legacy presets while synchronizing compatible rule sources with the Fast.ESLint.Config 2.1.9 workspace. Vue single-file components disable `switch-exhaustiveness-check`; regular TypeScript and TSX retain the error-level check. Vue 2 alone disables the Vue 3 emits contract. React continues to use CommonJS-loadable ESLint 8 plugins because the modern baseline plugin is ESM-only.
 
 The opt-in `/type-aware` config uses `recommended-type-checked`. Promise waiting remains an application decision: `no-floating-promises` and `strict-void-return` are disabled, while Promise misuse, invalid `await`, unsafe types, redundant conversions, and correctness-only `return-await` remain checked; Promise-returning event handlers are allowed in Vue templates and TSX attributes. Exported TypeScript module boundaries require explicit types, while internal functions, TSX component returns, and Vue SFC callbacks keep contextual inference.
 

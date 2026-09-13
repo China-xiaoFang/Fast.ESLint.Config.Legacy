@@ -180,6 +180,7 @@ test("type-aware overlay starts Project Service and enables recommended typed ru
 	assert.equal(typeScriptConfig.rules["@typescript-eslint/consistent-type-exports"][0], "error");
 	assert.equal(typeScriptConfig.rules["@typescript-eslint/prefer-readonly"][0], "error");
 	assert.equal(typeScriptConfig.rules["@typescript-eslint/switch-exhaustiveness-check"][0], "error");
+	assert.equal(vueConfig.rules["@typescript-eslint/switch-exhaustiveness-check"][0], "off");
 	assert.equal(typeScriptConfig.rules["@typescript-eslint/no-deprecated"][0], "warn");
 	assert.equal(typeScriptConfig.rules["@typescript-eslint/no-unnecessary-condition"][0], "off");
 	assert.equal(typeScriptConfig.rules["@typescript-eslint/prefer-promise-reject-errors"][1].allowThrowingUnknown, true);

@@ -54,7 +54,7 @@ module.exports = {
 
 根入口默认启用 browser globals、JavaScript、TypeScript、Vue 3、import-x、Promise、RegExp、JSON 方言、YAML、Markdown、CommonJS/工程文件兼容与 Prettier 冲突处理。
 
-2.1.8 在保留 ESLint 8、可选类型感知检查、Vue 2 及全部 Legacy 公开预设的同时，与 Fast.ESLint.Config 2.1.8 工作区同步可兼容的规则源码。类型感知 TypeScript 使用 `recommendedTypeChecked` 的 Legacy 等价预设；仅 Vue 2 关闭 Vue 3 的 emits 契约。React 继续使用 ESLint 8 可同步加载的 CommonJS 插件，因为现代基准插件仅提供 ESM。
+2.1.9 在保留 ESLint 8、可选类型感知检查、Vue 2 及全部 Legacy 公开预设的同时，与 Fast.ESLint.Config 2.1.9 工作区同步可兼容的规则源码。Vue 单文件组件关闭 `switch-exhaustiveness-check`，普通 TypeScript 与 TSX 仍按 error 检查；仅 Vue 2 关闭 Vue 3 的 emits 契约。React 继续使用 ESLint 8 可同步加载的 CommonJS 插件，因为现代基准插件仅提供 ESM。
 
 按需叠加的 `/type-aware` 使用 `recommended-type-checked`。Promise 是否等待由业务语义决定，因此关闭 `no-floating-promises` 与 `strict-void-return`，但继续检查 Promise 误用、错误的 `await`、unsafe 类型、冗余转换以及异常处理正确性所需的 `return-await`；Vue 模板与 TSX 属性允许 Promise 返回的事件处理函数。导出的 TypeScript 模块边界要求显式类型，内部函数、TSX 组件返回值及 Vue SFC 回调保留上下文推断。
 

@@ -161,6 +161,8 @@ export const createTypeAwareConfigs = (): Linter.ConfigOverride[] => {
 			},
 			rules: {
 				...typescriptTypeCheckedRules,
+				// Vue SFC 允许按模板与运行时兜底处理未穷尽的联合类型或枚举。
+				"@typescript-eslint/switch-exhaustiveness-check": "off",
 				// SFC 以模板上下文和快速迭代为主，不强制补写函数返回类型或模块边界类型。
 				"@typescript-eslint/explicit-function-return-type": "off",
 				"@typescript-eslint/explicit-module-boundary-types": "off",

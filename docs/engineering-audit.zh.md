@@ -1,10 +1,10 @@
 # 工程质量审查报告
 
-审查日期：2026-09-11
+审查日期：2026-09-14
 
-审查对象：`@fast-china/eslint-config-legacy` 2.1.8
+审查对象：`@fast-china/eslint-config-legacy` 2.1.9
 
-对照项目：同级 `Fast.ESLint.Config` 2.1.8 当前工作区（ESLint 10 Flat Config）
+对照项目：同级 `Fast.ESLint.Config` 2.1.9 当前工作区（ESLint 10 Flat Config）
 
 ## 结论
 

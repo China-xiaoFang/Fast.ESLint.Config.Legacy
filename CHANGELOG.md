@@ -4,6 +4,12 @@ All notable changes to this project are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and releases follow Semantic Versioning.
 
+## [2.1.9] - 2026-09-14
+
+### Changed
+
+- Disabled `@typescript-eslint/switch-exhaustiveness-check` for Vue single-file components while retaining the error-level check for regular TypeScript and TSX files.
+
 ## [2.1.8] - 2026-09-12
 
 ### Changed
